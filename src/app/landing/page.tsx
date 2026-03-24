@@ -761,7 +761,7 @@ export default function LandingPage() {
         </div>
 
         {/* BAGONG MASCOT — Decorative background element restored to prominence */}
-        <div className="absolute -right-16 -bottom-10 w-96 h-auto opacity-30 pointer-events-none z-0 animate-float-slow">
+        <div className="absolute -right-16 -bottom-10 w-96 h-auto opacity-30 pointer-events-none z-0 animate-float">
           <Image
             src="/images/bagong.png"
             alt="Bagong Mascot"
