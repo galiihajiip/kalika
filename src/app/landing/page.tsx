@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
+import CustomCursor from '@/components/CustomCursor'
 
 const LENSES_ROW_1 = [
   { id: 'nusantara', emoji: '🌴', label: 'Nusantara', region: 'SE Asia' },
@@ -38,30 +39,6 @@ const LENSES_ROW_2 = [
 ]
 
 export default function LandingPage() {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
-  const [ghostPos, setGhostPos] = useState({ x: 0, y: 0 })
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
-  useEffect(() => {
-    let frameId: number
-    const animateGhost = () => {
-      setGhostPos(prev => ({
-        x: prev.x + (cursorPos.x - prev.x) * 0.15,
-        y: prev.y + (cursorPos.y - prev.y) * 0.15,
-      }))
-      frameId = requestAnimationFrame(animateGhost)
-    }
-    frameId = requestAnimationFrame(animateGhost)
-    return () => cancelAnimationFrame(frameId)
-  }, [cursorPos])
-
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -112,15 +89,7 @@ export default function LandingPage() {
         <div className="orb w-[300px] h-[300px] bg-kalika-green/5 top-[30%] left-[50%] animate-float" />
       </div>
 
-      {/* Custom Cursor */}
-      <div 
-        className="fixed top-0 left-0 w-3 h-3 bg-kalika-green rounded-full z-[100] pointer-events-none hidden lg:block mix-blend-difference" 
-        style={{ transform: `translate3d(${cursorPos.x - 6}px, ${cursorPos.y - 6}px, 0)` }} 
-      />
-      <div 
-        className="fixed top-0 left-0 w-9 h-9 border border-kalika-green/30 rounded-full z-[100] pointer-events-none hidden lg:block mix-blend-difference transition-transform duration-75 ease-out" 
-        style={{ transform: `translate3d(${ghostPos.x - 18}px, ${ghostPos.y - 18}px, 0)` }} 
-      />
+      <CustomCursor />
 
       {/* --- Navbar --- */}
       <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
