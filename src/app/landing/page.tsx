@@ -276,63 +276,84 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-[1400px] mx-auto">
           
-          {/* Persona Card 1: Dyslexia */}
-          <div className="reveal bg-kalika-bg border border-kalika-border2 rounded-2xl p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group">
-            <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-              📖
+          {/* Persona Card 1: The Deliberate Learner */}
+          <div className="reveal bg-kalika-bg border border-kalika-border2 rounded-[32px] p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group shadow-lg">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                🧠
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-xl text-kalika-text">The Deliberate Learner</h3>
+                <div className="text-kalika-green font-bold text-[10px] uppercase tracking-widest mt-1">Dyslexia / Reading difficulty</div>
+              </div>
             </div>
-            <div className="flex flex-col gap-4">
-              <h3 className="font-display font-bold text-2xl text-kalika-text leading-snug">
-                The Dyslexic Learner
-              </h3>
-              <p className="text-kalika-text-secondary text-base leading-relaxed font-light">
-                KALIKA breaks down complex texts into digestible, dyslexia-friendly formats. Generous spacing, clear fonts, and structured content reduce cognitive load, making learning accessible and stress-free.
+            
+            <div className="bg-kalika-surface border-l-4 border-kalika-green p-6 rounded-r-2xl relative shadow-inner">
+              <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light">
+                "I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process — in my own cultural language."
               </p>
             </div>
-            <div className="mt-auto pt-6 border-t border-kalika-border">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-kalika-green bg-kalika-green-subtle border border-kalika-green-glow px-4 py-2 rounded-full">
-                Accessibility
-              </span>
+
+            <div className="mt-auto flex flex-wrap gap-2 pt-6 border-t border-kalika-border">
+              {['Dyslexia-Friendly Text', 'TTS Highlight', 'Bilingual Glossary'].map(f => (
+                <span key={f} className="text-[9px] font-bold text-kalika-muted uppercase tracking-wider bg-kalika-surface border border-kalika-border px-3 py-1.5 rounded-full">
+                  {f}
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* Persona Card 2: ADHD */}
-          <div className="reveal bg-kalika-bg border border-kalika-border2 rounded-2xl p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group">
-            <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-              ⚡
+          {/* Persona Card 2: The Sprint Learner */}
+          <div className="reveal bg-kalika-bg border border-kalika-border2 rounded-[32px] p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group shadow-lg">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                ⚡
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-xl text-kalika-text">The Sprint Learner</h3>
+                <div className="text-kalika-green font-bold text-[10px] uppercase tracking-widest mt-1">ADHD / Focus challenges</div>
+              </div>
             </div>
-            <div className="flex flex-col gap-4">
-              <h3 className="font-display font-bold text-2xl text-kalika-text leading-snug">
-                The ADHD Learner
-              </h3>
-              <p className="text-kalika-text-secondary text-base leading-relaxed font-light">
-                Engage with gamified quizzes, interactive analogies, and multimodal inputs that keep your focus sharp. KALIKA's dynamic approach turns studying into an exciting, rewarding experience.
+            
+            <div className="bg-kalika-surface border-l-4 border-kalika-green p-6 rounded-r-2xl relative shadow-inner">
+              <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light">
+                "ADHD makes focused reading hard, especially for dry subjects. The mini quizzes give me that quick hit of challenge I need to actually stay engaged with the material."
               </p>
             </div>
-            <div className="mt-auto pt-6 border-t border-kalika-border">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-kalika-green bg-kalika-green-subtle border border-kalika-green-glow px-4 py-2 rounded-full">
-                Engagement
-              </span>
+
+            <div className="mt-auto flex flex-wrap gap-2 pt-6 border-t border-kalika-border">
+              {['Gamified Quizzes', 'Audio Scholar', 'Narrative Analogies'].map(f => (
+                <span key={f} className="text-[9px] font-bold text-kalika-muted uppercase tracking-wider bg-kalika-surface border border-kalika-border px-3 py-1.5 rounded-full">
+                  {f}
+                </span>
+              ))}
             </div>
           </div>
 
-          {/* Persona Card 3: Global Scholar */}
-          <div className="reveal bg-kalika-bg border border-kalika-border2 rounded-2xl p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group">
-            <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-              🌍
+          {/* Persona Card 3: The Global Scholar */}
+          <div className="reveal bg-kalika-bg border border-kalika-border2 rounded-[32px] p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group shadow-lg">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                🌏
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-xl text-kalika-text">The Global Scholar</h3>
+                <div className="text-kalika-green font-bold text-[10px] uppercase tracking-widest mt-1">International / Multicultural</div>
+              </div>
             </div>
-            <div className="flex flex-col gap-4">
-              <h3 className="font-display font-bold text-2xl text-kalika-text leading-snug">
-                The Global Scholar
-              </h3>
-              <p className="text-kalika-text-secondary text-base leading-relaxed font-light">
-                Connect with academic material through culturally relevant analogies from over 50 world cultures. KALIKA bridges the gap between your background and complex concepts, fostering deeper understanding.
+            
+            <div className="bg-kalika-surface border-l-4 border-kalika-green p-6 rounded-r-2xl relative shadow-inner">
+              <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light">
+                "Explaining recursion through the Mahabharata? That clicked in 30 seconds what three lectures never could. Finally, software engineering makes sense to my brain."
               </p>
             </div>
-            <div className="mt-auto pt-6 border-t border-kalika-border">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-kalika-green bg-kalika-green-subtle border border-kalika-green-glow px-4 py-2 rounded-full">
-                Cultural Relevance
-              </span>
+
+            <div className="mt-auto flex flex-wrap gap-2 pt-6 border-t border-kalika-border">
+              {['50+ Cultural Lenses', 'Multimodal Input', 'Bilingual Glossary'].map(f => (
+                <span key={f} className="text-[9px] font-bold text-kalika-muted uppercase tracking-wider bg-kalika-surface border border-kalika-border px-3 py-1.5 rounded-full">
+                  {f}
+                </span>
+              ))}
             </div>
           </div>
 
