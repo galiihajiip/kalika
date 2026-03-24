@@ -717,9 +717,20 @@ export default function LandingPage() {
               ))}
             </ul>
 
-            <Link href="/app" className="block bg-kalika-green text-kalika-bg py-5 px-10 rounded-2xl font-display font-bold text-xl hover:-translate-y-1 hover:shadow-2xl hover:bg-green-300 transition-all duration-300">
-              ✦ Launch KALIKA Now
-            </Link>
+            <div className="relative">
+              <Link href="/app" className="block relative z-10 bg-kalika-green text-kalika-bg py-5 px-10 rounded-2xl font-display font-bold text-xl hover:-translate-y-1 hover:shadow-2xl hover:bg-green-300 transition-all duration-300">
+                ✦ Launch KALIKA Now
+              </Link>
+              <div className="absolute -right-8 -bottom-10 w-40 h-auto opacity-20 pointer-events-none z-0 animate-float" style={{ animationDelay: '1s' }}>
+                <Image
+                  src="/images/bagong.png"
+                  alt=""
+                  width={160}
+                  height={200}
+                  className="object-contain"
+                />
+              </div>
+            </div>
             
             <p className="mt-8 text-[10px] text-kalika-muted font-bold uppercase tracking-widest">
               Built by students, for students · 2026 KALIKA
