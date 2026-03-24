@@ -133,7 +133,7 @@ export default function ResultCard({ onGenerateQuiz, isGeneratingQuiz }: ResultC
           {isGeneratingQuiz ? (
             <>
               <span className="animate-spin text-lg">⟳</span>
-              Generating quiz...
+              Generating quiz.
             </>
           ) : (
             <>
