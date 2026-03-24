@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Nunito, Sora } from 'next/font/google'
 import './globals.css'
+import ToastContainer from '@/components/Toast'
 
 // ─── Fonts ──────────────────────────────────────────────────────
 const nunito = Nunito({
@@ -51,6 +52,7 @@ export default function RootLayout({
         className={`${nunito.variable} ${sora.variable} font-[var(--font-nunito)] antialiased min-h-screen`}
       >
         {children}
+        <ToastContainer />
       </body>
     </html>
   )
