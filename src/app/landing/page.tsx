@@ -161,18 +161,8 @@ export default function LandingPage() {
       <CustomCursor />
 
       <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 group">
           <LogoMark />
-          <div className="w-8 h-8 relative flex-shrink-0 animate-float-slow">
-            <Image
-              src="/images/bagong.png"
-              alt="Mascot"
-              width={32}
-              height={32}
-              className="object-contain"
-              priority
-            />
-          </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-kalika-green text-lg tracking-wider leading-none uppercase">KALIKA</span>
             <span className="text-[9px] text-kalika-muted uppercase tracking-widest mt-0.5 font-bold">AI STUDY COMPANION</span>
@@ -228,18 +218,6 @@ export default function LandingPage() {
         <div className="animate-fade-up relative w-full aspect-[4/3] max-w-[550px]" style={{ animationDelay: '0.3s' }}>
 
           <div className="relative overflow-visible">
-            {/* BAGONG MASCOT — Place file at public/images/bagong.png */}
-            <div className="absolute -right-4 -bottom-0 w-72 h-auto z-20 pointer-events-none">
-              <Image
-                src="/images/bagong.png"
-                alt="Bagong the Garuda Scholar mascot"
-                width={320}
-                height={400}
-                className="object-contain object-bottom w-full h-auto"
-                style={{ maxHeight: '380px' }}
-                priority
-              />
-            </div>
           </div>
 
           <div className="animate-float absolute inset-0 bg-kalika-surface border border-kalika-border2 rounded-kalika-xl shadow-[0_40px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(74,222,128,0.1)] overflow-visible flex flex-col">
