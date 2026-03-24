@@ -46,7 +46,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
   const words = textToRead.split(/\s+/).filter(Boolean)
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
 
-  // Load voices — must handle async voice loading
+  // Load voices: must handle async voice loading
   useEffect(() => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       setIsSupported(false)
@@ -271,7 +271,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
                         max-h-64 overflow-y-auto bg-kalika-surface">
           <div className="px-4 py-2 bg-kalika-surface2 border-b border-kalika-border
                           text-xs text-kalika-muted uppercase tracking-wider font-semibold">
-            Choose a voice — {voices.length} available
+            Choose a voice: {voices.length} available
           </div>
           {voices.map((v, i) => (
             <button
