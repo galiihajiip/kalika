@@ -14,10 +14,11 @@ export default function HomePage() {
   const { 
     isLoading, resultData, quizData, activeTab, setActiveTab, 
     history, inputText, selectedLens, addToast, setResult, 
-    setLoading, addHistory 
+    setLoading, addHistory, setQuiz 
   } = useKalikaStore()
 
   const [historyOpen, setHistoryOpen] = useState(false)
+  const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false)
 
   const handleGenerate = async () => {
     if (!inputText || inputText.length < 50) return
@@ -37,6 +38,7 @@ export default function HomePage() {
 
       const json = await res.json()
       setResult(json.data)
+      setQuiz(null) // Clear old quiz on new material
       
       addHistory({
         id: `hist-${Date.now()}`,
@@ -51,6 +53,33 @@ export default function HomePage() {
       addToast({ message: err.message || 'Server error', type: 'error' })
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleGenerateQuiz = async () => {
+    if (!inputText) return
+    setIsGeneratingQuiz(true)
+
+    try {
+      const res = await fetch('/api/generate-quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText, lens: selectedLens }),
+      })
+
+      if (!res.ok) {
+        const errJson = await res.json()
+        throw new Error(errJson.error ?? 'Failed to generate quiz')
+      }
+
+      const json = await res.json()
+      setQuiz(json.data)
+      setActiveTab('quiz')
+      addToast({ message: 'Quiz successfully generated!', type: 'success' })
+    } catch(err: any) {
+      addToast({ message: err.message || 'Failed to generate quiz', type: 'error' })
+    } finally {
+      setIsGeneratingQuiz(false)
     }
   }
 
@@ -74,12 +103,13 @@ export default function HomePage() {
         </div>
         
         <div className="flex items-center gap-5">
-          <p className="hidden md:block text-xs text-kalika-muted">
-            Learn anything through the <span className="text-kalika-green-dim font-medium">cultural lens</span> you choose
+          <p className="hidden md:block text-xs text-kalika-muted font-medium">
+            Learn anything through the <span className="text-kalika-green-dim font-bold">cultural lens</span> you choose
           </p>
           <button 
+            id="btn-history-panel"
             onClick={() => setHistoryOpen(true)}
-            className="text-xs font-semibold text-kalika-muted hover:text-kalika-green transition-colors px-2 py-1"
+            className="text-xs font-bold text-kalika-muted hover:text-kalika-green transition-colors px-3 py-1.5 rounded-lg border border-kalika-border hover:bg-kalika-surface2"
           >
             History {history.length > 0 && `(${history.length})`}
           </button>
@@ -124,23 +154,34 @@ export default function HomePage() {
           {/* Output Tabs */}
           {(resultData || isLoading) && (
             <div className="flex border-b border-kalika-border sticky top-0 bg-kalika-bg/90 backdrop-blur-md z-20">
-              {(['result', 'quiz'] as Tab[]).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 py-3.5 px-5 text-sm font-medium cursor-pointer text-center flex items-center justify-center gap-2 border-b-2 transition-all duration-200
-                    ${activeTab === tab 
-                      ? 'text-kalika-green border-kalika-green' 
-                      : 'text-kalika-muted border-transparent hover:text-kalika-text-secondary'}`}
-                >
-                  {tab === 'result' ? '📄 Analysis Result' : '🎮 Mini Quiz'}
-                </button>
-              ))}
+              <button
+                onClick={() => setActiveTab('result')}
+                className={`flex-1 py-3.5 px-5 text-sm font-medium cursor-pointer text-center flex items-center justify-center gap-2 border-b-2 transition-all duration-200
+                  ${activeTab === 'result' 
+                    ? 'text-kalika-green border-kalika-green' 
+                    : 'text-kalika-muted border-transparent hover:text-kalika-text-secondary'}`}
+              >
+                📄 Analysis Result
+              </button>
+              <button
+                onClick={() => setActiveTab('quiz')}
+                className={`flex-1 py-3.5 px-5 text-sm font-medium cursor-pointer text-center flex items-center justify-center gap-2 border-b-2 transition-all duration-200
+                  ${activeTab === 'quiz' 
+                    ? 'text-kalika-green border-kalika-green' 
+                    : 'text-kalika-muted border-transparent hover:text-kalika-text-secondary'}`}
+              >
+                🎮 Mini Quiz
+                {quizData && quizData.length > 0 && (
+                  <span className="ml-1.5 bg-kalika-green-subtle text-kalika-green text-[10px] px-1.5 py-0.5 rounded-full border border-kalika-green-glow">
+                    {quizData.length}
+                  </span>
+                )}
+              </button>
             </div>
           )}
 
           {/* Output Content */}
-          <div className="p-6 md:p-8 flex-1 overflow-auto">
+          <div className="p-6 md:p-8 flex-1 overflow-auto relative">
             {!resultData && !isLoading && (
               <div className="h-full flex flex-col items-center justify-center text-center opacity-60">
                 <div className="w-16 h-16 rounded-2xl bg-kalika-surface2 border border-kalika-border flex items-center justify-center mb-4">
@@ -154,18 +195,44 @@ export default function HomePage() {
             )}
 
             {isLoading && (
-              <div className="flex flex-col gap-6 animate-pulse p-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="bg-kalika-surface border border-kalika-border rounded-xl p-5">
-                    <div className="h-4 bg-kalika-surface2 rounded-full w-3/4 mb-3" />
-                    <div className="h-4 bg-kalika-surface2 rounded-full w-1/2" />
-                  </div>
-                ))}
+              <div className="flex flex-col gap-6 animate-pulse">
+                <div className="bg-kalika-surface border border-kalika-border rounded-xl p-5 mb-4">
+                  <div className="h-4 bg-kalika-surface2 rounded-full w-3/4 mb-3" />
+                  <div className="h-4 bg-kalika-surface2 rounded-full w-1/2" />
+                </div>
+                <div className="h-40 bg-kalika-surface border border-kalika-border rounded-xl animate-pulse" />
               </div>
             )}
 
-            {!isLoading && resultData && activeTab === 'result' && <ResultCard />}
-            {!isLoading && quizData && activeTab === 'quiz' && <QuizCard />}
+            {!isLoading && resultData && activeTab === 'result' && (
+              <ResultCard 
+                onGenerateQuiz={handleGenerateQuiz} 
+                isGeneratingQuiz={isGeneratingQuiz} 
+              />
+            )}
+
+            {!isLoading && activeTab === 'quiz' && (
+              quizData && quizData.length > 0 ? (
+                <QuizCard quiz={quizData} lens={selectedLens} />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full gap-4 text-kalika-muted py-20 animate-fade-in-up">
+                  <div className="text-5xl">🎮</div>
+                  <p className="text-sm font-medium text-kalika-text-secondary">No quiz yet</p>
+                  <p className="text-xs text-center max-w-[200px] leading-relaxed">
+                    First generate an analysis, then click "Generate Mini Quiz" in the result panel
+                  </p>
+                  {resultData && (
+                    <button
+                      onClick={handleGenerateQuiz}
+                      disabled={isGeneratingQuiz}
+                      className="mt-2 bg-kalika-green text-kalika-bg px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-green-300 transition-all active:scale-95 disabled:opacity-50"
+                    >
+                      {isGeneratingQuiz ? '⟳ Generating...' : '✦ Generate Quiz Now'}
+                    </button>
+                  )}
+                </div>
+              )
+            )}
           </div>
         </main>
       </div>
