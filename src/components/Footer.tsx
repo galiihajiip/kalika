@@ -24,7 +24,7 @@ export default function Footer() {
               </p>
               <p className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest pt-1">University</p>
               <p className="text-xs text-kalika-text-secondary font-body">UPN Veteran East Java, Indonesia</p>
-              <p className="text-[11px] text-kalika-green font-semibold pt-2">© 2026 KALIKA — GDG UTSC AI Case Competition</p>
+              <p className="text-[11px] text-kalika-green font-semibold pt-2">© 2026 KALIKA: GDG UTSC AI Case Competition</p>
             </div>
           </div>
 
