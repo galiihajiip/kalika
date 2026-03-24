@@ -195,18 +195,6 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div className="animate-fade-up grid grid-cols-3 gap-8 pt-10 mt-12 border-t border-kalika-border" style={{ animationDelay: '0.4s' }}>
-            {[
-              { val: '50+', label: 'Cultural Lenses' },
-              { val: '6', label: 'Core Features' },
-              { val: '3', label: 'Learner Personas' },
-            ].map(stat => (
-              <div key={stat.label}>
-                <div className="font-display font-extrabold text-3xl text-kalika-green mb-1">{stat.val}</div>
-                <div className="text-[10px] font-bold text-kalika-muted uppercase tracking-widest">{stat.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Hero Right: Mockup */}
@@ -351,52 +339,114 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- Section: Features --- */}
-      <section id="features" className="py-24 px-[5%] max-w-[1200px] mx-auto z-10 relative">
-        <div className="reveal flex flex-col mb-16">
-          <span className="text-kalika-green text-[11px] font-bold uppercase tracking-[0.2em] mb-3">What KALIKA Does</span>
-          <h2 className="font-display font-extrabold text-4xl mb-4">Everything you need to learn without limits</h2>
-          <p className="text-kalika-text-secondary font-light max-w-[500px]">Six AI-powered tools, one unified experience designed to dismantle academic barriers.</p>
+      {/* --- 6B: MAIN FEATURES SECTION --- */}
+      <section id="features" className="py-28 px-8 max-w-6xl mx-auto z-10 relative">
+        <div className="reveal flex flex-col mb-20">
+          <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">What KALIKA Does</span>
+          <h2 className="font-display font-extrabold text-[clamp(32px,5vw,52px)] leading-tight mb-6">
+            Everything you need to <br/> 
+            <span className="text-kalika-green drop-shadow-[0_0_20px_rgba(74,222,128,0.2)]">learn without limits</span>
+          </h2>
+          <p className="text-kalika-text-secondary text-lg leading-relaxed max-w-2xl font-light">
+            Six AI-powered tools designed with neurodivergent minds in mind. 
+            Generous spacing, clear language, cultural context — because 
+            everyone learns differently.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-display">
-          <div className="reveal col-span-1 md:col-span-2 bg-gradient-to-br from-kalika-green-subtle to-kalika-surface border border-kalika-green-dim rounded-kalika-xl p-8 lg:p-10 flex flex-col md:flex-row gap-10 hover:shadow-[0_20px_50px_rgba(74,222,128,0.1)] transition-all duration-300">
-            <div className="flex-1 flex flex-col h-full">
-              <div className="w-14 h-14 rounded-2xl bg-kalika-green-glow flex items-center justify-center text-3xl mb-6">🌴</div>
-              <h3 className="font-extrabold text-2xl mb-4">The Cultural Lens Engine</h3>
-              <p className="text-kalika-green-text font-light text-lg leading-relaxed mb-6 font-body">
-                Transforms dense academic text into vivid analogies from 50+ world cultures. Mitochondria explained via a <span className="font-semibold underline decoration-kalika-green-glow text-kalika-green">Padang warung kitchen</span>. Quantum superposition through a <span className="font-semibold underline decoration-kalika-green-glow text-kalika-green">gamelan orchestra</span>.
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          
+          {/* 1. FEATURED CARD */}
+          <div className="reveal md:col-span-2 bg-gradient-to-br from-kalika-green-subtle/40 to-kalika-surface border border-kalika-green-dim rounded-2xl p-10 lg:p-12 flex flex-col lg:flex-row gap-12 hover:border-kalika-green-glow transition-all duration-500 group">
+            <div className="flex-1 flex flex-col">
+              <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-4xl mb-8 group-hover:scale-110 transition-transform duration-500">
+                🌴
+              </div>
+              <h3 className="font-display font-bold text-3xl text-kalika-text leading-snug mb-5">
+                The Cultural Lens Engine
+              </h3>
+              <p className="text-kalika-text-secondary text-base lg:text-lg leading-relaxed font-light mb-8 max-w-xl">
+                Transform dense academic text into vivid, memorable analogies 
+                from 50+ world cultures. Mitochondria explained via a <span className="text-kalika-green/80 font-medium">Padang warung 
+                kitchen</span>. Quantum superposition through a <span className="text-kalika-green/80 font-medium">gamelan orchestra</span>. 
+                Your cultural background becomes your greatest learning superpower.
               </p>
-              <div className="mt-auto px-3 py-1 rounded-full bg-kalika-green text-kalika-bg text-[10px] font-bold uppercase tracking-widest w-fit">Core Feature</div>
+              <div className="mt-auto">
+                <span className="text-xs font-semibold uppercase tracking-widest text-kalika-green bg-kalika-green-subtle border border-kalika-green-glow px-4 py-2 rounded-full">
+                  Core Feature
+                </span>
+              </div>
             </div>
-            
-            <div className="flex-1 relative hidden md:flex items-center justify-center">
-              <div className="bg-kalika-bg border border-kalika-green-glow rounded-2xl p-6 w-full shadow-2xl scale-110">
-                <div className="flex gap-2 mb-6">
-                  <div className="px-3 py-1.5 rounded-lg bg-kalika-green text-kalika-bg text-[9px] font-bold uppercase">Nusantara</div>
-                  <div className="px-3 py-1.5 rounded-lg border border-kalika-border text-kalika-muted text-[9px] font-bold uppercase">Japanese</div>
+
+            {/* Featured Preview */}
+            <div className="flex-1 relative hidden lg:flex items-center justify-center">
+              <div className="bg-kalika-bg/50 backdrop-blur-sm border border-kalika-green-glow/30 rounded-2xl p-8 w-full shadow-2xl scale-105">
+                <div className="flex gap-3 mb-8">
+                  <div className="px-4 py-2 rounded-xl bg-kalika-green text-kalika-bg text-[10px] font-bold uppercase tracking-wider">Nusantara</div>
+                  <div className="px-4 py-2 rounded-xl border border-kalika-border text-kalika-muted text-[10px] font-bold uppercase tracking-wider opacity-60">Japanese</div>
+                  <div className="px-4 py-2 rounded-xl border border-kalika-border text-kalika-muted text-[10px] font-bold uppercase tracking-wider opacity-40">Islamic</div>
                 </div>
-                <div className="space-y-3">
-                  <div className="h-2 bg-kalika-green/30 rounded-full w-full" />
-                  <div className="h-2 bg-kalika-green/20 rounded-full w-[85%]" />
-                  <div className="h-2 bg-kalika-green/10 rounded-full w-[95%]" />
+                <div className="space-y-4">
+                  <div className="h-2.5 bg-kalika-green/30 rounded-full w-full animate-shimmer" />
+                  <div className="h-2.5 bg-kalika-green/20 rounded-full w-[85%] animate-shimmer" style={{ animationDelay: '0.2s' }} />
+                  <div className="bg-kalika-green-subtle/30 border border-kalika-green-glow/30 rounded-xl p-4 mt-2">
+                    <div className="h-2 bg-kalika-green/40 rounded-full w-[95%] mb-2" />
+                    <div className="h-2 bg-kalika-green/30 rounded-full w-[70%]" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {[
-            { tag: 'Accessibility', icon: '📖', title: 'Dyslexia-Friendly Structuring', desc: 'Short sentences. Bold keywords. Bullet points. Every wall of text restructured for clarity.' },
-            { tag: 'Engagement', icon: '🎮', title: 'Gamified Mini Quizzes', desc: '3 questions. Wrapped in your chosen narrative. Built for ADHD brains that thrive on engagement.' },
-            { tag: 'Comprehension', icon: '📚', title: 'Bilingual Glossary', desc: 'Complex terms decoded in plain English (B1 level) and local context for no-friction learning.' },
-            { tag: 'Input', icon: '🎙️', title: 'Multimodal Input', desc: 'Upload notes, lecture photos, or voice. KALIKA structures it using Gemini Vision powers.' },
-            { tag: 'Audio', icon: '🔊', title: 'TTS with Highlight', desc: 'Listen while words light up. Study on commute or rest your eyes with auto language detection.' },
+            { 
+              icon: '📖', 
+              tag: 'Accessibility', 
+              title: 'Dyslexia-Friendly Structuring', 
+              desc: 'Every wall of text broken into short sentences, clear bullet points, and bold keywords. Generous spacing. Clean layout. Because every learner deserves to understand — not just survive.' 
+            },
+            { 
+              icon: '🎮', 
+              tag: 'Engagement', 
+              title: 'Gamified Mini Quizzes', 
+              desc: 'Three culturally-wrapped questions. Five focused minutes. Instant feedback with explanations. Designed for ADHD brains that learn best through urgency, narrative, and quick wins.' 
+            },
+            { 
+              icon: '📚', 
+              tag: 'Comprehension', 
+              title: 'Bilingual Smart Glossary', 
+              desc: 'Every complex academic term decoded in plain English (B1 level) and local cultural context. No more falling into dictionary rabbit holes mid-study session.' 
+            },
+            { 
+              icon: '🖼️', 
+              tag: 'Multimodal Input', 
+              title: 'Upload Anything — Notes, Photos, Audio', 
+              desc: 'Photograph your handwritten notes. Upload a lecture screenshot. Record a voice memo. KALIKA extracts and structures the text using Gemini Vision — then analyzes it through your chosen lens.' 
+            },
+            { 
+              icon: '🔊', 
+              tag: 'Audio Learning', 
+              title: 'Text-to-Speech with Word Highlight', 
+              desc: 'Listen as every word lights up in real time. Choose your playback speed and voice language. Study on your commute, eyes-free. Built for auditory learners and anyone with reading fatigue.' 
+            },
           ].map((f, i) => (
-            <div key={i} className="reveal bg-kalika-surface border border-kalika-border rounded-kalika-xl p-8 flex flex-col hover:border-kalika-green-dim hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
-              <div className="text-3xl mb-6">{f.icon}</div>
-              <h3 className="font-bold text-lg mb-3">{f.title}</h3>
-              <p className="text-kalika-text-secondary text-sm font-light leading-relaxed mb-6 flex-1 font-body">{f.desc}</p>
-              <div className="text-[9px] font-bold text-kalika-muted uppercase tracking-widest">{f.tag}</div>
+            <div key={i} className="reveal bg-kalika-surface border border-kalika-border2 rounded-2xl p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group">
+              <div className="w-16 h-16 rounded-2xl bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                {f.icon}
+              </div>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-display font-bold text-2xl text-kalika-text leading-snug">
+                  {f.title}
+                </h3>
+                <p className="text-kalika-text-secondary text-base leading-relaxed font-light">
+                  {f.desc}
+                </p>
+              </div>
+              <div className="mt-auto pt-6 border-t border-kalika-border">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-kalika-green bg-kalika-green-subtle border border-kalika-green-glow px-4 py-2 rounded-full">
+                  {f.tag}
+                </span>
+              </div>
             </div>
           ))}
         </div>
