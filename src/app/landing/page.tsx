@@ -295,6 +295,28 @@ export default function LandingPage() {
               <span className="font-display font-bold text-kalika-green text-lg">3 / 3 <span className="text-xs">✦</span></span>
             </div>
           </div>
+
+          {/* BAGONG MASCOT — Medium size, uncropped on the right side */}
+          <div className="absolute -right-24 -bottom-12 w-[340px] h-auto z-20 pointer-events-none animate-float hidden lg:block">
+            <Image
+              src="/images/bagong.png"
+              alt="Bagong the Garuda Scholar mascot"
+              width={340}
+              height={420}
+              className="object-contain object-bottom w-full h-auto drop-shadow-[0_20px_50px_rgba(74,222,128,0.25)]"
+              priority
+            />
+          </div>
+          <div className="absolute -right-12 -bottom-12 w-48 h-auto z-20 pointer-events-none animate-float block lg:hidden">
+            <Image
+              src="/images/bagong.png"
+              alt="Mascot"
+              width={192}
+              height={240}
+              className="object-contain object-bottom w-full h-auto drop-shadow-[0_20px_50px_rgba(74,222,128,0.25)]"
+              priority
+            />
+          </div>
         </div>
       </section>
 
