@@ -31,9 +31,9 @@ const config: Config = {
         }
       },
       fontFamily: {
-        display: ['var(--font-sora)', 'sans-serif'],
-        body:    ['var(--font-dm-sans)', 'sans-serif'],
-        mono:    ['var(--font-dm-mono)', 'monospace'],
+        display: ['Sora', 'sans-serif'],
+        body:    ['DM Sans', 'sans-serif'],
+        mono:    ['DM Mono', 'monospace'],
       },
       borderRadius: {
         'kalika': '12px',
