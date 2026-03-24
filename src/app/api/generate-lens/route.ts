@@ -88,7 +88,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { error: 'An error occurred on the AI server.' },
+      { error: 'An error occurred on the AI server: ' + errorMessage },
       { status: 500 }
     )
   }
