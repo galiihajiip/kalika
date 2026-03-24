@@ -22,17 +22,6 @@ export default function ResultCard({ onGenerateQuiz, isGeneratingQuiz }: ResultC
   }
 
   return (
-    <div className="flex flex-col gap-4 animate-fade-in-up">
-      
-      {/* 1. Dyslexia Friendly Text */}
-      <div className="bg-kalika-surface border border-kalika-border rounded-xl overflow-hidden">
-        <div className="px-4 py-3 flex items-center justify-between border-b border-kalika-border bg-kalika-surface2">
-          <h3 className="text-xs font-semibold text-kalika-text-secondary flex items-center gap-2 tracking-wide uppercase">
-            <span className="text-kalika-green-dim">▸</span> Structural Breakdown
-          </h3>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => handleListen(result.dyslexiaFriendlyText)}
               className="px-3 py-1 rounded-full text-[10px] font-medium border border-kalika-border text-kalika-muted hover:border-kalika-green-glow hover:text-kalika-green transition-colors flex items-center gap-1"
             >
               <span>🔊</span> Listen
