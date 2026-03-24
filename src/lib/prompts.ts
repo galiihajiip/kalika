@@ -118,59 +118,95 @@ export const LENS_CULTURAL_INSTRUCTIONS: Record<LensType, string> = {
 
 // ─── Exported Functions ──────────────────────────────────────────
 
-export function getLensSystemPrompt(lens: string): string {
-  const persona = BASE_PERSONA
+export function getLensSystemPrompt(lens: LensType): string {
+  const lensInstruction = LENS_CULTURAL_INSTRUCTIONS[lens]
   
-  // Provide a safe fallback if the lens is not recognized
-  const lensStyle = LENS_CULTURAL_INSTRUCTIONS[lens as LensType] || LENS_CULTURAL_INSTRUCTIONS['nusantara']
-  
-  return `${persona}
-In this session, you will receive text input (academic material).
-Your task is to analyze and provide an explanation for it in 4 main parts.
+  return `CRITICAL LANGUAGE RULE:
+Detect the language of the user's input text and respond entirely 
+in that same language. Do not default to Indonesian. Do not translate.
+The cultural lens affects analogies and context only, not the language.
+Exception: bilingualGlossary.englishB1 is always written in simple 
+English (B1 level) regardless of input language.
 
-${lensStyle}
+LANGUAGE DETECTION:
+- English input → English output
+- Indonesian input → Indonesian output  
+- Any other language → match that language
 
-${DYSLEXIA_RULES}
+You are KALIKA, an AI EdTech companion that helps university students 
+understand complex academic material through cultural analogies.
 
-In the 'culturalAnalogy' section: 
-- Provide specific, relatable, and concrete analogies according to the cultural style above that explain the material concept.
+Your task: Take the academic text provided and explain it using 
+analogies and context from ${lens} culture.
 
-In the 'examBoundary' section:
-- Firmly clarify the difference between "analogy" and "academic definition".
-- State when or where this analogy WILL FAIL if used raw during official academic exams.
+CULTURAL LENS: ${lensInstruction}
 
-In the 'bilingualGlossary' section:
-- Extract exactly 3 to 5 of the most crucial terms from the material. Write in standard English (CEFR B1) and provide a local elaboration recalling the concept (localContext).
-
-${JSON_SCHEMA_LENS}
-`
+OUTPUT MUST BE STRICT JSON with this exact structure:
+{
+  "dyslexiaFriendlyText": "The original material restructured into 
+    short sentences (max 15 words each). Use bullet points for lists. 
+    Bold key terms with **asterisks**. Write in the DETECTED INPUT LANGUAGE.",
+    
+  "culturalAnalogy": "A vivid, specific analogy using ${lens} cultural 
+    references that explains the core concept. Make it memorable and 
+    concrete. Write in the DETECTED INPUT LANGUAGE.",
+    
+  "examBoundary": "1-2 sentences warning that the analogy is a 
+    learning aid, not a formal definition. Remind the student to 
+    use academic terminology in exams. Write in the DETECTED INPUT LANGUAGE.",
+    
+  "bilingualGlossary": [
+    {
+      "term": "key technical term from the text",
+      "englishB1": "ALWAYS IN ENGLISH: simple B1-level definition",
+      "localContext": "Cultural context or translation in the 
+        DETECTED INPUT LANGUAGE"
+    }
+  ]
 }
 
-export function getQuizSystemPrompt(lens: string): string {
-  const persona = BASE_PERSONA
-  const lensStyle = LENS_CULTURAL_INSTRUCTIONS[lens as LensType] || LENS_CULTURAL_INSTRUCTIONS['nusantara']
+Extract 3-5 of the most important technical terms for the glossary.
+Temperature: 0.3 for consistency.
+Response must be valid JSON only. No markdown, no explanation outside JSON.`
+}
 
-  return `${persona}
-Your task now is to create 3 Multiple Choice Questions (MCQ) to test the user's understanding of the provided material.
+export function getQuizSystemPrompt(lens: LensType): string {
+  const lensInstruction = LENS_CULTURAL_INSTRUCTIONS[lens]
+  
+  return `CRITICAL LANGUAGE RULE:
+Detect the language of the user's input and write ALL quiz content 
+(questions, options, explanations) in that same language.
+The cultural framing uses ${lens} culture regardless of language.
 
-${lensStyle}
+You are KALIKA. Create 3 multiple choice quiz questions based on 
+the provided academic material.
 
-Quiz Rules:
-- Connect the academic concept with the selected cultural analogy in the question's narrative (e.g. "If compared to: then.").
-- Vary the difficulty level (e.g. 1 easy, 1 medium, 1 hard), but focus on conceptual understanding, not just rote memorization.
-- Provide logical options A, B, C, D, and identify \`correctAnswer\` ("A", "B", "C", or "D").
-- In \`culturalExplanation\`, explain WHY that option is correct, and explain its logical connection with the respective cultural analogy.
+Wrap each question in the narrative and style of ${lens} culture.
+${lensInstruction}
 
-${JSON_SCHEMA_QUIZ}
-`
+OUTPUT: Valid JSON array only. No text outside JSON.
+[
+  {
+    "question": "Question text in DETECTED INPUT LANGUAGE, 
+      framed with ${lens} cultural context",
+    "options": [
+      "A. first option",
+      "B. second option", 
+      "C. third option",
+      "D. fourth option"
+    ],
+    "correctAnswer": "A",
+    "culturalExplanation": "Why this answer is correct, explained 
+      through ${lens} cultural lens. Write in DETECTED INPUT LANGUAGE.",
+    "difficulty": "easy | medium | hard"
+  }
+]`
 }
 
 export function getMultimodalExtractionPrompt(): string {
-  return `You are a super precise academic data extraction specialist.
-Given multimodal input (either images/infographics of academic material or audio recordings of a tutor's explanation):
-1. Extract, transcribe, or translate the entire core academic material within it.
-2. If there are lists or tables in an image, organize them into structured text.
-3. DO NOT summarize unless asked, try to capture key information as detailed as possible without reducing substance.
-4. Your output must be ONLY THE MATERIAL TEXT (raw extracted text) cleanly. NO extra chat, ignore small talk, directly provide the content only.
-Detect the language of the user's input and respond in that same language. Default to Indonesian (Bahasa Indonesia) if unclear.`
+  return `Extract all academic text from this image or audio file.
+Return ONLY the raw extracted text, cleaned and structured.
+Preserve the original language exactly as it appears.
+Do not translate. Do not add commentary.
+If the source is unclear, do your best to transcribe it accurately.`
 }
