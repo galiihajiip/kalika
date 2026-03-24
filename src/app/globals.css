@@ -1,51 +1,36 @@
 @import "tailwindcss";
 
-
-@theme {
-  --color-kalika-bg: #0a0f0a;
-  --color-kalika-surface: #111a11;
-  --color-kalika-surface2: #162116;
-  --color-kalika-border: #1e2e1e;
-  
-  --color-kalika-green: #4ade80;
-  --color-kalika-green-dim: #22c55e;
-  --color-kalika-green-glow: #166534;
-  --color-kalika-green-subtle: #14532d;
-  --color-kalika-green-text: #bbf7d0;
-  
-  --color-kalika-muted: #6b7a6b;
-  --color-kalika-text: #e8f5e8;
-  --color-kalika-text-secondary: #a3b8a3;
-
-  --font-display: Sora, sans-serif;
-  --font-body: Inter, sans-serif;
+@layer base {
+  html { 
+    scroll-behavior: smooth; 
+  }
+  body {
+    background-color: #060c06;
+    color: #e2f0e2;
+  }
 }
 
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1e2e1e; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #166534; }
-
-html { scroll-behavior: smooth; }
-body {
-  background-color: var(--color-kalika-bg);
-  color: var(--color-kalika-text);
-  font-family: var(--font-body);
+/* Custom Scrollbar */
+::-webkit-scrollbar { 
+  width: 4px; 
+  height: 4px; 
+}
+::-webkit-scrollbar-track { 
+  background: transparent; 
+}
+::-webkit-scrollbar-thumb { 
+  background: #1a2a1a; 
+  border-radius: 10px; 
+}
+::-webkit-scrollbar-thumb:hover { 
+  background: #4ade80; 
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.3s ease both;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
+/* Input Range Tweaks */
 input[type="range"] {
-  -webkit-appearance: none;
+  appearance: none;
   background: transparent;
 }
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
+  appearance: none;
 }
