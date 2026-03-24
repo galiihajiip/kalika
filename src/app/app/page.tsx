@@ -88,8 +88,8 @@ export default function HomePage() {
       
       {/* ── TOPBAR ── */}
       <header className="bg-kalika-surface border-b border-kalika-border px-5 py-3 flex items-center justify-between sticky top-0 z-40">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-kalika-green-subtle border border-kalika-green-dim flex items-center justify-center font-display font-bold text-kalika-green text-sm shadow-[0_0_12px_rgba(34,197,94,0.15)]">
+        <Link href="/landing" className="flex items-center gap-3 group">
+          <div className="w-8 h-8 rounded-lg bg-kalika-green-subtle border border-kalika-green-dim flex items-center justify-center font-display font-bold text-kalika-green text-sm shadow-[0_0_12px_rgba(34,197,94,0.15)] group-hover:scale-110 transition-transform">
             K
           </div>
           <div className="flex flex-col">
@@ -100,7 +100,7 @@ export default function HomePage() {
               AI Study Companion
             </span>
           </div>
-        </div>
+        </Link>
         
         <div className="flex items-center gap-5">
           <p className="hidden md:block text-xs text-kalika-muted font-medium">
