@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import LogoMark from '@/components/LogoMark'
 import InputField from '@/components/InputField'
 import LensSelector from '@/components/LensSelector'
 import ResultCard from '@/components/ResultCard'
