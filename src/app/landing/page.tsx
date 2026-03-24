@@ -437,27 +437,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- Footer --- */}
-      <footer className="py-10 px-[5%] bg-kalika-surface border-t border-kalika-border relative z-20 font-display">
-        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex flex-col gap-2 text-center md:text-left">
-            <div className="font-bold text-kalika-green text-sm flex items-center gap-2 justify-center md:justify-start">
-              KALIKA © 2025 <span className="text-kalika-muted font-light">—</span> 
-              <span className="text-kalika-text/70 font-medium font-body">Built for GDG UTSC AI Case Competition</span>
-            </div>
-            <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest leading-none">
-              UPN Veteran East Java, Indonesia
-            </div>
-          </div>
-          
-          <div className="flex flex-col gap-1 text-center md:text-right">
-            <div className="text-[10px] text-kalika-muted uppercase font-bold tracking-widest">Designed & Built by</div>
-            <div className="text-kalika-text-secondary text-xs font-medium font-body">
-              Galih Aji Pangestu · Muhammad Ananda Hariadi · Fachri Ahmad Fabian
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
