@@ -1,35 +1,124 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useKalikaStore } from '@/store/useKalikaStore'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
-export default function AudioPlayer({ textToRead }: { textToRead?: string }) {
-  // Simplistic Audio Player sticky bar mockup fulfilling styling guidelines
-  // Actual TTS logic preserved but UI heavily updated
+interface AudioPlayerProps {
+  textToRead: string
+}
+
+export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false)
-  
-  if (!textToRead) return null;
+  const [speed, setSpeed] = useState(1.0)
+  const [progress, setProgress] = useState(0)
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
+
+  // Auto-detect language
+  const detectLanguage = (text: string) => {
+    const idWords = ['yang', 'adalah', 'dengan', 'untuk', 'ini', 'itu', 'dari', 'ke', 'di']
+    const words = text.toLowerCase().split(/\s+/)
+    const count = words.filter(w => idWords.includes(w)).length
+    return (count / words.length) > 0.3 ? 'id-ID' : 'en-US'
+  }
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis?.cancel()
+    }
+  }, [])
+
+  // Reset when text changes
+  useEffect(() => {
+    window.speechSynthesis?.cancel()
+    setIsPlaying(false)
+    setProgress(0)
+    utteranceRef.current = null
+  }, [textToRead])
+
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      window.speechSynthesis.pause()
+      setIsPlaying(false)
+    } else {
+      if (window.speechSynthesis.paused && utteranceRef.current) {
+        window.speechSynthesis.resume()
+      } else {
+        window.speechSynthesis.cancel()
+        const ut = new SpeechSynthesisUtterance(textToRead)
+        ut.lang = detectLanguage(textToRead)
+        ut.rate = speed
+        
+        ut.onend = () => {
+          setIsPlaying(false)
+          setProgress(100)
+        }
+        
+        ut.onboundary = (event) => {
+          if (event.name === 'word') {
+            const charIndex = event.charIndex
+            const percent = (charIndex / textToRead.length) * 100
+            setProgress(percent)
+          }
+        }
+
+        utteranceRef.current = ut
+        window.speechSynthesis.speak(ut)
+      }
+      setIsPlaying(true)
+    }
+  }
+
+  const handleStop = () => {
+    window.speechSynthesis.cancel()
+    setIsPlaying(false)
+    setProgress(0)
+    utteranceRef.current = null
+  }
+
+  const changeSpeed = (newSpeed: number) => {
+    setSpeed(newSpeed)
+    if (isPlaying) {
+      const wasPlaying = isPlaying
+      handleStop()
+      if (wasPlaying) setTimeout(handleTogglePlay, 50)
+    }
+  }
 
   return (
-    <div className="sticky bottom-0 bg-kalika-surface2 border-t border-kalika-border px-5 py-3 flex items-center gap-4 z-30 shadow-[0_-4px_24px_rgba(0,0,0,0.4)]">
-      {/* Play Btn */}
-      <button 
-        className="w-8 h-8 rounded-full bg-kalika-green text-kalika-bg text-xs font-bold flex items-center justify-center hover:bg-green-300 flex-shrink-0 transition-all"
-        onClick={() => setIsPlaying(!isPlaying)}
-      >
-        {isPlaying ? '⏸' : '▶'}
-      </button>
-
-      {/* Track */}
-      <div className="flex-1 h-[4px] bg-kalika-border rounded-full overflow-hidden relative">
-        <div className="absolute top-0 left-0 h-full bg-kalika-green rounded-full transition-all duration-300 ease-linear" style={{ width: isPlaying ? '40%' : '5%' }} />
+    <div className="flex items-center gap-4 w-full">
+      <div className="flex items-center gap-2">
+        <button 
+          onClick={handleTogglePlay}
+          className="w-8 h-8 rounded-full bg-kalika-green text-kalika-bg text-xs font-bold flex items-center justify-center hover:bg-green-300 flex-shrink-0 transition-all active:scale-90"
+        >
+          {isPlaying ? '⏸' : '▶'}
+        </button>
+        <button 
+          onClick={handleStop}
+          className="w-8 h-8 rounded-full border border-kalika-border text-kalika-muted text-[10px] flex items-center justify-center hover:text-kalika-text transition-all"
+        >
+          ⏹
+        </button>
       </div>
 
-      {/* Speeds */}
-      <div className="flex gap-1">
-        {['0.75x', '1x', '1.25x'].map((s) => (
-          <button key={s} className={`text-[10px] px-2 py-1 rounded-full border transition-colors ${s === '1x' ? 'bg-kalika-green-subtle text-kalika-green border-kalika-green-glow' : 'border-kalika-border text-kalika-muted hover:border-kalika-green-glow hover:text-kalika-green'}`}>
-            {s}
+      <div className="flex-1 h-[3px] bg-kalika-border rounded-full overflow-hidden relative">
+        <div 
+          className="absolute top-0 left-0 h-full bg-kalika-green rounded-full transition-all duration-300 ease-linear shadow-[0_0_8px_rgba(74,222,128,0.5)]" 
+          style={{ width: `${progress}%` }} 
+        />
+      </div>
+
+      <div className="flex gap-1 shrink-0">
+        {[0.75, 1, 1.25, 1.5].map((s) => (
+          <button 
+            key={s} 
+            onClick={() => changeSpeed(s)}
+            className={`text-[9px] px-2 py-1 rounded-full border transition-all
+              ${speed === s 
+                ? 'bg-kalika-green-subtle text-kalika-green border-kalika-green-glow' 
+                : 'border-kalika-border text-kalika-muted hover:border-kalika-green-glow'}`}
+          >
+            {s}x
           </button>
         ))}
       </div>
