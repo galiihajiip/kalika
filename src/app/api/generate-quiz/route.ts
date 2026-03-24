@@ -36,9 +36,18 @@ export async function POST(request: Request) {
 
     const targetLens = lens as LensType
 
+    // Simple language detection hint
+    const { detectLanguageHint } = await import('@/lib/languageDetect')
+    const detectedLang = detectLanguageHint(text)
+
     // 2. Call Gemini
     const systemInstruction = getQuizSystemPrompt(targetLens)
-    const userPrompt = `Create a multiple-choice quiz from this material:\n\n${text}`
+    const userPrompt = `DETECTED INPUT LANGUAGE: ${detectedLang}
+Write all quiz content in ${detectedLang}.
+
+Academic material for quiz generation:
+
+${text}`
 
     const responseString = await callGemini({
       userPrompt,
