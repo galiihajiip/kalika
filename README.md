@@ -1,4 +1,4 @@
-# KALIKA — AI Study Companion
+# KALIKA: AI Study Companion
 
 KALIKA is an AI-powered EdTech study companion that simplifies complex academic materials using culturally-aware analogies and dyslexia-friendly formatting, powered by Google Gemini 2.5 Flash SDK.
 

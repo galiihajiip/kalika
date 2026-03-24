@@ -3,7 +3,7 @@ import './globals.css'
 import ToastContainer from '@/components/Toast'
 
 export const metadata: Metadata = {
-  title: 'KALIKA — AI Study Companion',
+  title: 'KALIKA: AI Study Companion',
   description: 'AI-Powered student companion built to simplify complex academic materials.',
 }
 
