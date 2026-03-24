@@ -9,7 +9,7 @@ import ResultCard from '@/components/ResultCard'
 import QuizCard from '@/components/QuizCard'
 import HistoryPanel from '@/components/HistoryPanel'
 import { useKalikaStore } from '@/store/useKalikaStore'
-import { LENS_ITEMS } from '@/lib/constants' // Assuming LENS_ITEMS is imported from here
+import { LENS_ITEMS } from '@/components/LensSelector'
 
 type Tab = 'result' | 'quiz'
 
