@@ -99,32 +99,32 @@ export default function LensSelector() {
   const activeObj = useMemo(() => LENS_ITEMS.find((l) => l.id === selectedLens) || LENS_ITEMS[0], [selectedLens])
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       {/* Search Bar */}
-      <div className="flex items-center gap-2 bg-kalika-bg border border-kalika-border rounded-lg px-3 py-2.5 focus-within:border-kalika-green-glow focus-within:ring-1 focus-within:ring-kalika-green-subtle transition-all duration-150">
-        <span className="text-kalika-muted text-sm shrink-0">🔍</span>
+      <div className="flex items-center gap-3 bg-kalika-bg border border-kalika-border rounded-xl px-4 py-3 focus-within:border-kalika-green-glow focus-within:ring-1 focus-within:ring-kalika-green-glow transition-all duration-200 shadow-inner shadow-black/20">
+        <span className="text-kalika-muted text-base shrink-0 filter grayscale">🔍</span>
         <input
           type="text"
           placeholder="Search culture... (e.g. Viking, Japan, Music)"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="text-xs text-kalika-text bg-transparent outline-none w-full placeholder-kalika-muted"
+          className="text-sm text-kalika-text bg-transparent outline-none w-full placeholder-kalika-muted font-medium"
         />
       </div>
 
       {/* Region Tabs */}
       {!searchQuery && (
-        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+        <div className="flex gap-2 overflow-x-auto pb-1.5 scrollbar-hide">
           {TABS.map((tab) => {
             const isActive = activeTab === tab
             return (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1 text-[11px] font-medium rounded-full border whitespace-nowrap transition-colors duration-150
+                className={`px-4 py-2 text-xs font-bold rounded-full border whitespace-nowrap transition-all duration-200
                   ${isActive 
-                    ? 'bg-kalika-green-subtle text-kalika-green-text border-kalika-green-glow' 
-                    : 'border-kalika-border text-kalika-muted hover:border-kalika-green-glow/50 hover:text-kalika-text-secondary'}`}
+                    ? 'bg-kalika-green-subtle text-kalika-green-text border-kalika-green-glow shadow-sm shadow-kalika-green/10' 
+                    : 'border-kalika-border text-kalika-muted hover:border-kalika-green-glow/50 hover:text-kalika-text-secondary hover:bg-kalika-surface2'}`}
               >
                 {tab}
               </button>
@@ -134,7 +134,7 @@ export default function LensSelector() {
       )}
 
       {/* Pill Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1.5 max-h-40 overflow-y-auto pr-1 custom-scrollbar">
+      <div className="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1.5 custom-scrollbar">
         {displayItems.length > 0 ? (
           displayItems.map((lens) => {
             const isSel = selectedLens === lens.id
@@ -142,38 +142,38 @@ export default function LensSelector() {
               <button
                 key={lens.id}
                 onClick={() => setSelectedLens(lens.id)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all duration-150 text-left cursor-pointer
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-200 text-left cursor-pointer group
                   ${isSel 
-                    ? 'bg-kalika-green-subtle border-kalika-green-dim ring-1 ring-kalika-green-glow/30' 
+                    ? 'bg-kalika-green-subtle border-kalika-green-dim ring-1 ring-kalika-green-glow/30 shadow-md shadow-kalika-green/5' 
                     : 'bg-kalika-bg border-kalika-border hover:border-kalika-green-glow hover:bg-kalika-surface2'}`}
               >
-                <span className="text-[14px] leading-none shrink-0">{lens.emoji}</span>
-                <span className={`text-[11px] font-medium truncate ${isSel ? 'text-kalika-green-text' : 'text-kalika-text-secondary'}`}>
+                <span className="text-base leading-none shrink-0 group-hover:scale-110 transition-transform">{lens.emoji}</span>
+                <span className={`text-sm font-semibold truncate ${isSel ? 'text-kalika-green-text' : 'text-kalika-text-secondary group-hover:text-kalika-text'}`}>
                   {lens.label}
                 </span>
               </button>
             )
           })
         ) : (
-          <p className="col-span-full text-center text-[11px] text-kalika-muted py-4">No lenses found for "{searchQuery}"</p>
+          <p className="col-span-full text-center text-sm text-kalika-muted py-6 bg-kalika-bg/50 rounded-xl border border-dashed border-kalika-border">No lenses found for "{searchQuery}"</p>
         )}
       </div>
 
       {/* Active Lens Card */}
       {activeObj && (
-        <div className="bg-kalika-bg border border-kalika-green-glow rounded-xl p-3 flex gap-3 items-start mt-1">
-          <span className="text-3xl leading-none mt-1 shrink-0">{activeObj.emoji}</span>
+        <div className="bg-kalika-surface2 border border-kalika-green-glow/30 rounded-2xl p-5 flex gap-4 items-start mt-2 shadow-lg shadow-black/40 animate-fade-in">
+          <span className="text-4xl leading-none mt-1 shrink-0 filter drop-shadow-md">{activeObj.emoji}</span>
           <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold text-kalika-green font-display flex items-center gap-2">
+            <h4 className="text-base font-bold text-kalika-green font-display flex items-center gap-2">
               {activeObj.label} Lens
             </h4>
-            <span className="inline-block text-[9px] font-bold tracking-widest uppercase bg-kalika-green-glow text-kalika-green-text px-2 py-0.5 rounded-full my-1">
+            <span className="inline-block text-[10px] font-extrabold tracking-[0.15em] uppercase bg-kalika-green-glow/40 text-kalika-green px-2.5 py-1 rounded-md my-2 border border-kalika-green-glow/20">
               {activeObj.region}
             </span>
-            <p className="text-[11px] text-kalika-text-secondary leading-relaxed mt-1">
+            <p className="text-sm text-kalika-text-secondary leading-relaxed mt-1 font-medium">
               {activeObj.desc}
             </p>
-            <p className="text-[10px] text-kalika-muted italic mt-2 pt-2 border-t border-kalika-border">
+            <p className="text-sm text-kalika-muted italic mt-3 pt-3 border-t border-kalika-border/50">
               {activeObj.example}
             </p>
           </div>
