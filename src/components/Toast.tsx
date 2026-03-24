@@ -1,97 +1,47 @@
 'use client'
 
 import { useKalikaStore } from '@/store/useKalikaStore'
-import { useEffect, useState } from 'react'
 
-export default function ToastContainer() {
+export default function Toast() {
   const { toasts, removeToast } = useKalikaStore()
-  const [mounted, setMounted] = useState(false)
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none">
       {toasts.map((toast) => {
-        let bgColor = ''
-        let borderColor = ''
+        let colors = ''
         let icon = ''
-        let iconColor = ''
-
-        switch (toast.type) {
-          case 'success':
-            bgColor = 'bg-emerald-50 dark:bg-emerald-950/80 shadow-emerald-500/10'
-            borderColor = 'border-emerald-200 dark:border-emerald-800'
-            iconColor = 'text-emerald-500'
-            icon = '✓'
-            break
-          case 'error':
-            bgColor = 'bg-red-50 dark:bg-red-950/80 shadow-red-500/10'
-            borderColor = 'border-red-200 dark:border-red-800'
-            iconColor = 'text-red-500'
-            icon = '✗'
-            break
-          case 'info':
-          case 'warning':
-          default:
-            bgColor = 'bg-blue-50 dark:bg-blue-950/80 shadow-blue-500/10'
-            borderColor = 'border-blue-200 dark:border-blue-800'
-            iconColor = 'text-blue-500'
-            icon = 'ℹ'
-            break
+        
+        if (toast.type === 'success') {
+          colors = 'bg-kalika-green-subtle border-kalika-green-dim text-kalika-green-text'
+          icon = '✓'
+        } else if (toast.type === 'error') {
+          colors = 'bg-[#4c1d1d] border-red-500 text-red-200'
+          icon = '⚠️'
+        } else {
+          colors = 'bg-kalika-surface2 border-kalika-border text-kalika-text'
+          icon = 'ℹ️'
         }
 
         return (
           <div
             key={toast.id}
-            className={`
-              pointer-events-auto w-full max-w-sm rounded-xl border p-4 shadow-lg backdrop-blur-sm
-              ${bgColor} ${borderColor}
-              flex items-start gap-3
-              animate-slide-in-right opacity-100 transition-opacity duration-300
-            `}
-            style={{
-              animation: 'slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards'
-            }}
+            className={`pointer-events-auto flex items-center gap-3 w-80 px-4 py-3 rounded-lg border shadow-lg backdrop-blur-md animate-fade-in-up ${colors}`}
           >
-            {/* Icon */}
-            <div className={`mt-0.5 shrink-0 ${iconColor} font-bold text-lg leading-none`}>
+            <span className="text-sm shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-black/20">
               {icon}
-            </div>
-
-            {/* Message */}
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-[var(--text-primary)] leading-tight">
-                {toast.message}
-              </p>
-            </div>
-
-            {/* Close Button */}
+            </span>
+            <p className="text-xs font-semibold leading-relaxed flex-1 pt-[1px] font-body mr-1">
+              {toast.message}
+            </p>
             <button
               onClick={() => removeToast(toast.id)}
-              className="shrink-0 rounded-md p-1 opacity-50 transition-opacity hover:opacity-100 text-[var(--text-secondary)] hover:bg-[var(--surface-muted)]"
-              aria-label="Close Notification"
+              className="text-xs shrink-0 w-6 h-6 flex items-center justify-center rounded hover:bg-black/20 transition-colors opacity-70 hover:opacity-100"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              ✕
             </button>
           </div>
         )
       })}
-
-      {/* Inject Global Keyframe specific for Toast */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(100%); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-      `}} />
     </div>
   )
 }
