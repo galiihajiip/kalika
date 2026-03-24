@@ -11,6 +11,13 @@
   }
 }
 
+/* Custom Cursor Rules (Desktop Only) */
+@media (any-hover: hover) {
+  body, a, button, .cursor-pointer {
+    cursor: none !important;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar { 
   width: 4px; 
