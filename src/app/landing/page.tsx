@@ -472,40 +472,259 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- Section: Personas --- */}
-      <section id="personas" className="py-24 px-[5%] bg-kalika-surface border-y border-kalika-border z-10 relative">
-        <div className="reveal flex flex-col items-center text-center max-w-[800px] mx-auto mb-16">
-          <span className="text-kalika-green text-[11px] font-bold uppercase tracking-[0.2em] mb-4">Who It's For</span>
-          <h2 className="font-display font-extrabold text-4xl mb-4">Built for every kind of mind</h2>
+      {/* --- Section: How It Works --- */}
+      <section id="how-it-works" className="py-28 px-8 max-w-6xl mx-auto z-10 relative">
+        <div className="reveal flex flex-col items-center text-center mb-20">
+          <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">How KALIKA Works</span>
+          <h2 className="font-display font-extrabold text-[clamp(28px,4vw,44px)] leading-tight mb-6">Three steps to understanding</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-[1240px] mx-auto">
+        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
+          {/* Connecting Line (Desktop) */}
+          <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] border-t-2 border-dashed border-kalika-border z-0" />
+          
           {[
-            { tag: 'Dyslexia', icon: '🧠', title: 'The Deliberate Learner', sub: 'Student with dyslexia', quote: 'I used to avoid reading dense lecture notes. Now I paste them into KALIKA and get bullet points I can actually process.', color: 'border-kalika-green' },
-            { tag: 'ADHD', icon: '⚡', title: 'The Sprint Learner', sub: 'Student with ADHD', quote: '5-minute quizzes that feel like a game? Finally something that keeps my brain engaged until I actually understand everything.', color: 'border-amber-500' },
-            { tag: 'Global', icon: '🌏', title: 'The Global Scholar', sub: 'International student', quote: 'Explaining recursion through the story of Mahabharata? That clicked in 30 seconds what 3 lectures couldn\'t explain.', color: 'border-sky-500' }
+            { 
+              num: '01', 
+              icon: '📥', 
+              title: 'Paste or Upload Your Material',
+              desc: 'Type lecture notes, paste from a PDF, photograph handwritten notes, or upload an audio recording. KALIKA handles all formats.'
+            },
+            { 
+              num: '02', 
+              icon: '🌍', 
+              title: 'Choose Your Cultural Lens',
+              desc: 'Select from 50+ world cultures. Nusantara, Japanese, Viking, Islamic, Gamer — pick the lens that resonates with you.'
+            },
+            { 
+              num: '03', 
+              icon: '✦', 
+              title: 'Get Your Personalized Analysis',
+              desc: 'Receive a dyslexia-friendly breakdown, cultural analogy, exam boundary warning, and bilingual glossary — all in seconds.'
+            }
+          ].map((step, i) => (
+            <div key={i} className="reveal flex flex-col items-center text-center relative z-10">
+              <div className="absolute -top-10 font-display font-extrabold text-7xl text-kalika-green/10 select-none">
+                {step.num}
+              </div>
+              <div className="w-20 h-20 rounded-2xl bg-kalika-surface border border-kalika-green-dim flex items-center justify-center text-3xl mb-8 shadow-xl">
+                {step.icon}
+              </div>
+              <h3 className="font-display font-bold text-xl text-kalika-text mb-4 px-4">{step.title}</h3>
+              <p className="text-kalika-text-secondary text-base leading-relaxed font-light">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* --- Section: Personas --- */}
+      <section id="personas" className="py-28 px-8 bg-kalika-surface border-y border-kalika-border z-10 relative">
+        <div className="reveal flex flex-col items-center text-center max-w-3xl mx-auto mb-20 text-balance">
+          <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">Who It's For</span>
+          <h2 className="font-display font-extrabold text-[clamp(28px,4vw,44px)] leading-tight mb-4">Built for every kind of mind</h2>
+          <p className="text-kalika-text-secondary text-lg font-light">No learner gets left behind.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
+          {[
+            { 
+              tag: 'Dyslexia', 
+              icon: '🧠', 
+              title: 'The Deliberate Learner', 
+              role: 'Student with Dyslexia or Reading Difficulty',
+              quote: 'I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process — in my own cultural language.',
+              features: ['Dyslexia-Friendly Text', 'TTS Highlight', 'Bilingual Glossary'],
+              color: 'border-kalika-green'
+            },
+            { 
+              tag: 'ADHD', 
+              icon: '⚡', 
+              title: 'The Sprint Learner', 
+              role: 'Student with ADHD or Attention Challenges',
+              quote: '5-minute quizzes that feel like a game? Finally something that keeps my brain locked in until I actually understand the material.',
+              features: ['Mini Quiz', 'Cultural Analogy', 'Fast Input'],
+              color: 'border-amber-500'
+            },
+            { 
+              tag: 'Global', 
+              icon: '🌏', 
+              title: 'The Global Scholar', 
+              role: 'International Student, Multicultural Background',
+              quote: 'Explaining recursion through the Mahabharata? That clicked in 30 seconds what three lectures never could.',
+              features: ['50+ Cultural Lenses', 'Multimodal Input', 'Bilingual Glossary'],
+              color: 'border-sky-500'
+            }
           ].map((p, i) => (
-            <div key={i} className="reveal bg-kalika-bg border border-kalika-border rounded-kalika-xl p-8 hover:-translate-y-2 hover:border-kalika-green-dim transition-all duration-300">
-              <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl mb-6`}>{p.icon}</div>
-              <h4 className="font-display font-bold text-xl mb-1">{p.title}</h4>
-              <div className="text-kalika-muted text-xs font-bold uppercase tracking-widest mb-6">{p.sub}</div>
-              <div className={`bg-kalika-surface border-l-2 ${p.color} p-5 rounded-r-xl italic text-sm text-kalika-text-secondary leading-relaxed`}>
-                "{p.quote}"
+            <div key={i} className="reveal bg-kalika-bg border border-kalika-border2 rounded-2xl p-10 flex flex-col gap-8 transition-all duration-300 hover:border-kalika-green/30">
+              <div className="flex items-center gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-kalika-surface border border-kalika-border flex items-center justify-center text-3xl shadow-lg leading-none">
+                  {p.icon}
+                </div>
+                <div>
+                  <h4 className="font-display font-bold text-xl text-kalika-text">{p.title}</h4>
+                  <div className="text-kalika-muted text-xs font-bold uppercase tracking-widest mt-1">{p.tag}</div>
+                </div>
+              </div>
+              
+              <div className="text-sm font-medium text-kalika-muted/80">{p.role}</div>
+
+              <div className={`bg-kalika-surface border-l-4 ${p.color} p-6 rounded-r-2xl`}>
+                <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light">
+                  "{p.quote}"
+                </p>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.features.map(f => (
+                  <span key={f} className="text-[10px] font-bold text-kalika-muted uppercase tracking-wider bg-kalika-surface border border-kalika-border px-3 py-1.5 rounded-full">
+                    {f}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* --- Tech Strip --- */}
-      <section className="py-20 px-[5%] max-w-[1200px] mx-auto z-10 relative text-center">
-        <span className="text-[11px] font-bold text-kalika-muted uppercase tracking-[0.3em] mb-8 block">Built With World Class Stack</span>
-        <div className="flex flex-wrap justify-center gap-3 font-mono">
-          {['Next.js 15', 'Gemini 2.5 Flash', 'TypeScript', 'Tailwind CSS', 'Zustand', 'Web Speech API', 'Vercel', '@google/genai'].map(tech => (
-            <div key={tech} className="px-5 py-2.5 rounded-lg border border-kalika-border bg-kalika-surface text-xs text-kalika-text-secondary hover:border-kalika-green/50 hover:text-kalika-green transition-all cursor-default">
-              {tech}
+      {/* --- Section: Testimonials --- */}
+      <section className="py-24 bg-kalika-surface/50 border-b border-kalika-border relative overflow-hidden z-10">
+        <div className="max-w-6xl mx-auto px-8 mb-16">
+          <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em]">What learners say</span>
+        </div>
+
+        <div className="space-y-8">
+          {/* Row 1 (Left) */}
+          <div className="flex overflow-hidden">
+            <div className="flex gap-6 animate-marquee shrink-0">
+              {[
+                { name: 'Aisha M.', uni: 'University of Toronto', text: 'The Islamic lens made thermodynamics click instantly. Explaining entropy through the concept of tawakkul — I\'ll never forget that analogy.', color: 'A' },
+                { name: 'Bintang R.', uni: 'Universitas Indonesia', text: 'Nusantara lens is perfect for me. KALIKA explained neural networks using the gotong royong concept. My exam score jumped from C to A.', color: 'B' },
+                { name: 'Park Seo-jin', uni: 'Yonsei University', text: 'The Korean lens explained supply and demand using K-drama production economics. I actually laughed while learning — that never happens.', color: 'P' },
+                { name: 'Marcos D.', uni: 'UP Diliman Philippines', text: 'Filipino bayanihan analogy for distributed computing? Genius. And the TTS feature lets me study during my 3-hour commute.', color: 'M' },
+              ].map((t, i) => (
+                <div key={i} className="bg-kalika-bg border border-kalika-border2 p-8 rounded-2xl w-[400px] shrink-0 hover:border-kalika-green/40 transition-colors">
+                  <div className="flex text-yellow-400 text-sm gap-1 mb-4">{'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}</div>
+                  <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light mb-8">"{t.text}"</p>
+                  <div className="flex items-center gap-4 border-t border-kalika-border pt-6 mt-auto">
+                    <div className="w-10 h-10 rounded-full bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center font-bold text-kalika-green text-sm">{t.color}</div>
+                    <div>
+                      <div className="font-display font-bold text-sm text-kalika-text">{t.name}</div>
+                      <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest">{t.uni}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {/* Duplicate for Marquee */}
+              {[
+                { name: 'Aisha M.', uni: 'University of Toronto', text: 'The Islamic lens made thermodynamics click instantly. Explaining entropy through the concept of tawakkul — I\'ll never forget that analogy.', color: 'A' },
+                { name: 'Bintang R.', uni: 'Universitas Indonesia', text: 'Nusantara lens is perfect for me. KALIKA explained neural networks using the gotong royong concept. My exam score jumped from C to A.', color: 'B' },
+                { name: 'Park Seo-jin', uni: 'Yonsei University', text: 'The Korean lens explained supply and demand using K-drama production economics. I actually laughed while learning — that never happens.', color: 'P' },
+                { name: 'Marcos D.', uni: 'UP Diliman Philippines', text: 'Filipino bayanihan analogy for distributed computing? Genius. And the TTS feature lets me study during my 3-hour commute.', color: 'M' },
+              ].map((t, i) => (
+                <div key={i+'dup'} className="bg-kalika-bg border border-kalika-border2 p-8 rounded-2xl w-[400px] shrink-0 hover:border-kalika-green/40 transition-colors">
+                  <div className="flex text-yellow-400 text-sm gap-1 mb-4">{'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}</div>
+                  <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light mb-8">"{t.text}"</p>
+                  <div className="flex items-center gap-4 border-t border-kalika-border pt-6 mt-auto">
+                    <div className="w-10 h-10 rounded-full bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center font-bold text-kalika-green text-sm">{t.color}</div>
+                    <div>
+                      <div className="font-display font-bold text-sm text-kalika-text">{t.name}</div>
+                      <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest">{t.uni}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Row 2 (Right) */}
+          <div className="flex overflow-hidden">
+            <div className="flex gap-6 animate-marquee2 shrink-0">
+               {[
+                { name: 'Priya K.', uni: 'IIT Delhi', text: 'As someone with dyslexia, the formatted output alone is worth everything. Short sentences, bold keywords, room to breathe. Finally.', color: 'P' },
+                { name: 'Yusuf A.', uni: 'UGM Indonesia', text: 'Islamic Persian lens using Rumi\'s poetry to explain recursion. My CS professor was impressed when I used that analogy in class.', color: 'Y' },
+                { name: 'Mei L.', uni: 'NTU Taiwan', text: 'Chinese Confucian lens for organizational behavior. The bilingual glossary saved my group presentation. 100% recommend.', color: 'M' },
+                { name: 'Dimitri V.', uni: 'University of Athens', text: 'Greek Classical lens is incredible for philosophy coursework. Socratic method explaining debugging — why isn\'t this taught everywhere?', color: 'D' },
+              ].map((t, i) => (
+                <div key={i} className="bg-kalika-bg border border-kalika-border2 p-8 rounded-2xl w-[400px] shrink-0 hover:border-kalika-green/40 transition-colors">
+                  <div className="flex text-yellow-400 text-sm gap-1 mb-4">{'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}</div>
+                  <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light mb-8">"{t.text}"</p>
+                  <div className="flex items-center gap-4 border-t border-kalika-border pt-6 mt-auto">
+                    <div className="w-10 h-10 rounded-full bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center font-bold text-kalika-green text-sm">{t.color}</div>
+                    <div>
+                      <div className="font-display font-bold text-sm text-kalika-text">{t.name}</div>
+                      <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest">{t.uni}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {/* Duplicate for Marquee */}
+              {[
+                { name: 'Priya K.', uni: 'IIT Delhi', text: 'As someone with dyslexia, the formatted output alone is worth everything. Short sentences, bold keywords, room to breathe. Finally.', color: 'P' },
+                { name: 'Yusuf A.', uni: 'UGM Indonesia', text: 'Islamic Persian lens using Rumi\'s poetry to explain recursion. My CS professor was impressed when I used that analogy in class.', color: 'Y' },
+                { name: 'Mei L.', uni: 'NTU Taiwan', text: 'Chinese Confucian lens for organizational behavior. The bilingual glossary saved my group presentation. 100% recommend.', color: 'M' },
+                { name: 'Dimitri V.', uni: 'University of Athens', text: 'Greek Classical lens is incredible for philosophy coursework. Socratic method explaining debugging — why isn\'t this taught everywhere?', color: 'D' },
+              ].map((t, i) => (
+                <div key={i+'dup'} className="bg-kalika-bg border border-kalika-border2 p-8 rounded-2xl w-[400px] shrink-0 hover:border-kalika-green/40 transition-colors">
+                  <div className="flex text-yellow-400 text-sm gap-1 mb-4">{'★★★★★'.split('').map((s, i) => <span key={i}>{s}</span>)}</div>
+                  <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light mb-8">"{t.text}"</p>
+                  <div className="flex items-center gap-4 border-t border-kalika-border pt-6 mt-auto">
+                    <div className="w-10 h-10 rounded-full bg-kalika-green-subtle border border-kalika-green-glow flex items-center justify-center font-bold text-kalika-green text-sm">{t.color}</div>
+                    <div>
+                      <div className="font-display font-bold text-sm text-kalika-text">{t.name}</div>
+                      <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest">{t.uni}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- Section: Pricing --- */}
+      <section id="pricing" className="py-28 px-8 max-w-6xl mx-auto z-10 relative">
+        <div className="reveal flex flex-col items-center text-center mb-16">
+          <span className="bg-kalika-green-subtle border border-kalika-green-dim text-kalika-green text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+            Free for Hackathon Demo
+          </span>
+          <h2 className="font-display font-extrabold text-[clamp(28px,4vw,52px)] leading-tight mb-6">Try KALIKA — completely free</h2>
+          <p className="text-kalika-text-secondary text-lg font-light leading-relaxed max-w-2xl">
+            No account needed. No payment. Just paste your material 
+            and start learning in your cultural language.
+          </p>
+        </div>
+
+        <div className="reveal bg-kalika-surface border-2 border-kalika-green-glow rounded-[40px] p-16 max-w-xl mx-auto shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-kalika-green/10 blur-3xl pointer-events-none group-hover:bg-kalika-green/20 transition-all" />
+          
+          <div className="relative text-center">
+            <div className="font-display font-extrabold text-7xl text-kalika-green mb-2 tracking-tighter">FREE</div>
+            <div className="text-kalika-muted text-xs uppercase font-bold tracking-[0.3em] mb-12">During Hackathon Demo Period</div>
+            
+            <ul className="space-y-4 mb-12 text-left inline-block">
+              {[
+                'Unlimited analyses',
+                'All 50+ cultural lenses',
+                'Mini quiz generation',
+                'Multimodal input (image + audio)',
+                'Text-to-speech with 20+ voices',
+                'Bilingual glossary',
+                'History saved locally'
+              ].map(f => (
+                <li key={f} className="flex items-center gap-3 text-kalika-text-secondary font-light">
+                  <span className="text-kalika-green">✓</span> {f}
+                </li>
+              ))}
+            </ul>
+
+            <Link href="/app" className="block bg-kalika-green text-kalika-bg py-5 px-10 rounded-2xl font-display font-bold text-xl hover:-translate-y-1 hover:shadow-2xl hover:bg-green-300 transition-all duration-300">
+              ✦ Launch KALIKA Now
+            </Link>
+            
+            <p className="mt-8 text-[10px] text-kalika-muted font-bold uppercase tracking-widest">
+              Built by students, for students · 2026 KALIKA
+            </p>
+          </div>
         </div>
       </section>
 
