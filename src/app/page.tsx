@@ -5,6 +5,7 @@ import InputField from '@/components/InputField'
 import LensSelector from '@/components/LensSelector'
 import ResultCard from '@/components/ResultCard'
 import QuizCard from '@/components/QuizCard'
+import HistoryPanel from '@/components/HistoryPanel'
 import { useKalikaStore } from '@/store/useKalikaStore'
 
 // ─── Tab type ────────────────────────────────────────────────────
@@ -12,7 +13,7 @@ type Tab = 'result' | 'quiz'
 
 // ─── Page ────────────────────────────────────────────────────────
 export default function HomePage() {
-  const { isLoading, resultData, quizData, activeTab, setActiveTab } =
+  const { isLoading, resultData, quizData, activeTab, setActiveTab, history } =
     useKalikaStore()
 
   const [historyOpen, setHistoryOpen] = useState(false)
@@ -38,12 +39,31 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Tagline — hidden on mobile */}
-          <p className="hidden md:block text-sm text-[var(--text-secondary)] max-w-xs text-right">
-            Pelajari apa saja melalui{' '}
-            <span className="text-[var(--kalika-primary)] font-semibold">lens budaya</span>{' '}
-            yang kamu pilih
-          </p>
+          <div className="flex items-center gap-4">
+            {/* Tagline — hidden on mobile */}
+            <p className="hidden md:block text-sm text-[var(--text-secondary)] max-w-xs text-right">
+              Pelajari apa saja melalui{' '}
+              <span className="text-[var(--kalika-primary)] font-semibold">lens budaya</span>{' '}
+              yang kamu pilih
+            </p>
+
+            {/* Riwayat Button Header */}
+            <button
+              id="btn-header-history"
+              onClick={() => setHistoryOpen(true)}
+              className="relative p-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-border)] hover:text-[var(--kalika-primary)] transition-all flex items-center justify-center text-[var(--text-secondary)] shadow-sm"
+              aria-label="Buka Riwayat"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {history.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center border-2 border-[var(--surface-bg)] shadow-sm">
+                  {history.length}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -195,36 +215,7 @@ export default function HomePage() {
         </p>
       </footer>
 
-      {/* ── History Drawer Overlay ────────────────────────────── */}
-      {historyOpen && (
-        <div
-          className="fixed inset-0 z-50 flex"
-          onClick={() => setHistoryOpen(false)}
-        >
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <div
-            className="relative ml-auto h-full w-full max-w-sm glass-card rounded-r-none rounded-l-2xl p-6 overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="font-[var(--font-sora)] font-bold text-[var(--text-primary)]">
-                Riwayat Analisis
-              </h2>
-              <button
-                id="btn-close-history"
-                onClick={() => setHistoryOpen(false)}
-                className="w-8 h-8 rounded-lg bg-[var(--surface-muted)] flex items-center justify-center
-                  hover:bg-[var(--surface-border)] transition-colors text-[var(--text-secondary)]"
-              >
-                ✕
-              </button>
-            </div>
-            <p className="text-sm text-[var(--text-muted)]">
-              Riwayat akan tampil di sini setelah kamu generate analisis pertama.
-            </p>
-          </div>
-        </div>
-      )}
+      <HistoryPanel isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
     </div>
   )
 }
