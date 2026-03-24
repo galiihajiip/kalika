@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai'
 
-// Inisialisasi Singleton Instance
+// Initialize Singleton Instance
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY as string })
 
 // Interfaces
@@ -17,11 +17,11 @@ interface CallGeminiParams {
   includeMedia?: MediaData
 }
 
-// Helper: Tunggu N milidetik
+// Helper: Wait for N milliseconds
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
- * Panggil Gemini dengan fitur otomatis retry dan JSON validation.
+ * Call Gemini with auto-retry and JSON validation features.
  */
 export async function callGemini({
   userPrompt,
@@ -34,10 +34,10 @@ export async function callGemini({
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      // 1. Susun payload content
+      // 1. Construct payload content
       const contents: any[] = []
       
-      // Jika ada media, sisipkan sebagai inlineData (base64) dulu
+      // If there's media, insert it as inlineData (base64) first
       if (includeMedia) {
         contents.push({
           inlineData: {
@@ -47,10 +47,10 @@ export async function callGemini({
         })
       }
       
-      // Sisipkan teks user prompt
+      // Insert text user prompt
       contents.push(userPrompt)
 
-      // 2. Kirim request ke model Gemini 2.5 Flash
+      // 2. Send request to Gemini 2.5 Flash model
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: contents,
@@ -63,15 +63,15 @@ export async function callGemini({
 
       const responseText = response.text()
       if (!responseText) {
-        throw new Error('Response kosong dari Gemini.')
+        throw new Error('Empty response from Gemini.')
       }
 
-      // 3. Jika ekspektasinya JSON, pastikan bisa di-parse
-      // lalu re-stringify agar formatnya konsisten dan valid
+      // 3. If expecting JSON, assure parseablity
+      // then re-stringify for consistent formatting
       if (responseAsJson) {
         try {
-          // Bersihkan potensi karakter tak valid dari API sebelum JSON.parse
-          // Kadang API me-return dalam format markdown block: ```json ... ```
+          // Clean potential invalid characters from API before JSON.parse
+          // Sometimes API returns in markdown block: ```json ... ```
           let cleanJson = responseText.trim()
           if (cleanJson.startsWith('```json')) {
             cleanJson = cleanJson.replace(/^```json/, '').replace(/```$/, '').trim()
@@ -82,11 +82,11 @@ export async function callGemini({
           const parsed = JSON.parse(cleanJson)
           return JSON.stringify(parsed)
         } catch (err) {
-          throw new Error('Gagal mem-parsing output JSON dari Gemini: ' + responseText)
+          throw new Error('Failed to parse JSON output from Gemini: ' + responseText)
         }
       }
 
-      // 4. Jika teks biasa, langsung return
+      // 4. If plain text, return directly
       return responseText.trim()
     } catch (error: any) {
       const isRetryableError =
@@ -95,21 +95,21 @@ export async function callGemini({
         error.status === 429 ||
         error.status === 503
 
-      // Jika error 429 / 503 dan masih punya sisa retry, tunggu & ulangi
+      // If 429 / 503 error and have retries left, wait and repeat
       if (isRetryableError && attempt < MAX_RETRIES) {
         const waitTime = Math.pow(2, attempt) * 1000 // 2s, 4s
-        console.warn(`[Gemini] Error ${error.status || '429/503'}. Mencoba ulang ${attempt}/${MAX_RETRIES} dalam ${waitTime}ms...`)
+        console.warn(`[Gemini] Error ${error.status || '429/503'}. Retrying ${attempt}/${MAX_RETRIES} in ${waitTime}ms...`)
         await delay(waitTime)
         continue
       }
 
-      // Jika sudah max retry atau error lain layaknya 400 Bad Request, Exception, dll.
-      console.error('[Gemini] Gagal memanggil model:', error?.message || error)
+      // If max retries reached or other errors like 400 Bad Request, Exception, etc.
+      console.error('[Gemini] Failed to call model:', error?.message || error)
       throw new Error(
-        error?.message || 'Gagal tersambung ke layanan Gemini AI. Coba lagi beberapa saat.'
+        error?.message || 'Failed to connect to Gemini AI services. Please try again later.'
       )
     }
   }
 
-  throw new Error('Terjadi kesalahan tak terduga saat memanggil Gemini.')
+  throw new Error('An unexpected error occurred while calling Gemini.')
 }
