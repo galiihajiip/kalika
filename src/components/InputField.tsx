@@ -28,11 +28,25 @@ function TextMode() {
     const el = textareaRef.current
     if (!el) return
     el.style.height = 'auto'
-    el.style.height = `${Math.min(Math.max(el.scrollHeight, 140), 400)}px`
+    el.style.height = `${Math.min(Math.max(el.scrollHeight, 200), 500)}px`
   }, [inputText])
 
   const charCount = inputText.length
   const isOverLimit = charCount > MAX_CHARS
+  
+  // Character counter color feedback
+  const getCounterColor = () => {
+    if (charCount > 0 && charCount < 50) return 'text-red-400'
+    if (charCount >= 50 && charCount < 1000) return 'text-kalika-muted'
+    if (charCount >= 1000 && charCount < 4000) return 'text-kalika-green'
+    if (charCount >= 4000) return 'text-yellow-400'
+    return 'text-kalika-muted'
+  }
+
+  const getCounterLabel = () => {
+    if (charCount > 0 && charCount < 50) return 'Too short'
+    return null
+  }
 
   return (
     <div className="relative">
@@ -40,16 +54,18 @@ function TextMode() {
         ref={textareaRef}
         value={inputText}
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
-        placeholder="Paste your study material here... (min. 50 characters)"
+        placeholder="Paste your lecture notes, study material, or textbook excerpt here... Minimum 50 characters. You can also upload an image or audio above."
         maxLength={MAX_CHARS + 100}
-        className={`w-full min-h-[140px] bg-kalika-bg border rounded-xl p-4 text-sm text-kalika-text-secondary placeholder-kalika-muted resize-none focus:outline-none focus:border-kalika-green-glow focus:ring-1 focus:ring-kalika-green-glow transition-colors duration-150 custom-scrollbar
+        className={`w-full min-h-[200px] bg-kalika-bg border rounded-xl p-6 text-base leading-relaxed text-kalika-text-secondary placeholder-kalika-muted resize-none focus:outline-none focus:border-kalika-green-glow focus:ring-1 focus:ring-kalika-green-glow transition-all duration-150 custom-scrollbar
           ${isOverLimit ? 'border-red-500/50' : 'border-kalika-border'}`}
-        style={{ minHeight: 140, maxHeight: 400 }}
+        style={{ minHeight: 200, maxHeight: 500 }}
       />
-      <span className={`text-[10px] absolute bottom-2.5 right-3 px-1.5 py-0.5 rounded
-        ${isOverLimit ? 'text-red-400 bg-red-900/20' : 'text-kalika-muted bg-kalika-surface/50'}`}>
-        {charCount.toLocaleString('en-US')} / {MAX_CHARS.toLocaleString('en-US')}
-      </span>
+      <div className={`text-xs absolute bottom-3 right-4 px-2 py-1 flex items-center gap-2 rounded-md bg-kalika-surface/80 backdrop-blur-sm border border-kalika-border ${getCounterColor()}`}>
+        {getCounterLabel() && <span className="font-bold border-r border-kalika-border pr-2">{getCounterLabel()}</span>}
+        <span className="font-mono">
+          {charCount.toLocaleString('en-US')} / {MAX_CHARS.toLocaleString('en-US')}
+        </span>
+      </div>
     </div>
   )
 }
@@ -67,44 +83,48 @@ function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onCl
   const icon = mode === 'image' ? '🖼️' : '🎙️'
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <div
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
         onClick={() => !previewFile && inputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center cursor-pointer transition-all duration-150 min-h-[140px]
-          ${isDragging ? 'border-kalika-green bg-kalika-green-subtle/20' : 'border-kalika-border bg-kalika-bg hover:border-kalika-green-glow'}
+        className={`relative flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed px-8 py-12 text-center cursor-pointer transition-all duration-150 min-h-[200px]
+          ${isDragging ? 'border-kalika-green bg-kalika-green-subtle/10' : 'border-kalika-border bg-kalika-bg hover:border-kalika-green-glow shadow-inner shadow-black/20'}
           ${previewFile ? 'pointer-events-none opacity-80' : ''}`}
       >
-        <span className="text-2xl opacity-60">{icon}</span>
+        <span className="text-3xl opacity-60 filter grayscale group-hover:grayscale-0 transition-all">{icon}</span>
         <div>
-          <p className="text-xs font-medium text-kalika-text-secondary">Drag & drop your file here</p>
-          <p className="text-[10px] text-kalika-muted mt-1">or click to browse</p>
+          <p className="text-sm font-semibold text-kalika-text-secondary group-hover:text-kalika-green transition-colors">Drag & drop your file here</p>
+          <p className="text-xs text-kalika-muted mt-1.5 px-3 py-1 bg-kalika-surface2 rounded-full border border-kalika-border">or click to browse local files</p>
         </div>
         <input ref={inputRef} type="file" accept={accept} className="hidden" onChange={(e) => { if (e.target.files?.[0]) onFile(e.target.files[0]); e.target.value = '' }} />
       </div>
 
       {previewFile && (
-        <div className="flex items-center justify-between p-3 rounded-lg bg-kalika-surface2 border border-kalika-border">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-sm">{icon}</span>
+        <div className="flex items-center justify-between p-4 rounded-xl bg-kalika-surface2 border border-kalika-border shadow-sm">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="text-xl">{icon}</span>
             <div className="min-w-0">
-              <p className="text-[11px] font-medium text-kalika-text-secondary truncate">{previewFile.name}</p>
-              <p className="text-[9px] text-kalika-muted">{formatBytes(previewFile.size)}</p>
+              <p className="text-xs font-semibold text-kalika-text-secondary truncate">{previewFile.name}</p>
+              <p className="text-xs text-kalika-muted">{formatBytes(previewFile.size)}</p>
             </div>
           </div>
           {isExtracting ? (
-            <span className="text-[10px] font-semibold text-kalika-green animate-pulse">Extracting...</span>
+            <span className="text-xs font-bold text-kalika-green animate-pulse flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-kalika-green" /> Extracting...
+            </span>
           ) : (
-            <button type="button" onMouseDown={(e) => { e.stopPropagation(); onClear() }} className="text-[10px] px-2 py-1 rounded border border-kalika-border text-kalika-muted hover:text-red-400 hover:border-red-900/50 pointer-events-auto">
+            <button type="button" onMouseDown={(e) => { e.stopPropagation(); onClear() }} className="text-xs font-bold px-3 py-1.5 rounded-lg border border-kalika-border text-kalika-muted hover:text-red-400 hover:border-red-500/30 transition-all pointer-events-auto">
               Clear
             </button>
           )}
         </div>
       )}
       
-      {error && <p className="text-[10px] text-red-400 mt-1">{error}</p>}
+      {error && <p className="text-xs font-medium text-red-400 mt-2 px-1 flex items-center gap-2">
+        <span>⚠️</span> {error}
+      </p>}
     </div>
   )
 }
@@ -133,17 +153,17 @@ export default function InputField() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       {/* Container Tabs */}
-      <div className="flex bg-kalika-bg rounded-lg p-1 border border-kalika-border">
+      <div className="flex bg-kalika-bg rounded-xl p-1.5 border border-kalika-border shadow-sm">
         {TABS.map(({ mode, label, icon }) => (
           <button key={mode} onClick={() => setInputMode(mode)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-center text-[11px] font-medium rounded-md cursor-pointer transition-colors duration-200
+            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-center text-sm font-semibold rounded-lg cursor-pointer transition-all duration-300
             ${inputMode === mode 
-              ? 'bg-kalika-green-subtle text-kalika-green border border-kalika-green-glow shadow-[0_0_10px_rgba(22,101,52,0.5)]' 
+              ? 'bg-kalika-green-subtle text-kalika-green border border-kalika-green-glow shadow-md shadow-kalika-green/10' 
               : 'text-kalika-muted border border-transparent hover:text-kalika-text-secondary'}`}
           >
-            <span className="opacity-70">{icon}</span> {label}
+            <span className="text-lg opacity-80">{icon}</span> {label}
           </button>
         ))}
       </div>
