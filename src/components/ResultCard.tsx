@@ -128,11 +128,11 @@ export default function ResultCard({ onGenerateQuiz, isGeneratingQuiz }: ResultC
         <button
           onClick={onGenerateQuiz}
           disabled={isGeneratingQuiz}
-          className="w-full bg-kalika-green-subtle border border-kalika-green-glow text-kalika-green rounded-xl py-3.5 text-sm font-semibold font-display tracking-wide flex items-center justify-center gap-2 hover:bg-kalika-green hover:text-kalika-bg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 active:scale-[0.98]"
+          className="w-full bg-kalika-green-subtle border border-kalika-green-glow text-kalika-green rounded-xl py-4 text-sm font-semibold font-display tracking-wide flex items-center justify-center gap-2 hover:bg-kalika-green hover:text-kalika-bg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 active:scale-[0.98]"
         >
           {isGeneratingQuiz ? (
             <>
-              <span className="animate-spin">⟳</span>
+              <span className="animate-spin text-lg">⟳</span>
               Generating quiz...
             </>
           ) : (
@@ -143,21 +143,31 @@ export default function ResultCard({ onGenerateQuiz, isGeneratingQuiz }: ResultC
         </button>
       </div>
 
-      {/* Persistent Audio Player Overlay */}
+      {/* 5. MULTILINGUAL AUDIO PLAYER OVERLAY (STICKY) */}
       {showPlayer && ttsText && (
-        <div className="sticky bottom-0 bg-kalika-surface2 border-t border-kalika-border px-5 py-3 -mx-6 md:-mx-8 z-30 shadow-[0_-4px_24px_rgba(0,0,0,0.5)] animate-fade-in-up">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] text-kalika-muted uppercase tracking-wider font-bold">
-              Now reading your material...
-            </span>
+        <div className="fixed bottom-0 left-0 right-0 md:left-auto md:right-8 md:bottom-8 md:w-[400px] bg-kalika-surface2 border-t md:border border-kalika-border px-6 py-5 z-50 shadow-[0_-8px_40px_rgba(0,0,0,0.7)] animate-fade-in-up md:rounded-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-kalika-green animate-pulse" />
+              <span className="text-[10px] text-kalika-muted uppercase tracking-[0.2em] font-bold">
+                KALIKA Audio Reader
+              </span>
+            </div>
             <button 
-              onClick={() => setShowPlayer(false)}
-              className="text-kalika-muted hover:text-kalika-text text-lg leading-none"
+              onClick={() => {
+                setShowPlayer(false)
+                window.speechSynthesis.cancel()
+              }}
+              className="w-8 h-8 rounded-full border border-kalika-border flex items-center justify-center text-kalika-muted hover:text-kalika-red hover:border-kalika-red/30 transition-all active:scale-95"
             >
               ✕
             </button>
           </div>
           <AudioPlayer textToRead={ttsText} />
+          
+          <p className="mt-4 text-[9px] text-kalika-muted italic leading-tight text-center">
+            Tip: You can change voice language and speed in the controls above.
+          </p>
         </div>
       )}
 
