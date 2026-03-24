@@ -65,6 +65,7 @@ export type LensType =
   | 'sports_universal'
   | 'scientific'
   | 'musical'
+  | 'cyber'
 
 export type InputMode = 'text' | 'image' | 'audio'
 export type TabType = 'result' | 'quiz'
