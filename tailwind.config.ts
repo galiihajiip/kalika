@@ -27,9 +27,8 @@ const config: Config = {
         }
       },
       fontFamily: {
-        display: ['Sora', 'sans-serif'],
-        body:    ['DM Sans', 'sans-serif'],
-        mono:    ['DM Mono', 'monospace'],
+        display: ['var(--font-sora)', 'sans-serif'],
+        body:    ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {
         'kalika': '12px',
@@ -44,6 +43,10 @@ const config: Config = {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%':      { transform: 'translateY(-12px)' },
+        },
+        floatSlow: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%':      { transform: 'translateY(-6px)' },
         },
         marquee: {
           '0%':   { transform: 'translateX(0)' },
@@ -67,14 +70,15 @@ const config: Config = {
         },
       },
       animation: {
-        'fade-up':  'fadeUp 0.6s ease both',
-        'float':    'float 6s ease-in-out infinite',
-        'marquee':  'marquee 30s linear infinite',
-        'marquee2': 'marquee 25s linear infinite reverse',
-        'shimmer':  'shimmer 2.5s ease-in-out infinite',
-        'wave':     'wave 1.2s ease-in-out infinite',
-        'blink':    'blink 2s ease-in-out infinite',
-        'orb':      'orbFloat 12s ease-in-out infinite',
+        'fade-up':    'fadeUp 0.6s ease both',
+        'float':      'float 6s ease-in-out infinite',
+        'float-slow': 'floatSlow 10s ease-in-out infinite',
+        'marquee':    'marquee 35s linear infinite',
+        'marquee2':   'marquee 40s linear infinite reverse',
+        'shimmer':    'shimmer 2.5s ease-in-out infinite',
+        'wave':       'wave 1.2s ease-in-out infinite',
+        'blink':      'blink 2s ease-in-out infinite',
+        'orb':        'orbFloat 12s ease-in-out infinite',
       },
     }
   },
