@@ -174,7 +174,7 @@ export default function LandingPage() {
             <div className="absolute -right-8 -bottom-8 w-64 h-64 z-20 pointer-events-none">
               <Image
                 src="/images/bagong.png"
-                alt="Bagong — KALIKA mascot, a Garuda warrior scholar"
+                alt="Bagong: KALIKA mascot, a Garuda warrior scholar"
                 width={256}
                 height={256}
                 className="object-contain drop-shadow-2xl"
