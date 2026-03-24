@@ -1,6 +1,23 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+@theme {
+  --color-kalika-bg: #060c06;
+  --color-kalika-surface: #0c140c;
+  --color-kalika-surface2: #111c11;
+  --color-kalika-border: #1a2a1a;
+  --color-kalika-border2: #243824;
+  --color-kalika-muted: #5a7a5a;
+  --color-kalika-text: #e2f0e2;
+  --color-kalika-text-secondary: #9ab89a;
+  --color-kalika-green: #4ade80;
+  --color-kalika-green-dim: #22c55e;
+  --color-kalika-green-glow: #166534;
+  --color-kalika-green-subtle: #14532d;
+  --color-kalika-green-text: #bbf7d0;
+  --color-kalika-green-pale: #dcfce7;
+}
+
 :root {
   --tw-kalika-green: #4ade80;
 }
