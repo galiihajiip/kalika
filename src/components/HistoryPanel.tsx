@@ -19,17 +19,17 @@ const LENS_COLORS: Record<LensType, { bg: string; text: string; label: string }>
 function getRelativeTime(timestamp: number) {
   const diffInSeconds = Math.floor((Date.now() - timestamp) / 1000)
   
-  if (diffInSeconds < 60) return `${diffInSeconds} detik lalu`
+  if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`
   
   const diffInMinutes = Math.floor(diffInSeconds / 60)
-  if (diffInMinutes < 60) return `${diffInMinutes} menit lalu`
+  if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`
   
   const diffInHours = Math.floor(diffInMinutes / 60)
-  if (diffInHours < 24) return `${diffInHours} jam lalu`
+  if (diffInHours < 24) return `${diffInHours} hours ago`
   
   const diffInDays = Math.floor(diffInHours / 24)
-  if (diffInDays === 1) return 'kemarin'
-  return `${diffInDays} hari lalu`
+  if (diffInDays === 1) return 'yesterday'
+  return `${diffInDays} days ago`
 }
 
 export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
@@ -43,7 +43,7 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
 
   if (!mounted) return null
 
-  // Handle clik pada item
+  // Handle item click
   const handleRestore = (entry: HistoryEntry) => {
     setInputText(entry.inputText)
     setSelectedLens(entry.lens)
@@ -53,14 +53,14 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
   }
 
   const handleClear = () => {
-    if (confirm('Yakin ingin menghapus semua riwayat analisis?')) {
+    if (confirm('Are you sure you want to delete all analysis history?')) {
       clearHistory()
     }
   }
 
   return (
     <>
-      {/* ── Overlay Gelap ── */}
+      {/* ── Dark Overlay ── */}
       <div 
         className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -68,7 +68,7 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
         onClick={onClose}
       />
 
-      {/* ── Panel Slide dari Kiri ── */}
+      {/* ── Slide-in Panel from Left ── */}
       <div
         className={`fixed top-0 left-0 h-full w-[320px] bg-[var(--surface-bg)] shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] border-r border-[var(--surface-border)] ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -77,12 +77,12 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[var(--surface-border)] bg-[var(--surface-card)]">
           <h2 className="font-[var(--font-sora)] font-bold text-lg text-[var(--text-primary)]">
-            Riwayat Analisis
+            Analysis History
           </h2>
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-lg bg-[var(--surface-muted)] flex items-center justify-center hover:bg-[var(--surface-border)] hover:text-red-500 transition-colors text-[var(--text-secondary)]"
-            aria-label="Tutup riwayat"
+            aria-label="Close history"
           >
             ✕
           </button>
@@ -93,9 +93,9 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
           {history.length === 0 ? (
             <div className="flex flex-col items-center justify-center text-center h-full opacity-60">
               <span className="text-5xl mb-4">🕰️</span>
-              <p className="font-semibold text-[var(--text-primary)]">Belum ada riwayat</p>
+              <p className="font-semibold text-[var(--text-primary)]">No history yet</p>
               <p className="text-xs text-[var(--text-muted)] mt-1 max-w-[200px]">
-                Materi yang pernah kamu analisis akan tersimpan otomatis di sini.
+                The materials you analyze will automatically be saved here.
               </p>
             </div>
           ) : (
@@ -134,10 +134,10 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
               onClick={handleClear}
               className="w-full py-3 rounded-xl border border-red-200 dark:border-red-900/50 text-red-500 text-sm font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
             >
-              🗑️ Hapus Semua Riwayat
+              🗑️ Clear All History
             </button>
             <p className="text-center text-[10px] font-semibold text-[var(--text-muted)] mt-3 tracking-wide">
-              TERSIMPAN LOKAL DI BROWSER KAMU
+              STORED LOCALLY IN YOUR BROWSER
             </p>
           </div>
         )}
