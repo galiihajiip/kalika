@@ -8,10 +8,10 @@ import AudioPlayer from '@/components/AudioPlayer'
 // ─── Constants & Helpers ──────────────────────────────────────────
 
 const LENS_LOADING_MESSAGES: Record<LensType, string> = {
-  nusantara: 'Sedang menyedu analogi Nusantara... ☕',
+  nusantara: 'Brewing your Nusantara analogy... ☕',
   western: 'Crafting your Western analogy... 🌍',
-  islamic: 'Menyusun kajian Islami... ☪️',
-  chinese: 'Merangkum filosofi Tionghoa... 🐉',
+  islamic: 'Composing Islamic insights... ☪️',
+  chinese: 'Summarizing Chinese philosophy... 🐉',
 }
 
 const LENS_EMOJIS: Record<LensType, string> = {
@@ -76,20 +76,20 @@ export default function ResultCard() {
     setActiveTab,
   } = useKalikaStore()
 
-  // State untuk AudioPlayer (placeholder until implemented)
+  // State for AudioPlayer wrapper
   const [playAudio, setPlayAudio] = useState(false)
 
   // Copy to clipboard handler
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      addToast({ message: 'Disalin ke clipboard!', type: 'success' })
+      addToast({ message: 'Copied to clipboard!', type: 'success' })
     } catch (err) {
-      addToast({ message: 'Gagal menyalin teks.', type: 'error' })
+      addToast({ message: 'Failed to copy text.', type: 'error' })
     }
   }
 
-  // Generate kuis handler
+  // Generate quiz handler
   const handleGenerateQuiz = async () => {
     if (!inputText) return
     setLoading(true)
@@ -100,14 +100,14 @@ export default function ResultCard() {
         body: JSON.stringify({ text: inputText, lens }),
       })
 
-      if (!res.ok) throw new Error('Gagal membuat kuis.')
+      if (!res.ok) throw new Error('Failed to create quiz.')
 
       const data = await res.json()
-      setQuiz(data.data) // Asumsikan struktur { success: true, data: QuizItem[] }
+      setQuiz(data.data) // Assumes structure { success: true, data: QuizItem[] }
       setActiveTab('quiz')
-      addToast({ message: 'Kuis berhasil dibuat!', type: 'success' })
+      addToast({ message: 'Quiz created successfully!', type: 'success' })
     } catch (error) {
-      addToast({ message: 'Gagal memuat kuis, coba lagi nanti.', type: 'error' })
+      addToast({ message: 'Failed to load quiz, try again later.', type: 'error' })
     } finally {
       setLoading(false)
     }
@@ -137,26 +137,27 @@ export default function ResultCard() {
     )
   }
 
-  // 2. Kosong / Belum ada result
+  // 2. Empty / No result yet
   if (!result) return null
 
-  // 3. Render Hasil
+  // 3. Render Result
   const style = LENS_STYLES[lens]
 
   return (
     <div className="flex flex-col gap-5 animate-fade-in-up">
 
-      {/* Teks Ramah Belajar */}
-      <Accordion title="Teks Ramah Belajar" icon="📖">
+      {/* Dyslexia-Friendly Text */}
+      <Accordion title="Dyslexia-Friendly Text" icon="📖">
         <div className="flex flex-col gap-4">
           <div className="prose prose-sm dark:prose-invert max-w-none leading-relaxed
             [&>p]:mb-3 [&>ul]:mb-3 [&>ul>li]:mb-1 [&>strong]:text-[var(--kalika-primary)] font-medium">
-            {/* Merender string secara kasar tapi meng-handle bullet points yang mungkin masih berbalut markdown basic */}
+            {/* Render string roughly while handling basic bullet points from markdown */}
             {result.dyslexiaFriendlyText.split('\n').map((line, idx) => {
+              line = line.replace(/^\s+/, "") // trim start spaces
               if (line.trim().startsWith('-')) {
                 return (
                   <li key={idx} className="ml-4 list-disc marker:text-[var(--kalika-primary)]">
-                    {/* Mengganti **bold** sederhana */}
+                    {/* Replacing simple **bold** */}
                     <span dangerouslySetInnerHTML={{ __html: line.replace(/^- /, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
                   </li>
                 )
@@ -171,30 +172,30 @@ export default function ResultCard() {
             })}
           </div>
 
-          <div className="flex items-center gap-3 mt-2 border-t border-[var(--surface-border)] pt-4">
+          <div className="flex flex-wrap items-center gap-3 mt-2 border-t border-[var(--surface-border)] pt-4">
             <button
               onClick={() => handleCopy(result.dyslexiaFriendlyText)}
               className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--surface-muted)] text-[var(--text-primary)] hover:bg-[var(--surface-border)] transition-colors flex items-center gap-2"
             >
-              <span>📋</span> Salin Teks
+              <span>📋</span> Copy Text
             </button>
             <button
               onClick={() => setPlayAudio(!playAudio)}
               className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--kalika-primary)] text-white hover:opacity-90 transition-colors flex items-center gap-2"
             >
-              <span>🔊</span> {playAudio ? 'Berhenti' : 'Dengarkan'}
+              <span>🔊</span> {playAudio ? 'Close Player' : 'Listen'}
             </button>
           </div>
           {playAudio && (
-             <div className="mt-2 text-xs italic text-[var(--kalika-primary)]">
-                (Integrasi AudioPlayer diletakkan di sini nantinya)
+             <div className="mt-2 text-xs">
+                <AudioPlayer textToRead={result.dyslexiaFriendlyText} />
              </div>
           )}
         </div>
       </Accordion>
 
-      {/* Analogi Budaya */}
-      <Accordion title={`Analogi Budaya ${lens.charAt(0).toUpperCase() + lens.slice(1)}`} icon="🎭">
+      {/* Cultural Analogy */}
+      <Accordion title={`${lens.charAt(0).toUpperCase() + lens.slice(1)} Cultural Analogy`} icon="🎭">
         <div className={`relative p-6 rounded-xl border ${style.lightBg} border-[var(--surface-border)] overflow-hidden`}>
           <span className="absolute -top-4 -left-2 text-6xl opacity-20 pointer-events-none">
             {LENS_EMOJIS[lens]}
@@ -207,8 +208,8 @@ export default function ResultCard() {
         </div>
       </Accordion>
 
-      {/* Batas Ujian / Peringatan */}
-      <Accordion title="Batas Analisis Ujian" icon="⚠️" defaultOpen={false}>
+      {/* Exam Boundary / Warning */}
+      <Accordion title="Exam Boundary Warning" icon="⚠️" defaultOpen={false}>
         <div className="flex gap-4 items-start p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
           <span className="text-amber-500 text-xl shrink-0 mt-0.5">⚠️</span>
           <p className="text-sm italic text-amber-700 dark:text-amber-400 leading-relaxed font-medium">
@@ -217,15 +218,15 @@ export default function ResultCard() {
         </div>
       </Accordion>
 
-      {/* Glosarium Bilingual */}
-      <Accordion title="Glosarium Bilingual" icon="📚" defaultOpen={false}>
+      {/* Bilingual Glossary */}
+      <Accordion title="Bilingual Glossary" icon="📚" defaultOpen={false}>
         <div className="overflow-x-auto rounded-xl border border-[var(--surface-border)]">
           <table className="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
             <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)]">
               <tr>
-                <th className="px-4 py-3 font-semibold w-1/4">Istilah</th>
+                <th className="px-4 py-3 font-semibold w-1/4">Term</th>
                 <th className="px-4 py-3 font-semibold w-1/4">English (B1)</th>
-                <th className="px-4 py-3 font-semibold w-1/2">Konteks Lokal</th>
+                <th className="px-4 py-3 font-semibold w-1/2">Local Context</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--surface-border)]">
@@ -253,7 +254,7 @@ export default function ResultCard() {
             active:scale-[.99] transition-all duration-200
             disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'Mempersiapkan Kuis...' : '🧠 Generate Kuis dari Materi Ini'}
+          {isLoading ? 'Preparing Quiz...' : '🧠 Generate Quiz from this Material'}
         </button>
       </div>
 

@@ -7,7 +7,7 @@ export default function ToastContainer() {
   const { toasts, removeToast } = useKalikaStore()
   const [mounted, setMounted] = useState(false)
 
-  // Hindari hydration mismatch
+  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -74,7 +74,7 @@ export default function ToastContainer() {
             <button
               onClick={() => removeToast(toast.id)}
               className="shrink-0 rounded-md p-1 opacity-50 transition-opacity hover:opacity-100 text-[var(--text-secondary)] hover:bg-[var(--surface-muted)]"
-              aria-label="Tutup Notifikasi"
+              aria-label="Close Notification"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -84,7 +84,7 @@ export default function ToastContainer() {
         )
       })}
 
-      {/* Inject Keyframe Global khusus Toast kalau perlu */}
+      {/* Inject Global Keyframe specific for Toast */}
       <style dangerouslySetInnerHTML={{
         __html: `
         @keyframes slideInRight {
