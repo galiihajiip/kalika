@@ -16,7 +16,7 @@ interface LensItem {
   region: RegionTab
 }
 
-const LENS_ITEMS: LensItem[] = [
+export const LENS_ITEMS: LensItem[] = [
   // Asia (SE, East, South)
   { id: 'nusantara', emoji: '🌴', label: 'Nusantara', region: 'Asia', desc: 'Indonesian cultural analogies: wayang, gotong royong, pasar traditions.', example: 'e.g. A system is like a busy traditional market...' },
   { id: 'malay', emoji: '🌺', label: 'Malay', region: 'Asia', desc: 'Malay traditions: pantun, adat layers, kampong connections.', example: 'e.g. A function returning data is like a balasan pantun...' },
