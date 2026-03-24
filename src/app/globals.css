@@ -1,189 +1,51 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap');
 
+@theme {
+  --color-kalika-bg: #0a0f0a;
+  --color-kalika-surface: #111a11;
+  --color-kalika-surface2: #162116;
+  --color-kalika-border: #1e2e1e;
+  
+  --color-kalika-green: #4ade80;
+  --color-kalika-green-dim: #22c55e;
+  --color-kalika-green-glow: #166534;
+  --color-kalika-green-subtle: #14532d;
+  --color-kalika-green-text: #bbf7d0;
+  
+  --color-kalika-muted: #6b7a6b;
+  --color-kalika-text: #e8f5e8;
+  --color-kalika-text-secondary: #a3b8a3;
 
-
-/* ─── CSS Custom Properties ────────────────────────────────────── */
-:root {
-  /* Brand */
-  --kalika-primary: #6366f1;
-  --kalika-primary-dark: #4f46e5;
-  --kalika-secondary: #8b5cf6;
-  --kalika-accent: #f59e0b;
-
-  /* Lens colors */
-  --lens-nusantara: #10b981;
-  --lens-nusantara-bg: #d1fae5;
-  --lens-nusantara-dark-bg: #064e3b;
-
-  --lens-western: #3b82f6;
-  --lens-western-bg: #dbeafe;
-  --lens-western-dark-bg: #1e3a5f;
-
-  --lens-islamic: #14b8a6;
-  --lens-islamic-bg: #ccfbf1;
-  --lens-islamic-dark-bg: #134e4a;
-
-  --lens-chinese: #ef4444;
-  --lens-chinese-bg: #fee2e2;
-  --lens-chinese-dark-bg: #4c1d1d;
-
-  /* Surface */
-  --surface-bg: #f8fafc;
-  --surface-card: #ffffff;
-  --surface-border: #e2e8f0;
-  --surface-muted: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-
-  /* Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-
-  /* Shadow */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
-  --shadow-lg: 0 16px 48px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.06);
-  --shadow-glow: 0 0 24px rgba(99,102,241,.25);
+  --font-display: Sora, sans-serif;
+  --font-body: Inter, sans-serif;
 }
 
-.dark {
-  --surface-bg: #0b0d14;
-  --surface-card: #13162a;
-  --surface-border: #1e2340;
-  --surface-muted: #181b2e;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.5);
-  --shadow-lg: 0 16px 48px rgba(0,0,0,.6);
-}
-
-/* ─── Base Reset ────────────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  background-color: var(--surface-bg);
-  color: var(--text-primary);
-  font-family: 'Nunito', system-ui, sans-serif;
-  line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Sora', system-ui, sans-serif;
-  line-height: 1.2;
-}
-
-/* ─── Scrollbar ─────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--kalika-primary);
-  border-radius: 999px;
-  opacity: 0.5;
-}
+::-webkit-scrollbar-thumb { background: #1e2e1e; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #166534; }
 
-/* ─── Lens Pill Utility ─────────────────────────────────────────── */
-.lens-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition: all 0.2s ease;
-}
-
-.lens-pill-nusantara {
-  color: var(--lens-nusantara);
-  background: var(--lens-nusantara-bg);
-}
-.dark .lens-pill-nusantara {
-  background: var(--lens-nusantara-dark-bg);
-}
-
-.lens-pill-western {
-  color: var(--lens-western);
-  background: var(--lens-western-bg);
-}
-.dark .lens-pill-western {
-  background: var(--lens-western-dark-bg);
-}
-
-.lens-pill-islamic {
-  color: var(--lens-islamic);
-  background: var(--lens-islamic-bg);
-}
-.dark .lens-pill-islamic {
-  background: var(--lens-islamic-dark-bg);
-}
-
-.lens-pill-chinese {
-  color: var(--lens-chinese);
-  background: var(--lens-chinese-bg);
-}
-.dark .lens-pill-chinese {
-  background: var(--lens-chinese-dark-bg);
-}
-
-/* ─── Gradient Text ─────────────────────────────────────────────── */
-.gradient-text {
-  background: linear-gradient(135deg, var(--kalika-primary), var(--kalika-secondary), var(--kalika-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Glass Card ────────────────────────────────────────────────── */
-.glass-card {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-.dark .glass-card {
-  background: rgba(19,22,42,0.8);
-  border-color: rgba(99,102,241,0.15);
-}
-
-/* ─── Animations ────────────────────────────────────────────────── */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 12px rgba(99,102,241,.3); }
-  50%       { box-shadow: 0 0 28px rgba(99,102,241,.6); }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--color-kalika-bg);
+  color: var(--color-kalika-text);
+  font-family: var(--font-body);
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.4s ease both;
+  animation: fadeInUp 0.3s ease both;
 }
-.animate-shimmer {
-  background: linear-gradient(90deg, var(--surface-muted) 25%, var(--surface-card) 50%, var(--surface-muted) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.6s infinite;
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
 }
