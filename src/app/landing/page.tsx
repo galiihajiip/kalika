@@ -760,13 +760,12 @@ export default function LandingPage() {
           ಕಲಿಕೆ
         </div>
 
-        {/* BAGONG MASCOT — Decorative background element */}
-        <div className="absolute right-0 bottom-0 w-64 h-auto opacity-15 pointer-events-none z-0 hidden lg:block">
+        <div className="absolute right-[-20px] bottom-0 w-72 h-auto opacity-40 pointer-events-none z-0 hidden lg:block animate-float">
           <Image
             src="/images/bagong.png"
-            alt=""
-            width={256}
-            height={320}
+            alt="Mascot decoration"
+            width={300}
+            height={380}
             className="object-contain object-bottom w-full h-auto"
             aria-hidden="true"
           />
