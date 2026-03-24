@@ -4,29 +4,22 @@ import { useState } from 'react'
 import { useKalikaStore } from '@/store/useKalikaStore'
 import type { LensType } from '@/types'
 import AudioPlayer from '@/components/AudioPlayer'
+import { LENS_ITEMS } from '@/components/LensSelector'
 
 // ─── Constants & Helpers ──────────────────────────────────────────
 
-const LENS_LOADING_MESSAGES: Record<LensType, string> = {
-  nusantara: 'Brewing your Nusantara analogy... ☕',
-  western: 'Crafting your Western analogy... 🌍',
-  islamic: 'Composing Islamic insights... ☪️',
-  chinese: 'Summarizing Chinese philosophy... 🐉',
+function getLensMeta(lens: string) {
+  const found = LENS_ITEMS.find((l) => l.id === lens)
+  return {
+    label: found ? found.label : lens.replace('_', ' '),
+    emoji: found ? found.emoji : '🌍',
+    loading: found ? `Crafting your ${found.label} analogy... ☕` : 'Crafting analogy... ☕',
+    bg: 'bg-[var(--kalika-primary)]',
+    text: 'text-[var(--kalika-primary)]',
+    lightBg: 'bg-[var(--kalika-primary)]/5 border-[var(--kalika-primary)]/20',
+  }
 }
 
-const LENS_EMOJIS: Record<LensType, string> = {
-  nusantara: '🌴',
-  western: '🌍',
-  islamic: '☪️',
-  chinese: '🐉',
-}
-
-const LENS_STYLES: Record<LensType, { bg: string; text: string; lightBg: string }> = {
-  nusantara: { bg: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-400', lightBg: 'bg-emerald-50 dark:bg-emerald-950/30' },
-  western: { bg: 'bg-blue-500', text: 'text-blue-700 dark:text-blue-400', lightBg: 'bg-blue-50 dark:bg-blue-950/30' },
-  islamic: { bg: 'bg-teal-500', text: 'text-teal-700 dark:text-teal-400', lightBg: 'bg-teal-50 dark:bg-teal-950/30' },
-  chinese: { bg: 'bg-red-500', text: 'text-red-700 dark:text-red-400', lightBg: 'bg-red-50 dark:bg-red-950/30' },
-}
 
 // ─── Sub-component: Accordion Section ────────────────────────────
 
@@ -115,12 +108,13 @@ export default function ResultCard() {
 
   // 1. Loading State
   if (isLoading) {
+    const metaLoading = getLensMeta(lens)
     return (
       <div className="flex flex-col gap-4 animate-fade-in-up">
         <div className="flex items-center gap-3 mb-2 px-2">
           <div className="w-5 h-5 border-2 border-[var(--kalika-primary)] border-t-transparent rounded-full animate-spin" />
           <p className="font-semibold text-[var(--kalika-primary)] text-sm animate-pulse">
-            {LENS_LOADING_MESSAGES[lens]}
+            {metaLoading.loading}
           </p>
         </div>
         {[1, 2, 3].map((i) => (
@@ -141,7 +135,7 @@ export default function ResultCard() {
   if (!result) return null
 
   // 3. Render Result
-  const style = LENS_STYLES[lens]
+  const meta = getLensMeta(lens)
 
   return (
     <div className="flex flex-col gap-5 animate-fade-in-up">
@@ -195,13 +189,13 @@ export default function ResultCard() {
       </Accordion>
 
       {/* Cultural Analogy */}
-      <Accordion title={`${lens.charAt(0).toUpperCase() + lens.slice(1)} Cultural Analogy`} icon="🎭">
-        <div className={`relative p-6 rounded-xl border ${style.lightBg} border-[var(--surface-border)] overflow-hidden`}>
-          <span className="absolute -top-4 -left-2 text-6xl opacity-20 pointer-events-none">
-            {LENS_EMOJIS[lens]}
+      <Accordion title={`${meta.label} Cultural Analogy`} icon="🎭">
+        <div className={`relative p-6 rounded-xl border ${meta.lightBg} overflow-hidden`}>
+          <span className="absolute -top-4 -left-2 text-6xl opacity-10 pointer-events-none">
+            {meta.emoji}
           </span>
           <div className="relative z-10">
-            <p className={`text-sm leading-relaxed font-medium ${style.text}`}>
+            <p className={`text-sm leading-relaxed font-medium ${meta.text}`}>
               {result.culturalAnalogy}
             </p>
           </div>
