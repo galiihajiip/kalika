@@ -13,10 +13,48 @@ type Tab = 'result' | 'quiz'
 
 // ─── Page ────────────────────────────────────────────────────────
 export default function HomePage() {
-  const { isLoading, resultData, quizData, activeTab, setActiveTab, history } =
+  const { isLoading, resultData, quizData, activeTab, setActiveTab, history, inputText, selectedLens, addToast, setResult, setLoading, addHistory } =
     useKalikaStore()
 
   const [historyOpen, setHistoryOpen] = useState(false)
+
+  // Generate Analysis Handle (Moved from old structure to connect)
+  const handleGenerate = async () => {
+    if (!inputText || inputText.length < 50) return
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/generate-lens', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText, lens: selectedLens }),
+      })
+
+      if (!res.ok) {
+        const errJson = await res.json()
+        throw new Error(errJson.error ?? 'Failed to generate analysis')
+      }
+
+      const json = await res.json()
+      // Store in Result
+      setResult(json.data)
+      
+      // Add to history
+      addHistory({
+        id: `hist-${Date.now()}`,
+        inputText: inputText,
+        lens: selectedLens,
+        result: json.data,
+        timestamp: Date.now()
+      })
+
+      setActiveTab('result')
+    } catch(err: any) {
+      addToast({ message: err.message || 'Server error', type: 'error' })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--surface-bg)] transition-colors duration-300">
@@ -42,17 +80,17 @@ export default function HomePage() {
           <div className="flex items-center gap-4">
             {/* Tagline — hidden on mobile */}
             <p className="hidden md:block text-sm text-[var(--text-secondary)] max-w-xs text-right">
-              Pelajari apa saja melalui{' '}
-              <span className="text-[var(--kalika-primary)] font-semibold">lens budaya</span>{' '}
-              yang kamu pilih
+              Learn anything through the{' '}
+              <span className="text-[var(--kalika-primary)] font-semibold">cultural lens</span>{' '}
+              you choose
             </p>
 
-            {/* Riwayat Button Header */}
+            {/* History Button Header */}
             <button
               id="btn-header-history"
               onClick={() => setHistoryOpen(true)}
               className="relative p-2 rounded-xl bg-[var(--surface-muted)] hover:bg-[var(--surface-border)] hover:text-[var(--kalika-primary)] transition-all flex items-center justify-center text-[var(--text-secondary)] shadow-sm"
-              aria-label="Buka Riwayat"
+              aria-label="Open History"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -80,10 +118,10 @@ export default function HomePage() {
             <div className="glass-card p-6 flex flex-col gap-5 animate-fade-in-up">
               <div>
                 <h2 className="font-[var(--font-sora)] text-base font-bold text-[var(--text-primary)] mb-1">
-                  Materi yang ingin dipelajari
+                  Material to Study
                 </h2>
                 <p className="text-xs text-[var(--text-muted)]">
-                  Ketik teks, unggah gambar, atau rekam audio
+                  Type text, upload image, or record audio
                 </p>
               </div>
 
@@ -93,7 +131,7 @@ export default function HomePage() {
               {/* Lens Selector */}
               <div>
                 <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">
-                  Pilih Lens Budaya
+                  Select Cultural Lens
                 </p>
                 <LensSelector />
               </div>
@@ -101,7 +139,8 @@ export default function HomePage() {
               {/* Generate Button */}
               <button
                 id="btn-generate"
-                disabled={isLoading}
+                onClick={handleGenerate}
+                disabled={isLoading || inputText.length < 50}
                 className="w-full py-3.5 rounded-xl font-[var(--font-sora)] font-bold text-sm text-white
                   bg-gradient-to-r from-[var(--kalika-primary)] to-[var(--kalika-secondary)]
                   hover:opacity-90 active:scale-[.98]
@@ -111,15 +150,15 @@ export default function HomePage() {
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                    Menganalisis...
+                    Analyzing...
                   </span>
                 ) : (
-                  '✨ Generate Analisis'
+                  '✨ Generate Analysis'
                 )}
               </button>
             </div>
 
-            {/* History trigger */}
+            {/* History trigger (alternative) */}
             <button
               id="btn-open-history"
               onClick={() => setHistoryOpen(true)}
@@ -132,7 +171,7 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Riwayat Analisis
+              Analysis History
             </button>
           </aside>
 
@@ -154,7 +193,7 @@ export default function HomePage() {
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                     }`}
                 >
-                  {tab === 'result' ? '📖 Hasil Analisis' : '🧠 Mini Kuis'}
+                  {tab === 'result' ? '📖 Analysis Result' : '🧠 Mini Quiz'}
                 </button>
               ))}
             </div>
@@ -168,10 +207,10 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-[var(--font-sora)] font-bold text-[var(--text-primary)] text-lg">
-                      Belum ada analisis
+                      No analysis yet
                     </p>
                     <p className="text-sm text-[var(--text-muted)] mt-1 max-w-xs mx-auto">
-                      Masukkan materi di panel kiri, lalu klik <strong>Generate Analisis</strong>
+                      Enter your material in the left panel, then click <strong>Generate Analysis</strong>
                     </p>
                   </div>
 
@@ -195,7 +234,7 @@ export default function HomePage() {
                 <div className="h-full flex flex-col items-center justify-center gap-4">
                   <div className="w-12 h-12 border-4 border-[var(--kalika-primary)]/30 border-t-[var(--kalika-primary)] rounded-full animate-spin" />
                   <p className="text-sm font-semibold text-[var(--text-secondary)]">
-                    Gemini sedang menganalisis...
+                    Gemini is analyzing...
                   </p>
                 </div>
               )}
@@ -210,7 +249,7 @@ export default function HomePage() {
       {/* ── Footer ────────────────────────────────────────────── */}
       <footer className="border-t border-[var(--surface-border)] py-4 px-6 text-center">
         <p className="text-xs text-[var(--text-muted)]">
-          KALIKA © 2025 · Powered by{' '}
+          KALIKA © 2026 · Powered by{' '}
           <span className="text-[var(--kalika-primary)] font-semibold">Google Gemini</span>
         </p>
       </footer>
