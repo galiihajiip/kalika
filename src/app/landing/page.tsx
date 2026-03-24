@@ -136,16 +136,16 @@ export default function LandingPage() {
       `}</style>
 
       {/* Noise Overlay */}
-      <div 
+      <div
         className="fixed inset-0 pointer-events-none z-[60] opacity-[0.04]"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
       />
 
       {/* Grid Background */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 animate-pulse bg-[length:60px_60px]"
-          style={{ 
+          style={{
             backgroundImage: 'linear-gradient(#1a2a1a 1px, transparent 1px), linear-gradient(90deg, #1a2a1a 1px, transparent 1px)',
             maskImage: 'radial-gradient(circle at center, black, transparent 80%)',
             WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 80%)',
@@ -180,9 +180,9 @@ export default function LandingPage() {
 
         <div className="hidden md:flex items-center gap-10">
           {['Features', 'Lenses', 'Who It\'s For'].map(item => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase().replace(/\s/g, '-')}`} 
+            <a
+              key={item}
+              href={`#${item.toLowerCase().replace(/\s/g, '-')}`}
               className="text-sm font-medium text-kalika-text-secondary hover:text-kalika-green transition-colors"
             >
               {item}
@@ -197,11 +197,11 @@ export default function LandingPage() {
       {/* --- Hero Section --- */}
       <section className="relative min-h-screen pt-28 px-[5%] flex flex-col md:grid md:grid-cols-[1.2fr_1fr] lg:grid-cols-[1.1fr_1fr] gap-12 items-center z-10 max-w-[1400px] mx-auto">
         <div className="flex flex-col text-left">
-      <div className="animate-fade-up inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-kalika-green/10 border border-kalika-green-dim text-kalika-green text-[11px] font-bold tracking-widest uppercase mb-6 w-fit">
-        <span className="w-2 h-2 rounded-full bg-kalika-green animate-pulse" />
-        AI Case Competition · GDG UTSC 2026
-      </div>
-          
+          <div className="animate-fade-up inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-kalika-green/10 border border-kalika-green-dim text-kalika-green text-[11px] font-bold tracking-widest uppercase mb-6 w-fit">
+            <span className="w-2 h-2 rounded-full bg-kalika-green animate-pulse" />
+            AI Case Competition · GDG UTSC 2026
+          </div>
+
           <h1 className="animate-fade-up font-display font-extrabold text-[clamp(42px,6vw,72px)] leading-[1.02] tracking-tight mb-8" style={{ animationDelay: '0.1s' }}>
             <span className="text-kalika-text">Study smarter.</span><br />
             <span className="text-kalika-green drop-shadow-[0_0_30px_rgba(74,222,128,0.2)]">Think culturally.</span><br />
@@ -225,7 +225,7 @@ export default function LandingPage() {
 
         {/* Hero Right: Mockup */}
         <div className="animate-fade-up relative w-full aspect-[4/3] max-w-[550px]" style={{ animationDelay: '0.3s' }}>
-          
+
           <div className="relative overflow-visible">
             {/* BAGONG MASCOT — Place file at public/images/bagong.png */}
             <div className="absolute -right-4 -bottom-0 w-72 h-auto z-20 pointer-events-none">
@@ -248,7 +248,7 @@ export default function LandingPage() {
                 <span className="text-[10px] font-bold text-kalika-green tracking-widest">KALIKA</span>
               </div>
               <div className="flex gap-1.5">
-                {[1,2,3].map(i => <div key={i} className="w-2 h-2 rounded-full bg-kalika-border" />)}
+                {[1, 2, 3].map(i => <div key={i} className="w-2 h-2 rounded-full bg-kalika-border" />)}
               </div>
             </div>
 
@@ -288,11 +288,11 @@ export default function LandingPage() {
               <div className="mt-auto pt-2 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-kalika-green flex items-center justify-center text-[10px] text-kalika-bg font-bold cursor-default">▶</div>
                 <div className="flex-1 flex items-end gap-[3px] h-6 px-1">
-                  {[4,7,5,9,6,8,5,7].map((h, i) => (
-                    <div 
-                      key={i} 
-                      className="flex-1 bg-kalika-green/50 rounded-full animate-wave" 
-                      style={{ height: h*2 + 'px', animationDelay: i*0.1 + 's' }} 
+                  {[4, 7, 5, 9, 6, 8, 5, 7].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 bg-kalika-green/50 rounded-full animate-wave"
+                      style={{ height: h * 2 + 'px', animationDelay: i * 0.1 + 's' }}
                     />
                   ))}
                 </div>
@@ -323,8 +323,8 @@ export default function LandingPage() {
       <section className="border-y border-kalika-border bg-kalika-surface/30 relative z-10">
         <div className="max-w-[1400px] mx-auto px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
           {[
-            { icon: '🌍', num: '50+',  label: 'Cultural Lenses', sub: 'From Nusantara to Viking' },
-            { icon: '🔊', num: '20+',  label: 'Regional Voices', sub: 'Multilingual TTS Engine' },
+            { icon: '🌍', num: '50+', label: 'Cultural Lenses', sub: 'From Nusantara to Viking' },
+            { icon: '🔊', num: '20+', label: 'Regional Voices', sub: 'Multilingual TTS Engine' },
             { icon: '💎', num: '100%', label: 'Free Demo', sub: 'For Hackathon Period' },
           ].map((stat, i) => (
             <div key={i} className="flex items-center gap-6 group">
@@ -393,18 +393,18 @@ export default function LandingPage() {
         <div className="reveal flex flex-col mb-20">
           <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">What KALIKA Does</span>
           <h2 className="font-display font-extrabold text-[clamp(32px,5vw,52px)] leading-tight mb-6">
-            Everything you need to <br/> 
+            Everything you need to <br />
             <span className="text-kalika-green drop-shadow-[0_0_20px_rgba(74,222,128,0.2)]">learn without limits</span>
           </h2>
           <p className="text-kalika-text-secondary text-lg leading-relaxed max-w-2xl font-light">
-            Six AI-powered tools designed with neurodivergent minds in mind. 
-            Generous spacing, clear language, and cultural context: because 
+            Six AI-powered tools designed with neurodivergent minds in mind.
+            Generous spacing, clear language, and cultural context: because
             everyone learns differently.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          
+
           {/* 1. FEATURED CARD */}
           <div className="reveal md:col-span-2 bg-gradient-to-br from-kalika-green-subtle/40 to-kalika-surface border border-kalika-green-dim rounded-2xl p-10 lg:p-12 flex flex-col lg:flex-row gap-12 hover:border-kalika-green-glow transition-all duration-500 group">
             <div className="flex-1 flex flex-col">
@@ -415,9 +415,9 @@ export default function LandingPage() {
                 The Cultural Lens Engine
               </h3>
               <p className="text-kalika-text-secondary text-base lg:text-lg leading-relaxed font-light mb-8 max-w-xl">
-                Transform dense academic text into vivid, memorable analogies 
-                from 50+ world cultures. Mitochondria explained via a <span className="text-kalika-green/80 font-medium">Padang warung 
-                kitchen</span>. Quantum superposition through a <span className="text-kalika-green/80 font-medium">gamelan orchestra</span>. 
+                Transform dense academic text into vivid, memorable analogies
+                from 50+ world cultures. Mitochondria explained via a <span className="text-kalika-green/80 font-medium">Padang warung
+                  kitchen</span>. Quantum superposition through a <span className="text-kalika-green/80 font-medium">gamelan orchestra</span>.
                 Your cultural background becomes your greatest learning superpower.
               </p>
               <div className="mt-auto">
@@ -448,35 +448,35 @@ export default function LandingPage() {
           </div>
 
           {[
-            { 
-              icon: '📖', 
-              tag: 'Accessibility', 
-              title: 'Dyslexia-Friendly Structuring', 
-              desc: 'Every wall of text broken into short sentences, clear bullet points, and bold keywords. Generous spacing. Clean layout. Because every learner deserves to understand, not just survive.' 
+            {
+              icon: '📖',
+              tag: 'Accessibility',
+              title: 'Dyslexia-Friendly Structuring',
+              desc: 'Every wall of text broken into short sentences, clear bullet points, and bold keywords. Generous spacing. Clean layout. Because every learner deserves to understand, not just survive.'
             },
-            { 
-              icon: '🎮', 
-              tag: 'Engagement', 
-              title: 'Gamified Mini Quizzes', 
-              desc: 'Three culturally-wrapped questions. Five focused minutes. Instant feedback with explanations. Designed for ADHD brains that learn best through urgency, narrative, and quick wins.' 
+            {
+              icon: '🎮',
+              tag: 'Engagement',
+              title: 'Gamified Mini Quizzes',
+              desc: 'Three culturally-wrapped questions. Five focused minutes. Instant feedback with explanations. Designed for ADHD brains that learn best through urgency, narrative, and quick wins.'
             },
-            { 
-              icon: '📚', 
-              tag: 'Comprehension', 
-              title: 'Bilingual Smart Glossary', 
-              desc: 'Every complex academic term decoded in plain English (B1 level) and local cultural context. No more falling into dictionary rabbit holes mid-study session.' 
+            {
+              icon: '📚',
+              tag: 'Comprehension',
+              title: 'Bilingual Smart Glossary',
+              desc: 'Every complex academic term decoded in plain English (B1 level) and local cultural context. No more falling into dictionary rabbit holes mid-study session.'
             },
-            { 
-              icon: '🖼️', 
-              tag: 'Multimodal Input', 
-              title: 'Upload Anything: Notes, Photos, Audio', 
-              desc: 'Photograph your handwritten notes. Upload a lecture screenshot. Record a voice memo. KALIKA extracts and structures the text using Gemini Vision, then analyzes it through your chosen lens.' 
+            {
+              icon: '🖼️',
+              tag: 'Multimodal Input',
+              title: 'Upload Anything: Notes, Photos, Audio',
+              desc: 'Photograph your handwritten notes. Upload a lecture screenshot. Record a voice memo. KALIKA extracts and structures the text using Gemini Vision, then analyzes it through your chosen lens.'
             },
-            { 
-              icon: '🔊', 
-              tag: 'Audio Learning', 
-              title: 'Text-to-Speech with Word Highlight', 
-              desc: 'Listen as every word lights up in real time. Choose your playback speed and voice language. Study on your commute, eyes-free. Built for auditory learners and anyone with reading fatigue.' 
+            {
+              icon: '🔊',
+              tag: 'Audio Learning',
+              title: 'Text-to-Speech with Word Highlight',
+              desc: 'Listen as every word lights up in real time. Choose your playback speed and voice language. Study on your commute, eyes-free. Built for auditory learners and anyone with reading fatigue.'
             },
           ].map((f, i) => (
             <div key={i} className="reveal bg-kalika-surface border border-kalika-border2 rounded-2xl p-10 flex flex-col gap-8 hover:-translate-y-2 hover:border-kalika-green-glow transition-all duration-300 group">
@@ -511,23 +511,23 @@ export default function LandingPage() {
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
           {/* Connecting Line (Desktop) */}
           <div className="hidden md:block absolute top-[40px] left-[15%] right-[15%] h-[2px] border-t-2 border-dashed border-kalika-border z-0" />
-          
+
           {[
-            { 
-              num: '01', 
-              icon: '📥', 
+            {
+              num: '01',
+              icon: '📥',
               title: 'Paste or Upload Your Material',
               desc: 'Type lecture notes, paste from a PDF, photograph handwritten notes, or upload an audio recording. KALIKA handles all formats.'
             },
-            { 
-              num: '02', 
-              icon: '🌍', 
+            {
+              num: '02',
+              icon: '🌍',
               title: 'Choose Your Cultural Lens',
               desc: 'Select from 50+ world cultures. Nusantara, Japanese, Viking, Islamic, Gamer: pick the lens that resonates with you.'
             },
-            { 
-              num: '03', 
-              icon: '✦', 
+            {
+              num: '03',
+              icon: '✦',
               title: 'Get Your Personalized Analysis',
               desc: 'Receive a dyslexia-friendly breakdown, cultural analogy, exam boundary warning, and bilingual glossary: all in seconds.'
             }
@@ -558,28 +558,28 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
           {[
-            { 
-              tag: 'Dyslexia', 
-              icon: '🧠', 
-              title: 'The Deliberate Learner', 
+            {
+              tag: 'Dyslexia',
+              icon: '🧠',
+              title: 'The Deliberate Learner',
               role: 'Dyslexia / Reading difficulty',
               quote: 'I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process — in my own cultural language.',
               features: ['Dyslexia-Friendly Text', 'TTS Highlight', 'Bilingual Glossary'],
               color: 'border-kalika-green'
             },
-            { 
-              tag: 'ADHD', 
-              icon: '⚡', 
-              title: 'The Sprint Learner', 
+            {
+              tag: 'ADHD',
+              icon: '⚡',
+              title: 'The Sprint Learner',
               role: 'ADHD / Focus challenges',
               quote: 'ADHD makes focused reading hard, especially for dry subjects. The mini quizzes give me that quick hit of challenge I need to actually stay engaged with the material.',
               features: ['Gamified Quizzes', 'Audio Scholar', 'Narrative Analogies'],
               color: 'border-amber-500'
             },
-            { 
-              tag: 'Global', 
-              icon: '🌏', 
-              title: 'The Global Scholar', 
+            {
+              tag: 'Global',
+              icon: '🌏',
+              title: 'The Global Scholar',
               role: 'International / Multicultural',
               quote: 'Explaining recursion through the Mahabharata? That clicked in 30 seconds what three lectures never could. Finally, software engineering makes sense to my brain.',
               features: ['50+ Cultural Lenses', 'Multimodal Input', 'Multilingual TTS'],
@@ -596,7 +596,7 @@ export default function LandingPage() {
                   <div className="text-kalika-muted text-xs font-bold uppercase tracking-widest mt-1">{p.tag}</div>
                 </div>
               </div>
-              
+
               <div className="text-sm font-medium text-kalika-muted/80">{p.role}</div>
 
               <div className={`bg-kalika-surface border-l-4 ${p.color} p-6 rounded-r-2xl shadow-inner`}>
@@ -633,13 +633,12 @@ export default function LandingPage() {
                   <div className="text-yellow-400 text-sm">★★★★★</div>
                   <p className="text-sm text-kalika-text-secondary leading-relaxed italic font-light">"{t.quote}"</p>
                   <div className="flex items-center gap-4 border-t border-kalika-border pt-4 mt-auto">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
-                      t.color === 'green' ? 'bg-kalika-green-subtle text-kalika-green' :
-                      t.color === 'blue' ? 'bg-blue-500/10 text-blue-400' :
-                      t.color === 'purple' ? 'bg-purple-500/10 text-purple-400' :
-                      t.color === 'amber' ? 'bg-amber-500/10 text-amber-400' :
-                      'bg-teal-500/10 text-teal-400'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${t.color === 'green' ? 'bg-kalika-green-subtle text-kalika-green' :
+                        t.color === 'blue' ? 'bg-blue-500/10 text-blue-400' :
+                          t.color === 'purple' ? 'bg-purple-500/10 text-purple-400' :
+                            t.color === 'amber' ? 'bg-amber-500/10 text-amber-400' :
+                              'bg-teal-500/10 text-teal-400'
+                      }`}>
                       {t.initial}
                     </div>
                     <div>
@@ -655,18 +654,17 @@ export default function LandingPage() {
           {/* Row 2 (Cards 4-7) - Scrolls Right */}
           <div className="flex overflow-hidden">
             <div className="flex gap-6 animate-marquee2 shrink-0" style={{ animationDuration: '40s' }}>
-               {[...TESTIMONIALS.slice(4, 8), ...TESTIMONIALS.slice(4, 8)].map((t, i) => (
+              {[...TESTIMONIALS.slice(4, 8), ...TESTIMONIALS.slice(4, 8)].map((t, i) => (
                 <div key={i} className="min-w-80 max-w-sm flex-shrink-0 bg-kalika-bg border border-kalika-border2 rounded-2xl p-8 flex flex-col gap-5 hover:border-kalika-green/40 transition-colors group">
                   <div className="text-yellow-400 text-sm">★★★★★</div>
                   <p className="text-sm text-kalika-text-secondary leading-relaxed italic font-light">"{t.quote}"</p>
                   <div className="flex items-center gap-4 border-t border-kalika-border pt-4 mt-auto">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
-                      t.color === 'green' ? 'bg-kalika-green-subtle text-kalika-green' :
-                      t.color === 'blue' ? 'bg-blue-500/10 text-blue-400' :
-                      t.color === 'purple' ? 'bg-purple-500/10 text-purple-400' :
-                      t.color === 'amber' ? 'bg-amber-500/10 text-amber-400' :
-                      'bg-teal-500/10 text-teal-400'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${t.color === 'green' ? 'bg-kalika-green-subtle text-kalika-green' :
+                        t.color === 'blue' ? 'bg-blue-500/10 text-blue-400' :
+                          t.color === 'purple' ? 'bg-purple-500/10 text-purple-400' :
+                            t.color === 'amber' ? 'bg-amber-500/10 text-amber-400' :
+                              'bg-teal-500/10 text-teal-400'
+                      }`}>
                       {t.initial}
                     </div>
                     <div>
@@ -689,18 +687,18 @@ export default function LandingPage() {
           </span>
           <h2 className="font-display font-extrabold text-[clamp(28px,4vw,52px)] leading-tight mb-6">Try KALIKA: completely free</h2>
           <p className="text-kalika-text-secondary text-lg font-light leading-relaxed max-w-2xl">
-            No account needed. No payment. Just paste your material 
+            No account needed. No payment. Just paste your material
             and start learning in your cultural language.
           </p>
         </div>
 
         <div className="reveal bg-kalika-surface border-2 border-kalika-green-glow rounded-[40px] p-16 max-w-xl mx-auto shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-kalika-green/10 blur-3xl pointer-events-none group-hover:bg-kalika-green/20 transition-all" />
-          
+
           <div className="relative text-center">
             <div className="font-display font-extrabold text-7xl text-kalika-green mb-2 tracking-tighter">FREE</div>
             <div className="text-kalika-muted text-xs uppercase font-bold tracking-[0.3em] mb-12">During Hackathon Demo Period</div>
-            
+
             <ul className="space-y-4 mb-12 text-left inline-block">
               {[
                 'Unlimited analyses',
@@ -731,7 +729,7 @@ export default function LandingPage() {
                 />
               </div>
             </div>
-            
+
             <p className="mt-8 text-[10px] text-kalika-muted font-bold uppercase tracking-widest">
               Built by students, for students · 2026 KALIKA
             </p>
@@ -742,17 +740,17 @@ export default function LandingPage() {
       {/* --- CTA Section --- */}
       <section className="py-32 px-[5%] text-center relative z-10 overflow-hidden">
         <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-kalika-green/10 blur-[120px] pointer-events-none rounded-full" />
-        
+
         <div className="reveal max-w-[800px] mx-auto relative z-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-kalika-surface border border-kalika-border text-kalika-green-text text-[11px] font-bold uppercase tracking-widest mb-10">
             🦅 Powered by Bagong, the Garuda Scholar
           </div>
-          
+
           <h2 className="font-display font-extrabold text-[clamp(34px,6vw,68px)] leading-[1.05] tracking-tight mb-8">
             Ready to study like<br />
             <span className="text-kalika-green">a warrior</span> ?
           </h2>
-          
+
           <p className="text-kalika-text-secondary text-lg font-light leading-relaxed mb-12 max-w-[600px] mx-auto">
             No more struggling alone with dense textbooks. Let KALIKA and Bagong guide you through any subject, in any language, through any cultural lens.
           </p>
