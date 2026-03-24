@@ -163,13 +163,14 @@ export default function LandingPage() {
       <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
         <div className="flex items-center gap-4">
           <LogoMark />
-          <div className="w-8 h-8 relative flex-shrink-0 animate-float">
+          <div className="w-8 h-8 relative flex-shrink-0 animate-float-slow">
             <Image
-              src="/images/bagong-small.png"
-              alt="Bagong"
+              src="/images/bagong.png"
+              alt="Mascot"
               width={32}
               height={32}
               className="object-contain"
+              priority
             />
           </div>
           <div className="flex flex-col">
