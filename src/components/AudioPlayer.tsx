@@ -18,8 +18,8 @@ function detectLanguage(text: string): 'id-ID' | 'en-US' {
     if (COMMON_ID_WORDS.has(w)) idCount++
   }
 
-  // Jika kata-kata umum bahasa Indonesia muncul cukup sering (mengingat kata umum sangat sering muncul)
-  // Threshold kita set relatif rendah (misal 5% dari total kata) karena kata khusus tidak dihitung.
+  // If common Indonesian words appear relatively frequently
+  // Threshold is set low (e.g. 5% of total words) because specfic words are not counted.
   const ratio = idCount / words.length
   return ratio > 0.05 ? 'id-ID' : 'en-US'
 }
@@ -39,7 +39,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
     let match: RegExpExecArray | null
     const regex = /\S+/g
     
-    // Reset regex index state (aman karena instance lokal)
+    // Reset regex index state
     while ((match = regex.exec(textToRead)) !== null) {
       data.push({
         word: match[0],
@@ -59,7 +59,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
 
     setSupported(true)
 
-    // Cleanup saat komponen dibongkar
+    // Cleanup on unmount
     return () => {
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel()
@@ -79,7 +79,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
   const playAudio = () => {
     if (!supported || !textToRead.trim()) return
 
-    // Jika sedang pause, cukup resume
+    // Resume if paused
     if (isPaused) {
       window.speechSynthesis.resume()
       setIsPaused(false)
@@ -87,7 +87,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
       return
     }
 
-    // Jika sedang main dari awal
+    // Cancel anything playing beforehand
     window.speechSynthesis.cancel()
 
     const utterance = new SpeechSynthesisUtterance(textToRead)
@@ -110,7 +110,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
     }
 
     utterance.onerror = (e) => {
-      // Abaikan error saat di-cancel manual
+      // Ignore manual cancel errors
       if (e.error !== 'canceled' && e.error !== 'interrupted') {
         console.error('SpeechSynthesis Error:', e)
       }
@@ -122,11 +122,11 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
     utterance.onboundary = (e) => {
       if (e.name === 'word') {
         const charIndex = e.charIndex
-        // Cari kata yang sesuai dengan charIndex
+        // Find word that matches charIndex
         const wIndex = wordData.findIndex(
           (w) => charIndex >= w.start && charIndex < w.end
         )
-        // Kadangkala browser hanya pas di start
+        // Browser might only hit exactly at the start
         if (wIndex !== -1) setCurrentWordIndex(wIndex)
       }
     }
@@ -144,17 +144,14 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
     }
   }
 
-  // Handle pergantian speed ketika sedang main
+  // Handle speed change adjusting on the fly (restarts in most reliable fallback implementation)
   const handleSpeedChange = (newSpeed: number) => {
     setSpeed(newSpeed)
     if (isPlaying && !isPaused) {
-      // Browser belum tentu support ubah rate on-the-fly, 
-      // jadi restart jika sedang bermain adalah opsi teraman (atau biarkan efek pas kalimat baru)
-      // Demi kehalusan, kalika akan merestartnya
+      // Browsers might not support dynamic rate well, restarting cleanly
       stopAudio()
       setTimeout(() => {
         setSpeed(newSpeed)
-        // kita tidak auto-play agar UX tidak terputus kaget, tapi preferensi pengguna bisa diubah kapan saja.
       }, 100)
     }
   }
@@ -163,16 +160,16 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
 
   if (!supported) {
     return (
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-[var(--surface-muted)] border border-[var(--surface-border)]" title="Browser tidak mendukung Fitur Text-to-Speech">
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-[var(--surface-muted)] border border-[var(--surface-border)]" title="Browser does not support TTS">
         <span className="text-xl">🔇</span>
-        <span className="text-sm font-semibold text-[var(--text-muted)] line-through decoration-2">Asisten Audio Teks</span>
+        <span className="text-sm font-semibold text-[var(--text-muted)] line-through decoration-2">Text Audio Assistant</span>
       </div>
     )
   }
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      {/* ── Kotak Teks Highlight ── */}
+      {/* ── Highlighted Text Box ── */}
       {(isPlaying || isPaused) && wordData.length > 0 && (
         <div className="p-4 rounded-xl bg-[var(--surface-muted)] border border-[var(--surface-border)] max-h-48 overflow-y-auto leading-relaxed shadow-inner">
           <p className="text-sm font-medium text-[var(--text-primary)]">
@@ -208,7 +205,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
             </svg>
-            Mainkan
+            Play
           </button>
         ) : (
           <button
@@ -219,7 +216,7 @@ export default function AudioPlayer({ textToRead }: AudioPlayerProps) {
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
             </svg>
-            Jeda
+            Pause
           </button>
         )}
 
