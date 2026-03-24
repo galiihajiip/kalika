@@ -332,13 +332,12 @@ export default function LandingPage() {
               <div>
                 <div className="font-display font-bold text-3xl text-kalika-green leading-none">{stat.num}</div>
                 <div className="font-semibold text-kalika-text text-base mt-2">{stat.label}</div>
-                <div className="text-kalika-text-secondary text-[11px] font-bold uppercase tracking-widest mt-1 opacity-60 group-h.5 rounded-full">
-                  {f}
-                </span>
-              ))}
+                <div className="text-kalika-text-secondary text-[11px] font-bold uppercase tracking-widest mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                  {stat.sub}
+                </div>
+              </div>
             </div>
-          </div>
-
+          ))}
         </div>
       </section>
 
