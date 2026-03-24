@@ -4,342 +4,153 @@ import { useRef, useEffect, useCallback, useState, DragEvent, ChangeEvent } from
 import { useKalikaStore } from '@/store/useKalikaStore'
 import type { InputMode } from '@/types'
 
-// ─── Constants ───────────────────────────────────────────────────
 const MAX_CHARS = 5000
 const MIN_CHARS = 50
-const MAX_AUDIO_BYTES = 5 * 1024 * 1024 // 5 MB
+const MAX_AUDIO_BYTES = 5 * 1024 * 1024
 
 const TABS: { mode: InputMode; label: string; icon: string }[] = [
-  { mode: 'text',  label: 'Text',   icon: '📝' },
+  { mode: 'text',  label: 'Text',   icon: '📄' },
   { mode: 'image', label: 'Image', icon: '🖼️' },
   { mode: 'audio', label: 'Audio',  icon: '🎙️' },
 ]
 
-// ─── Helpers ─────────────────────────────────────────────────────
-function formatBytes(bytes: number): string {
+function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-// ─── Sub-components ───────────────────────────────────────────────
-
-/** Auto-resizing textarea for text mode */
 function TextMode() {
   const { inputText, setInputText } = useKalikaStore()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  // Auto-resize
   useEffect(() => {
     const el = textareaRef.current
     if (!el) return
     el.style.height = 'auto'
-    el.style.height = `${Math.min(Math.max(el.scrollHeight, 120), 400)}px`
+    el.style.height = `${Math.min(Math.max(el.scrollHeight, 140), 400)}px`
   }, [inputText])
 
   const charCount = inputText.length
   const isOverLimit = charCount > MAX_CHARS
-  const isBelowMin  = charCount > 0 && charCount < MIN_CHARS
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="relative">
-        <textarea
-          ref={textareaRef}
-          id="input-text-area"
-          value={inputText}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
-          placeholder="Paste your study material here... (min. 50 characters)"
-          maxLength={MAX_CHARS + 100}
-          className={`w-full resize-none rounded-xl border px-4 py-3 text-sm leading-relaxed
-            bg-[var(--surface-muted)] text-[var(--text-primary)]
-            placeholder:text-[var(--text-muted)]
-            outline-none transition-all duration-200
-            focus:border-[var(--kalika-primary)] focus:ring-2 focus:ring-[var(--kalika-primary)]/20
-            ${isOverLimit
-              ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
-              : 'border-[var(--surface-border)]'
-            }`}
-          style={{ minHeight: 120, maxHeight: 400 }}
-        />
-      </div>
-
-      <div className="flex items-center justify-between px-1">
-        {isBelowMin && (
-          <span className="text-xs text-amber-500 font-semibold">
-            Minimum {MIN_CHARS} characters required
-          </span>
-        )}
-        {!isBelowMin && <span />}
-        <span className={`text-xs font-semibold tabular-nums ${isOverLimit ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
-          {charCount.toLocaleString('en-US')} / {MAX_CHARS.toLocaleString('en-US')}
-        </span>
-      </div>
+    <div className="relative">
+      <textarea
+        ref={textareaRef}
+        value={inputText}
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
+        placeholder="Paste your study material here... (min. 50 characters)"
+        maxLength={MAX_CHARS + 100}
+        className={`w-full min-h-[140px] bg-kalika-bg border rounded-xl p-4 text-sm text-kalika-text-secondary placeholder-kalika-muted resize-none focus:outline-none focus:border-kalika-green-glow focus:ring-1 focus:ring-kalika-green-glow transition-colors duration-150 custom-scrollbar
+          ${isOverLimit ? 'border-red-500/50' : 'border-kalika-border'}`}
+        style={{ minHeight: 140, maxHeight: 400 }}
+      />
+      <span className={`text-[10px] absolute bottom-2.5 right-3 px-1.5 py-0.5 rounded
+        ${isOverLimit ? 'text-red-400 bg-red-900/20' : 'text-kalika-muted bg-kalika-surface/50'}`}>
+        {charCount.toLocaleString('en-US')} / {MAX_CHARS.toLocaleString('en-US')}
+      </span>
     </div>
   )
 }
 
-/** Shared drop zone for image / audio modes */
-interface DropZoneProps {
-  mode: 'image' | 'audio'
-  accept: string
-  onFile: (file: File) => void
-  error: string | null
-  isExtracting: boolean
-  previewFile: File | null
-  onClear: () => void
-}
-
-function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onClear }: DropZoneProps) {
+function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onClear }: any) {
   const [isDragging, setIsDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(false)
+    e.preventDefault(); setIsDragging(false)
     const file = e.dataTransfer.files[0]
     if (file) onFile(file)
   }, [onFile])
 
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) onFile(file)
-    // reset input so same file can be re-selected
-    e.target.value = ''
-  }, [onFile])
-
   const icon = mode === 'image' ? '🖼️' : '🎙️'
-  const hint = mode === 'image'
-    ? 'PNG, JPG · no size limit'
-    : 'MP3, WAV, OGG · max 5 MB'
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Drop zone */}
+    <div className="flex flex-col gap-2">
       <div
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true) }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
         onClick={() => !previewFile && inputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed
-          px-6 py-10 text-center cursor-pointer transition-all duration-200
-          ${isDragging
-            ? 'border-[var(--kalika-primary)] bg-[var(--kalika-primary)]/5 scale-[1.01]'
-            : 'border-[var(--surface-border)] bg-[var(--surface-muted)] hover:border-[var(--kalika-primary)]/50'
-          }
-          ${previewFile ? 'pointer-events-none opacity-70' : ''}`}
+        className={`relative flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-10 text-center cursor-pointer transition-all duration-150 min-h-[140px]
+          ${isDragging ? 'border-kalika-green bg-kalika-green-subtle/20' : 'border-kalika-border bg-kalika-bg hover:border-kalika-green-glow'}
+          ${previewFile ? 'pointer-events-none opacity-80' : ''}`}
       >
-        <span className="text-4xl">{icon}</span>
+        <span className="text-2xl opacity-60">{icon}</span>
         <div>
-          <p className="text-sm font-semibold text-[var(--text-primary)]">
-            Drag &amp; drop your file here
-          </p>
-          <p className="text-xs text-[var(--text-muted)] mt-0.5">{hint}</p>
+          <p className="text-xs font-medium text-kalika-text-secondary">Drag & drop your file here</p>
+          <p className="text-[10px] text-kalika-muted mt-1">or click to browse</p>
         </div>
-        <button
-          type="button"
-          id={`btn-pick-${mode}`}
-          onClick={(e) => { e.stopPropagation(); inputRef.current?.click() }}
-          className="px-5 py-2 rounded-lg text-xs font-bold bg-[var(--kalika-primary)] text-white
-            hover:opacity-90 active:scale-95 transition-all duration-150 pointer-events-auto"
-        >
-          Select File
-        </button>
-        <input
-          ref={inputRef}
-          type="file"
-          accept={accept}
-          className="hidden"
-          onChange={handleChange}
-        />
+        <input ref={inputRef} type="file" accept={accept} className="hidden" onChange={(e) => { if (e.target.files?.[0]) onFile(e.target.files[0]); e.target.value = '' }} />
       </div>
 
-      {/* Error */}
-      {error && (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">
-          <span className="text-red-500 text-sm">⚠️</span>
-          <p className="text-xs font-semibold text-red-500">{error}</p>
-        </div>
-      )}
-
-      {/* Preview / extracting */}
       {previewFile && (
-        <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl
-          bg-[var(--surface-card)] border border-[var(--surface-border)]">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="text-2xl shrink-0">{icon}</span>
+        <div className="flex items-center justify-between p-3 rounded-lg bg-kalika-surface2 border border-kalika-border">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-sm">{icon}</span>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-[var(--text-primary)] truncate">
-                {previewFile.name}
-              </p>
-              <p className="text-xs text-[var(--text-muted)]">
-                {formatBytes(previewFile.size)}
-              </p>
+              <p className="text-[11px] font-medium text-kalika-text-secondary truncate">{previewFile.name}</p>
+              <p className="text-[9px] text-kalika-muted">{formatBytes(previewFile.size)}</p>
             </div>
           </div>
-
           {isExtracting ? (
-            <div className="flex items-center gap-2 shrink-0">
-              <span className="w-4 h-4 border-2 border-[var(--kalika-primary)]/30 border-t-[var(--kalika-primary)]
-                rounded-full animate-spin" />
-              <span className="text-xs font-semibold text-[var(--text-secondary)]">
-                Extracting text...
-              </span>
-            </div>
+            <span className="text-[10px] font-semibold text-kalika-green animate-pulse">Extracting...</span>
           ) : (
-            <button
-              type="button"
-              id={`btn-clear-${mode}`}
-              onMouseDown={(e) => { e.stopPropagation(); onClear() }}
-              className="shrink-0 w-7 h-7 rounded-lg bg-[var(--surface-muted)] flex items-center justify-center
-                hover:bg-red-500/10 hover:text-red-500 text-[var(--text-muted)]
-                transition-all duration-150 text-sm font-bold pointer-events-auto"
-            >
-              ✕
+            <button type="button" onMouseDown={(e) => { e.stopPropagation(); onClear() }} className="text-[10px] px-2 py-1 rounded border border-kalika-border text-kalika-muted hover:text-red-400 hover:border-red-900/50 pointer-events-auto">
+              Clear
             </button>
           )}
         </div>
       )}
+      
+      {error && <p className="text-[10px] text-red-400 mt-1">{error}</p>}
     </div>
   )
 }
 
-// ─── Main Component ───────────────────────────────────────────────
-
 export default function InputField() {
   const { inputMode, setInputMode, setInputText } = useKalikaStore()
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageErr, setImageErr] = useState<string | null>(null)
+  const [imgExtract, setImgExtract] = useState(false)
+  
+  const [audioFile, setAudioFile] = useState<File | null>(null)
+  const [audioErr, setAudioErr] = useState<string | null>(null)
+  const [audExtract, setAudExtract] = useState(false)
 
-  // Image state
-  const [imageFile, setImageFile]     = useState<File | null>(null)
-  const [imageError, setImageError]   = useState<string | null>(null)
-  const [imageExtracting, setImageExtracting] = useState(false)
-
-  // Audio state
-  const [audioFile, setAudioFile]     = useState<File | null>(null)
-  const [audioError, setAudioError]   = useState<string | null>(null)
-  const [audioExtracting, setAudioExtracting] = useState(false)
-
-  // ── Handlers ───────────────────────────────────────────────────
-
-  async function extractMultimodal(file: File, type: 'image' | 'audio') {
-    const setFile       = type === 'image' ? setImageFile       : setAudioFile
-    const setError      = type === 'image' ? setImageError      : setAudioError
-    const setExtracting = type === 'image' ? setImageExtracting : setAudioExtracting
-
-    setFile(file)
-    setError(null)
-    setExtracting(true)
-
+  async function uploadExtr(file: File, type: 'image'|'audio') {
+    const isImg = type === 'image'; const _setFile = isImg ? setImageFile : setAudioFile;
+    const _setErr = isImg ? setImageErr : setAudioErr; const _setExt = isImg ? setImgExtract : setAudExtract;
+    _setFile(file); _setErr(null); _setExt(true);
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('type', type)
-
-      const res = await fetch('/api/process-multimodal', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!res.ok) {
-        const json = await res.json() as { error?: string }
-        throw new Error(json.error ?? 'Failed to extract content')
-      }
-
-      const json = await res.json() as { extractedText: string }
-      setInputText(json.extractedText)
-      setInputMode('text')
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'An error occurred'
-      setError(message)
-    } finally {
-      setExtracting(false)
-    }
+      const fd = new FormData(); fd.append('file', file); fd.append('type', type);
+      const res = await fetch('/api/process-multimodal', { method: 'POST', body: fd })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error ?? 'Failed')
+      setInputText(json.extractedText); setInputMode('text')
+    } catch (e: any) { _setErr(e.message) } finally { _setExt(false) }
   }
-
-  function handleImageFile(file: File) {
-    setImageError(null)
-    if (!['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(file.type)) {
-      setImageError('Unsupported format. Please use PNG, JPG, or WebP.')
-      return
-    }
-    extractMultimodal(file, 'image')
-  }
-
-  function handleAudioFile(file: File) {
-    setAudioError(null)
-    if (!['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/x-wav'].includes(file.type)) {
-      setAudioError('Unsupported format. Please use MP3, WAV, or OGG.')
-      return
-    }
-    if (file.size > MAX_AUDIO_BYTES) {
-      setAudioError(`File size too large. Maximum ${formatBytes(MAX_AUDIO_BYTES)}.`)
-      return
-    }
-    extractMultimodal(file, 'audio')
-  }
-
-  function clearImage() {
-    setImageFile(null)
-    setImageError(null)
-  }
-
-  function clearAudio() {
-    setAudioFile(null)
-    setAudioError(null)
-  }
-
-  // ── Render ─────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col gap-4">
-
-      {/* Tab Switcher */}
-      <div className="flex gap-1 p-1 rounded-xl bg-[var(--surface-muted)] border border-[var(--surface-border)]">
+    <div className="flex flex-col gap-3">
+      {/* Container Tabs */}
+      <div className="flex bg-kalika-bg rounded-lg p-1 border border-kalika-border">
         {TABS.map(({ mode, label, icon }) => (
-          <button
-            key={mode}
-            id={`tab-input-${mode}`}
-            type="button"
-            onClick={() => setInputMode(mode)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg
-              text-xs font-bold transition-all duration-200
-              ${inputMode === mode
-                ? 'bg-[var(--surface-card)] text-[var(--kalika-primary)] shadow-sm border border-[var(--surface-border)]'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
+          <button key={mode} onClick={() => setInputMode(mode)}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-center text-[11px] font-medium rounded-md cursor-pointer transition-colors duration-200
+            ${inputMode === mode 
+              ? 'bg-kalika-green-subtle text-kalika-green border border-kalika-green-glow shadow-[0_0_10px_rgba(22,101,52,0.5)]' 
+              : 'text-kalika-muted border border-transparent hover:text-kalika-text-secondary'}`}
           >
-            <span>{icon}</span>
-            <span className="hidden sm:inline">{label}</span>
+            <span className="opacity-70">{icon}</span> {label}
           </button>
         ))}
       </div>
 
-      {/* Mode Content */}
       {inputMode === 'text' && <TextMode />}
-
-      {inputMode === 'image' && (
-        <DropZone
-          mode="image"
-          accept="image/png,image/jpeg,image/jpg,image/webp"
-          onFile={handleImageFile}
-          error={imageError}
-          isExtracting={imageExtracting}
-          previewFile={imageFile}
-          onClear={clearImage}
-        />
-      )}
-
-      {inputMode === 'audio' && (
-        <DropZone
-          mode="audio"
-          accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg"
-          onFile={handleAudioFile}
-          error={audioError}
-          isExtracting={audioExtracting}
-          previewFile={audioFile}
-          onClear={clearAudio}
-        />
-      )}
+      {inputMode === 'image' && <DropZone mode="image" accept="image/*" onFile={(f:any)=>uploadExtr(f,'image')} error={imageErr} isExtracting={imgExtract} previewFile={imageFile} onClear={()=>setImageFile(null)} />}
+      {inputMode === 'audio' && <DropZone mode="audio" accept="audio/*" onFile={(f:any)=>uploadExtr(f,'audio')} error={audioErr} isExtracting={audExtract} previewFile={audioFile} onClear={()=>setAudioFile(null)} />}
     </div>
   )
 }
