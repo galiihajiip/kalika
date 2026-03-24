@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Footer from '@/components/Footer'
 
 const LENSES_ROW_1 = [
@@ -124,8 +125,26 @@ export default function LandingPage() {
       {/* --- Navbar --- */}
       <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-kalika-green-subtle border border-kalika-green-dim flex items-center justify-center font-display font-extrabold text-kalika-green text-lg">
-            K
+          <div className="w-8 h-8 relative flex-shrink-0">
+            <Image
+              src="/images/bagong-small.png"
+              alt="Bagong"
+              width={32}
+              height={32}
+              className="object-contain"
+              onError={(e) => {
+                // Fallback if image not found: show K logo
+                const target = e.target as HTMLElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  const kMark = document.createElement('div');
+                  kMark.className = "w-8 h-8 rounded-lg bg-kalika-green-subtle border border-kalika-green-dim flex items-center justify-center font-display font-extrabold text-kalika-green text-sm";
+                  kMark.innerText = "K";
+                  parent.appendChild(kMark);
+                }
+              }}
+            />
           </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-kalika-green text-lg tracking-wider leading-none">KALIKA</span>
@@ -192,6 +211,21 @@ export default function LandingPage() {
 
         {/* Hero Right: Mockup */}
         <div className="animate-fade-up relative w-full aspect-[4/3] max-w-[550px]" style={{ animationDelay: '0.3s' }}>
+          
+          <div className="relative">
+            {/* BAGONG MASCOT — Place file at public/images/bagong.png */}
+            <div className="absolute -right-8 -bottom-8 w-64 h-64 z-20 pointer-events-none">
+              <Image
+                src="/images/bagong.png"
+                alt="Bagong — KALIKA mascot, a Garuda warrior scholar"
+                width={256}
+                height={256}
+                className="object-contain drop-shadow-2xl"
+                priority
+              />
+            </div>
+          </div>
+
           <div className="animate-float absolute inset-0 bg-kalika-surface border border-kalika-border2 rounded-kalika-xl shadow-[0_40px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(74,222,128,0.1)] overflow-hidden flex flex-col">
             <div className="bg-kalika-surface2 px-5 py-3 border-b border-kalika-border flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -435,6 +469,18 @@ export default function LandingPage() {
 
         <div className="absolute bottom-[-40px] right-[-20px] font-display font-extrabold text-[180px] text-kalika-green/5 pointer-events-none select-none">
           ಕಲಿಕೆ
+        </div>
+
+        {/* BAGONG MASCOT — Decorative background element */}
+        <div className="absolute right-0 bottom-0 w-80 h-80 opacity-20 pointer-events-none">
+          <Image
+            src="/images/bagong.png"
+            alt=""
+            width={320}
+            height={320}
+            className="object-contain object-bottom"
+            aria-hidden="true"
+          />
         </div>
       </section>
 
