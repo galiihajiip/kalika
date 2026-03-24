@@ -92,9 +92,7 @@ export default function HomePage() {
       {/* ── TOPBAR ── */}
       <header className="bg-kalika-surface border-t-2 border-kalika-green border-b border-kalika-border h-[72px] px-8 flex items-center justify-between sticky top-0 z-40">
         <Link href="/landing" className="flex items-center gap-4 group">
-          <div className="w-9 h-9 rounded-lg bg-kalika-green-subtle border border-kalika-green-dim flex items-center justify-center font-display font-bold text-kalika-green text-sm shadow-[0_0_12px_rgba(34,197,94,0.15)] group-hover:scale-110 transition-transform">
-            K
-          </div>
+          <LogoMark />
           <div className="flex flex-col">
             <h1 className="font-display font-bold text-kalika-green text-[20px] tracking-wider leading-none">
               KALIKA
