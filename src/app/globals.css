@@ -16,6 +16,9 @@
   --color-kalika-green-subtle: #14532d;
   --color-kalika-green-text: #bbf7d0;
   --color-kalika-green-pale: #dcfce7;
+
+  --font-display: var(--font-sora), "Sora", sans-serif;
+  --font-body: var(--font-inter), "Inter", sans-serif;
 }
 
 :root {
