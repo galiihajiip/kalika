@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import InputField from '@/components/InputField'
 import LensSelector from '@/components/LensSelector'
 import ResultCard from '@/components/ResultCard'
 import QuizCard from '@/components/QuizCard'
 import HistoryPanel from '@/components/HistoryPanel'
 import { useKalikaStore } from '@/store/useKalikaStore'
+import { LENS_ITEMS } from '@/lib/constants' // Assuming LENS_ITEMS is imported from here
 
 type Tab = 'result' | 'quiz'
 
@@ -15,7 +17,7 @@ export default function HomePage() {
   const { 
     isLoading, resultData, quizData, activeTab, setActiveTab, 
     history, inputText, selectedLens, addToast, setResult, 
-    setLoading, addHistory, setQuiz 
+    setLoading, addHistory, setQuiz, setSelectedLens
   } = useKalikaStore()
 
   const [historyOpen, setHistoryOpen] = useState(false)
@@ -216,10 +218,9 @@ export default function HomePage() {
                   {['🌴 Try Nusantara', '⛩ Try Japanese', '⚡ Try Viking', '🎮 Try Gamer'].map(s => (
                     <button key={s}
                       onClick={() => {
-                        const lensId = s.split('Try ')[1].toLowerCase().replace(' ', '_')
-                        // Mapping simple names to IDs if needed, here we just assume they are close
-                        const idMap: Record<string, any> = { 'nusantara': 'nusantara', 'japanese': 'japanese', 'viking': 'viking', 'gamer': 'gamer' }
-                        if (idMap[lensId]) useKalikaStore.getState().setSelectedLens(idMap[lensId])
+                        const label = s.split('Try ')[1].toLowerCase()
+                        const id = LENS_ITEMS.find(l => l.label.toLowerCase() === label)?.id
+                        if (id) setSelectedLens(id)
                       }}
                       className="px-5 py-2.5 rounded-full border border-kalika-border2 text-sm text-kalika-text-secondary hover:border-kalika-green-glow hover:text-kalika-green bg-kalika-surface/30 hover:bg-kalika-surface transition-all active:scale-95"
                     >
@@ -274,10 +275,6 @@ export default function HomePage() {
           </div>
         </main>
       </div>
-
-      <HistoryPanel isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
-    </div>
-
 
       <HistoryPanel isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
     </div>
