@@ -2,254 +2,96 @@
 
 import { useState } from 'react'
 import { useKalikaStore } from '@/store/useKalikaStore'
-import type { LensType } from '@/types'
-import AudioPlayer from '@/components/AudioPlayer'
 import { LENS_ITEMS } from '@/components/LensSelector'
 
-// ─── Constants & Helpers ──────────────────────────────────────────
-
-function getLensMeta(lens: string) {
-  const found = LENS_ITEMS.find((l) => l.id === lens)
-  return {
-    label: found ? found.label : lens.replace('_', ' '),
-    emoji: found ? found.emoji : '🌍',
-    loading: found ? `Crafting your ${found.label} analogy... ☕` : 'Crafting analogy... ☕',
-    bg: 'bg-[var(--kalika-primary)]',
-    text: 'text-[var(--kalika-primary)]',
-    lightBg: 'bg-[var(--kalika-primary)]/5 border-[var(--kalika-primary)]/20',
-  }
-}
-
-
-// ─── Sub-component: Accordion Section ────────────────────────────
-
-function Accordion({
-  title,
-  icon,
-  defaultOpen = true,
-  children,
-}: {
-  title: string
-  icon: string
-  defaultOpen?: boolean
-  children: React.ReactNode
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
-
-  return (
-    <div className="border border-[var(--surface-border)] rounded-xl overflow-hidden bg-[var(--surface-card)]">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-5 py-4 bg-[var(--surface-muted)] hover:bg-[var(--surface-border)] transition-colors"
-      >
-        <div className="flex items-center gap-3 font-bold font-[var(--font-sora)]">
-          <span className="text-xl">{icon}</span>
-          <span>{title}</span>
-        </div>
-        <span className={`transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-          ▼
-        </span>
-      </button>
-      {isOpen && <div className="p-5">{children}</div>}
-    </div>
-  )
-}
-
-// ─── Main Component ───────────────────────────────────────────────
-
 export default function ResultCard() {
-  const {
-    resultData: result,
-    isLoading,
-    selectedLens: lens,
-    inputText,
-    addToast,
-    setLoading,
-    setQuiz,
-    setActiveTab,
-  } = useKalikaStore()
-
-  // State for AudioPlayer wrapper
-  const [playAudio, setPlayAudio] = useState(false)
-
-  // Copy to clipboard handler
-  const handleCopy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      addToast({ message: 'Copied to clipboard!', type: 'success' })
-    } catch (err) {
-      addToast({ message: 'Failed to copy text.', type: 'error' })
-    }
-  }
-
-  // Generate quiz handler
-  const handleGenerateQuiz = async () => {
-    if (!inputText) return
-    setLoading(true)
-    try {
-      const res = await fetch('/api/generate-quiz', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText, lens }),
-      })
-
-      if (!res.ok) throw new Error('Failed to create quiz.')
-
-      const data = await res.json()
-      setQuiz(data.data) // Assumes structure { success: true, data: QuizItem[] }
-      setActiveTab('quiz')
-      addToast({ message: 'Quiz created successfully!', type: 'success' })
-    } catch (error) {
-      addToast({ message: 'Failed to load quiz, try again later.', type: 'error' })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // 1. Loading State
-  if (isLoading) {
-    const metaLoading = getLensMeta(lens)
-    return (
-      <div className="flex flex-col gap-4 animate-fade-in-up">
-        <div className="flex items-center gap-3 mb-2 px-2">
-          <div className="w-5 h-5 border-2 border-[var(--kalika-primary)] border-t-transparent rounded-full animate-spin" />
-          <p className="font-semibold text-[var(--kalika-primary)] text-sm animate-pulse">
-            {metaLoading.loading}
-          </p>
-        </div>
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="rounded-xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-5">
-            <div className="h-6 w-1/3 bg-[var(--surface-muted)] rounded animate-pulse mb-4" />
-            <div className="space-y-3">
-              <div className="h-4 bg-[var(--surface-muted)] rounded animate-pulse w-full" />
-              <div className="h-4 bg-[var(--surface-muted)] rounded animate-pulse w-5/6" />
-              <div className="h-4 bg-[var(--surface-muted)] rounded animate-pulse w-4/6" />
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  // 2. Empty / No result yet
+  const { resultData: result, selectedLens } = useKalikaStore()
   if (!result) return null
 
-  // 3. Render Result
-  const meta = getLensMeta(lens)
-
   return (
-    <div className="flex flex-col gap-5 animate-fade-in-up">
-
-      {/* Dyslexia-Friendly Text */}
-      <Accordion title="Dyslexia-Friendly Text" icon="📖">
-        <div className="flex flex-col gap-4">
-          <div className="prose prose-sm dark:prose-invert max-w-none leading-relaxed
-            [&>p]:mb-3 [&>ul]:mb-3 [&>ul>li]:mb-1 [&>strong]:text-[var(--kalika-primary)] font-medium">
-            {/* Render string roughly while handling basic bullet points from markdown */}
-            {result.dyslexiaFriendlyText.split('\n').map((line, idx) => {
-              line = line.replace(/^\s+/, "") // trim start spaces
-              if (line.trim().startsWith('-')) {
-                return (
-                  <li key={idx} className="ml-4 list-disc marker:text-[var(--kalika-primary)]">
-                    {/* Replacing simple **bold** */}
-                    <span dangerouslySetInnerHTML={{ __html: line.replace(/^- /, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                  </li>
-                )
-              } else if (line.trim()) {
-                return (
-                  <p key={idx}>
-                    <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                  </p>
-                )
-              }
-              return null
-            })}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 mt-2 border-t border-[var(--surface-border)] pt-4">
-            <button
-              onClick={() => handleCopy(result.dyslexiaFriendlyText)}
-              className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--surface-muted)] text-[var(--text-primary)] hover:bg-[var(--surface-border)] transition-colors flex items-center gap-2"
-            >
-              <span>📋</span> Copy Text
-            </button>
-            <button
-              onClick={() => setPlayAudio(!playAudio)}
-              className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--kalika-primary)] text-white hover:opacity-90 transition-colors flex items-center gap-2"
-            >
-              <span>🔊</span> {playAudio ? 'Close Player' : 'Listen'}
-            </button>
-          </div>
-          {playAudio && (
-             <div className="mt-2 text-xs">
-                <AudioPlayer textToRead={result.dyslexiaFriendlyText} />
-             </div>
-          )}
+    <div className="flex flex-col gap-4 animate-fade-in-up">
+      
+      {/* 1. Dyslexia Friendly Text */}
+      <div className="bg-kalika-surface border border-kalika-border rounded-xl overflow-hidden">
+        <div className="px-4 py-3 flex items-center justify-between border-b border-kalika-border bg-kalika-surface2">
+          <h3 className="text-xs font-semibold text-kalika-text-secondary flex items-center gap-2 tracking-wide uppercase">
+            <span className="text-kalika-green-dim">▸</span> Structural Breakdown
+          </h3>
+          <button onClick={() => navigator.clipboard.writeText(result.dyslexiaFriendlyText)} className="px-3 py-1 rounded-full text-[10px] font-medium border border-kalika-border text-kalika-muted hover:border-kalika-green-glow hover:text-kalika-green transition-colors">
+            Copy
+          </button>
         </div>
-      </Accordion>
+        <div className="p-5 overflow-hidden">
+           <ul className="space-y-1.5">
+            {result.dyslexiaFriendlyText.split('\n').filter(Boolean).map((line, i) => (
+              <li key={i} className="flex items-start gap-2 text-[13px] text-kalika-text leading-relaxed before:content-['▸'] before:text-kalika-green-dim before:text-[10px] before:mt-1 before:flex-shrink-0">
+                <span dangerouslySetInnerHTML={{ __html: line.replace(/^- /, '').replace(/\*\*(.*?)\*\*/g, '<strong class="text-kalika-green font-semibold">$1</strong>') }} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
-      {/* Cultural Analogy */}
-      <Accordion title={`${meta.label} Cultural Analogy`} icon="🎭">
-        <div className={`relative p-6 rounded-xl border ${meta.lightBg} overflow-hidden`}>
-          <span className="absolute -top-4 -left-2 text-6xl opacity-10 pointer-events-none">
-            {meta.emoji}
-          </span>
-          <div className="relative z-10">
-            <p className={`text-sm leading-relaxed font-medium ${meta.text}`}>
+      {/* 2. Cultural Analogy */}
+      <div className="bg-kalika-surface border border-kalika-border rounded-xl overflow-hidden">
+        <div className="px-4 py-3 flex items-center justify-between border-b border-kalika-border bg-kalika-surface2">
+          <h3 className="text-xs font-semibold text-kalika-text-secondary flex items-center gap-2 tracking-wide uppercase">
+            <span className="text-kalika-green-dim">🎭</span> The Cultural Analogy
+          </h3>
+        </div>
+        <div className="p-5 flex flex-col gap-3">
+          <div className="bg-kalika-green-subtle border border-kalika-green-glow rounded-lg p-3.5 relative">
+            <span className="text-3xl text-kalika-green leading-none mb-1 block">"</span>
+            <p className="text-xs text-kalika-green-text leading-[1.75] font-medium z-10 relative">
               {result.culturalAnalogy}
             </p>
           </div>
+          
+          {/* Exam Boundary inserted immediately hereafter */}
+          <div className="flex gap-2.5 items-start bg-yellow-500/[0.06] border border-yellow-500/25 rounded-lg p-3 mt-2">
+            <span className="text-yellow-400 text-sm mt-0.5 flex-shrink-0">⚠️</span>
+            <p className="text-[11px] text-yellow-300/80 leading-relaxed italic">
+              <strong>Exam boundary:</strong> {result.examBoundary}
+            </p>
+          </div>
         </div>
-      </Accordion>
+      </div>
 
-      {/* Exam Boundary / Warning */}
-      <Accordion title="Exam Boundary Warning" icon="⚠️" defaultOpen={false}>
-        <div className="flex gap-4 items-start p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-          <span className="text-amber-500 text-xl shrink-0 mt-0.5">⚠️</span>
-          <p className="text-sm italic text-amber-700 dark:text-amber-400 leading-relaxed font-medium">
-            {result.examBoundary}
-          </p>
+      {/* 3. Bilingual Glossary */}
+      <div className="bg-kalika-surface border border-kalika-border rounded-xl overflow-hidden">
+        <div className="px-4 py-3 flex items-center justify-between border-b border-kalika-border bg-kalika-surface2">
+          <h3 className="text-xs font-semibold text-kalika-text-secondary flex items-center gap-2 tracking-wide uppercase">
+            <span className="text-kalika-green-dim">📚</span> Bilingual Glossary
+          </h3>
         </div>
-      </Accordion>
-
-      {/* Bilingual Glossary */}
-      <Accordion title="Bilingual Glossary" icon="📚" defaultOpen={false}>
-        <div className="overflow-x-auto rounded-xl border border-[var(--surface-border)]">
-          <table className="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
-            <thead className="bg-[var(--surface-muted)] text-[var(--text-secondary)]">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-[11px]">
+            <thead>
               <tr>
-                <th className="px-4 py-3 font-semibold w-1/4">Term</th>
-                <th className="px-4 py-3 font-semibold w-1/4">English (B1)</th>
-                <th className="px-4 py-3 font-semibold w-1/2">Local Context</th>
+                <th className="text-left text-kalika-muted font-medium py-1.5 px-3 border-b border-kalika-border tracking-widest text-[10px] uppercase">Term</th>
+                <th className="text-left text-kalika-muted font-medium py-1.5 px-3 border-b border-kalika-border tracking-widest text-[10px] uppercase">English (B1)</th>
+                <th className="text-left text-kalika-muted font-medium py-1.5 px-3 border-b border-kalika-border tracking-widest text-[10px] uppercase">Local Context</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--surface-border)]">
-              {result.bilingualGlossary.map((item, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? '' : 'bg-[var(--surface-muted)]/50'}>
-                  <td className="px-4 py-3 font-bold text-[var(--kalika-primary)]">{item.term}</td>
-                  <td className="px-4 py-3 font-medium text-[var(--text-primary)]">{item.englishB1}</td>
-                  <td className="px-4 py-3 text-[var(--text-secondary)]">{item.localContext}</td>
+            <tbody>
+              {result.bilingualGlossary.map((item, i) => (
+                <tr key={i} className={`group ${i % 2 === 0 ? 'bg-kalika-bg/50' : 'bg-kalika-green/[0.03]'}`}>
+                  <td className={`py-2 px-3 border-kalika-border ${i !== result.bilingualGlossary.length -1 ? 'border-b' : ''}`}>
+                    <span className="bg-kalika-green-subtle text-kalika-green px-2 py-0.5 rounded-full font-semibold text-[10px] whitespace-nowrap">
+                      {item.term}
+                    </span>
+                  </td>
+                  <td className={`py-2 px-3 text-kalika-text-secondary border-kalika-border ${i !== result.bilingualGlossary.length -1 ? 'border-b' : ''}`}>
+                    {item.englishB1}
+                  </td>
+                  <td className={`py-2 px-3 text-kalika-text-secondary border-kalika-border leading-relaxed ${i !== result.bilingualGlossary.length -1 ? 'border-b' : ''}`}>
+                    {item.localContext}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </Accordion>
-
-      {/* Action Button: Generate Quiz */}
-      <div className="mt-4">
-        <button
-          id="btn-generate-quiz"
-          onClick={handleGenerateQuiz}
-          disabled={isLoading}
-          className="w-full py-4 rounded-xl font-[var(--font-sora)] font-bold text-sm
-            bg-[var(--surface-card)] border-2 border-[var(--kalika-primary)] text-[var(--kalika-primary)]
-            hover:bg-[var(--kalika-primary)] hover:text-white
-            active:scale-[.99] transition-all duration-200
-            disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? 'Preparing Quiz...' : '🧠 Generate Quiz from this Material'}
-        </button>
       </div>
 
     </div>
