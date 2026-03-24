@@ -3,8 +3,6 @@ import { callGemini } from '@/lib/gemini'
 import { getQuizSystemPrompt } from '@/lib/prompts'
 import type { LensType, QuizItem } from '@/types'
 
-const ALLOWED_LENSES = ['nusantara', 'western', 'islamic', 'chinese']
-
 export async function POST(request: Request) {
   try {
     // 1. Parsing Body
@@ -29,9 +27,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Text is too long, maximum 5000 characters allowed.' }, { status: 400 })
     }
 
-    if (!lens || !ALLOWED_LENSES.includes(lens)) {
+    if (!lens) {
       return NextResponse.json(
-        { error: 'Invalid cultural lens. Choose between nusantara, western, islamic, or chinese.' },
+        { error: 'Invalid cultural lens.' },
         { status: 400 }
       )
     }

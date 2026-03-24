@@ -44,40 +44,84 @@ const JSON_SCHEMA_QUIZ = `\nThe output MUST be a valid JSON array of objects wit
 \nEnsure you always provide exactly 3 questions. The order of options A, B, C, D matches the options array elements.
 `
 
-// ─── Lens Specific Instructions ─────────────────────────────────────
+// ─── Detailed Cultural Instructions ─────────────────────────────────
 
-function getLensInstruction(lens: LensType): string {
-  switch (lens) {
-    case 'nusantara':
-      return `Use the 'Nusantara' cultural style.
-Use analogies deeply rooted in Indonesian culture: wayang shadows, traditional markets, community mutual assistance (gotong royong), batik philosophy, traditional farming in rice paddies, or traditional snacks (like onde-onde, lemper).
-Make it feel very down-to-earth, nostalgic, and uniquely local.`
+export const LENS_CULTURAL_INSTRUCTIONS: Record<LensType, string> = {
+  // Southeast Asia
+  nusantara: `Use analogies from Indonesian culture: wayang puppet theater characters (Arjuna for hero, Semar for wisdom), batik making process, gotong royong (communal cooperation), pasar tradisional (traditional market) bargaining, rice paddy farming cycles, gamelan orchestra harmony, and the wisdom of local proverbs (peribahasa).`,
+  malay: `Use Malay cultural references: pantun (four-line poetry structure), adat perpatih (customary law), peribahasa Melayu (Malay proverbs), kampung life, the tradition of musyawarah (consensus), wayang kulit, and classic hikayat stories like Hang Tuah.`,
+  filipino: `Use Filipino cultural concepts: bayanihan (community cooperation — villagers literally carrying a house together), fiesta celebrations, jeepney routes as network metaphors, pakikisama (group harmony), the sari-sari store as a local economy node, and folk heroes like Lapu-Lapu and José Rizal.`,
+  thai: `Use Thai cultural references: the structure of Thai temples (wat) with their hierarchy, merit-making (tam bun) as investment metaphors, the concept of sanuk (fun in everything), elephant as strength symbol, muay thai technique discipline, and the royal patronage system.`,
+  vietnamese: `Use Vietnamese cultural references: rice paddy terracing as layered systems, the Confucian family hierarchy (ông bà cha mẹ), the resilience of the Vietnamese through historical metaphors, lantern festival as signal/broadcast metaphors, and the pho broth as a slow, complex system that builds over time.`,
+  burmese: `Use Myanmar/Burmese culture: the Shwedagon pagoda's layered stupa, the tradition of offering alms, the thanakha face paste preparation, the complex weaving of traditional longyis, and the seasonal water festival (Thingyan) as a metaphor for reset or renewal.`,
 
-    case 'western':
-      return `Use the 'Western' (Modern Western) cultural style.
-Use analogies familiar with modern pop culture or westernization: Netflix movie references, tech startup/Silicon Valley work culture, coffee shop vibes (like a barista crafting coffee), or sports analogies (e.g. NBA basketball or American Football).
-Make it feel trendy, to-the-point, and global.`
+  // East Asia
+  chinese: `Use Chinese cultural concepts: Confucian hierarchy and relationships (guanxi), Sun Tzu Art of War strategies, the Silk Road as network infrastructure, dynasty cycles as system lifecycles, Chinese chess (xiangqi) for strategic thinking, and four great inventions (paper, printing, compass, gunpowder) as innovation metaphors.`,
+  japanese: `Use Japanese cultural concepts: bushido (warrior code) for discipline and ethics, wabi-sabi (beauty in imperfection) for approximation/estimation, kaizen (continuous improvement) for iterative processes, the senpai-kohai mentorship system, origami folding as data transformation, and manga narrative arcs for sequential logic.`,
+  korean: `Use Korean cultural concepts: nunchi (reading the room — social intelligence) for context awareness, the ppali-ppali (hurry-hurry) culture for speed/efficiency tradeoffs, K-drama plot twists for unexpected outcomes, the concept of kibun (mood/atmosphere) for state management, and the hierarchical honorific language system (banmal vs jondaemal) for access control metaphors.`,
+  taiwanese: `Use Taiwanese cultural concepts: bustling night markets (shilin) as decentralized distribution, bubble tea mixing as modular systems or chemistry, the blend of traditional values with high-tech semiconductor fabrication, and democratic community-driven problem solving.`,
+  mongolian: `Use Mongolian culture: nomadic steppe lifestyle, moving gers (yurts) as scalable and portable architecture, Genghis Khan's Yam relay system as high-speed data transmission, the relationship with horses, and surviving harsh winters (zud) as system resilience.`,
 
-    case 'islamic':
-      return `Use the 'Islami' cultural style.
-Use analogies or references based on Islamic value education: borrowing inspiring exemplary stories of the Prophet's companions, concise spiritual concepts (like the difference between tawhid, tawakkal vs ikhtiar), the value of ihsan, or metaphors about prayer rows, mosques, and lasting charity (sedekah jariyah).
-Make the sentences educational, calming, and ethical.`
+  // South Asia
+  indian_hindi: `Use North Indian cultural references: the Mahabharata's dharma dilemmas (Arjuna's choice) for ethical decisions, cricket strategy (test match patience vs T20 speed) for different approaches, Bollywood narrative arcs, the chai-making process as parameterization, and the guru-shishya tradition for knowledge transfer.`,
+  indian_tamil: `Use South Indian cultural references: Thirukkural couplets as compressed wisdom (two lines that contain entire philosophies), Carnatic music's raga system for structured improvisation, the Bharatanatyam dance's precise mudras for formal syntax, temple gopuram layered architecture for hierarchical systems, and classical Sangam poetry for emotional states.`,
+  bengali: `Use Bengali culture: Rabindranath Tagore's poetic philosophy, the monsoon rains as overwhelming data input vs fertile growth, mustard fields, navigating the Sundarbans mangrove network, and the chaos/efficiency of city cycle-rickshaws.`,
+  nepali: `Use Nepali culture: Kathmandu valley architecture, Sherpa climbing teamwork for guiding through complex tasks, Mount Everest basecamps as staging points, Gurkha bravery, and the spinning of dharma wheels as continuous computation.`,
+  sinhala: `Use Sri Lankan/Sinhala culture: terraced tea plantations, the strategic importance of spice trading ports, Buddhist Jataka tales for morality, Ayurvedic holistic balance, and stilt fishing as a metaphor for specialized, precarious stability.`,
 
-    case 'chinese':
-      return `Use the 'Tionghoa / Chinese' cultural style.
-Use analogies based on Chinese philosophy or culture: The Art of War (Sun Tzu), the mutualism concept of 'Guanxi', the harmony of Yin-Yang balance, ancient Chinese proverbs, or the trade culture prioritizing hard work and planning ethos.
-Make it feel wise, strategic, and pragmatic.`
-  }
+  // Middle East & Islamic
+  islamic_arabic: `Use Islamic and Arabic cultural references: Quran verses and hadith for ethical anchoring (cite respectfully), the 1001 Nights narrative structure for recursion/nesting, ancient Islamic Golden Age scholars (Ibn Sina, Al-Khwarizmi) for academic heritage, desert caravan trade routes for network routing, and the five pillars as a framework metaphor.`,
+  islamic_persian: `Use Persian cultural references: Rumi's Masnavi poetry for spiritual/abstract concepts, Hafez's ghazals for beauty in ambiguity, the Persian carpet's intricate patterns for complex data structures, the chess game (invented in Persia) for strategy, and the ancient Zoroastrian concept of asha (truth/order) vs druj (chaos) for boolean logic.`,
+  islamic_turkish: `Use Turkish culture: Ottoman Empire administrative systems (vilayets), the bustling Grand Bazaar as a marketplace/exchange, hammam processes for purification/filtering, the Bosphorus strait bridging two systems, and Nasreddin Hodja's clever satirical logic puzzles.`,
+  islamic_malay: `Use Malay Islamic culture: local pesantren/pondok education models, the rhythm of selawatan, the synthesis of local indigenous customs with Islamic law, the architecture of tiered mosque roofs, and halal concepts in modern contexts.`,
+  bedouin: `Use Desert Nomad / Bedouin culture: navigating by the stars as absolute positioning, finding oasis springs as resource discovery, the camel's endurance as systemic caching/energy storage, and profound hospitality (diyafa) as open-source sharing.`,
+
+  // Africa
+  west_african: `Use West African cultural references: Ubuntu philosophy ('I am because we are') for distributed systems and interdependence, the griot (oral historian/storyteller) as a database/memory metaphor, kente cloth weaving patterns as data patterns, talking drums as network communication, and the Anansi spider trickster stories for clever algorithms.`,
+  east_african: `Use East African culture: Swahili coastal trade language as a bridging protocol, the vast Serengeti savanna migrations as data flow, Maasai jumping rituals as energy potential, and distance marathon running as long-term sustainable processing.`,
+  north_african: `Use North African culture: the stark division between the Sahara and the fertile coast, the Kasbah fortresses as local security, the bustling souks of Marrakech, and the explorations of Ibn Battuta crossing domains.`,
+  south_african: `Use South African culture: the 'Rainbow Nation' diversity as a multi-threaded cooperative system, the veld survival, the truth and reconciliation process as conflict resolution algorithms, and indigenous Khoisan harmonizing with nature.`,
+  ethiopian: `Use Ethiopian culture: the intricate Ethiopian coffee ceremony as a multi-step structured process, the rock-hewn churches of Lalibela as monolithic architecture, the Solomonic dynasty legacy, and holding the only un-colonized African sovereignty as robust independence.`,
+
+  // Europe
+  western: `Use the 'Western' (Modern Western) cultural style. Use analogies familiar with modern pop culture or westernization: Netflix movie references, tech startup/Silicon Valley work culture, modern coffee shop vibes, or sports analogies like American Football or NBA basketball.`,
+  nordic: `Use Nordic cultural references: the concept of lagom (not too much, not too little — just right) for optimization, hygge (cozy atmosphere) for user experience, Viking longship crew coordination for distributed teamwork, Norse mythology's Yggdrasil (world tree) for tree data structures, and the Viking rune alphabet.`,
+  mediterranean: `Use Mediterranean (Italy/Spain/Greece) culture: the concept of the siesta for systemic downtime/garbage collection, the intricate art of olive oil pressing, the chaotic but functional piazza traffic, and the slow-food movement as deep processing.`,
+  greek_classical: `Use Ancient Greek cultural references: the Socratic method (elenchus) for debugging/validation, the agora (public square debate) for peer review, Greek mythology characters as archetypes (Prometheus for innovation, Sisyphus for infinite loops), and Olympic Games competition for optimization.`,
+  slavic: `Use Slavic/Eastern European culture: the intricate nesting of Matryoshka dolls for recursive functions, the harsh resilience built through freezing banya (sauna) dips, the space race (Sputnik) for technological leaps, and chess mastery for deep computational lookahead.`,
+  celtic: `Use Celtic (Ireland/Scotland/Wales) culture: the oral storytelling traditions in local pubs, the intricate Celtic knot for endless interconnected loops, navigating unpredictable thick mists as handling uncertainty, and the druidic alignment with natural cycles.`,
+
+  // Americas
+  latin_american: `Use Latin American culture (Brazil/Mexico/Colombia): the rhythmic coordination of Carnival samba schools as synchronized processes, telenovela dramatic arcs for state changes, fútbol passion as competitive dynamics, and Macondo-style magical realism for abstract concepts.`,
+  mexican: `Use Mexican culture: the blending of indigenous Aztec roots with Spanish influence (mestizo concept) as hybrid systems, Día de Muertos multilayered altars (ofrendas) as hierarchical tribute, the heat of chili peppers as friction/resistance, and mariachi band synchronization.`,
+  andean: `Use Andean culture (Peru/Bolivia): the Incan Quipu knot system as binary/data encoding, Machu Picchu's earthquake-resistant interlocking stonework as robust architecture without mortar, cultivating potatoes at high altitudes as edge computing, and chewing coca leaves for stamina.`,
+  native_american: `Use Indigenous Native American culture: the carving of historical Totem poles as immutable blockchain-like ledgers, the Great Plains nomadic tracking skills for pattern recognition, powwow circle assemblies, and the Seventh Generation principle for long-term sustainable logic.`,
+  caribbean: `Use Caribbean culture: the syncopated rhythms of Reggae for asynchronous timing, island archipelago hopping as network routing, the distillation of rum as refining raw data into high purity, and navigating trade winds.`,
+  north_american: `Use US/Canada general culture: the Wild West frontier expansion, the interstate highway road trip as data transit, the NFL playbook as complex branching logic, and the Silicon Valley 'move fast and break things' paradigm.`,
+
+  // Ancient Timeless
+  ancient_egyptian: `Use Ancient Egyptian culture: the seasonal flooding of the Nile as predictable data bursts, hieroglyphics as encodings, the construction of Pyramids as massive monolithic engineering, and the concept of Maat (cosmic balance/truth).`,
+  mesopotamian: `Use Ancient Mesopotamian culture: the Code of Hammurabi for strict rule-based logic/validation, cuneiform clay tablets as persistent cold storage, the unpredictable Tigris/Euphrates rivers, and the Ziggurat steps as stacked architecture.`,
+  roman: `Use Ancient Roman culture: the strict discipline of the Roman Legion for array/grid execution, the vast aqueduct systems for continuous data pipelines, the Senate debates for consensus logic, and Stoic philosophy for error-handling resilience.`,
+  aztec_maya: `Use Aztec/Mayan culture: the hyper-accurate cyclic Mayan calendars representing cyclical processes, the complex agriculture on chinampas (floating gardens), ritual sacrifice as resource cost, and base-20 mathematics.`,
+  viking: `Use Ancient Viking culture: seafaring longships engineered to bend not break in storms as flexibility architecture, raids as aggressive data harvesting, sagas as immutable transaction logs, and the pantheon of gods (Odin for knowledge, Thor for brute force).`,
+  hindu_vedic: `Use Ancient Hindu/Vedic culture: the cycle of Karma and Samsara as feedback loops and iterations, Dharma as strict type-checking or destiny, the Upanishads dialogue, and the concept of zero (Shunya) originating from this era.`,
+
+  // Special / Cross-Cultural
+  gamer: `Use gaming culture references: RPG quest structure (main quest vs side quest) for primary vs secondary processes, XP and leveling up for cumulative learning, boss fight mechanics (phases/patterns) for problem decomposition, respawn/checkpoint for error recovery, and guild dynamics.`,
+  internet: `Use Internet/Meme culture: viral propagation algorithms, treating entities as NPCs or main characters, forum thread derivations, speedrun exploits bypassing normal logic, and iceberg lore hierarchy for deep concepts.`,
+  sports_universal: `Use Universal Sports culture: relay race baton passing as memory handoffs, team formations (offense/defense arrays), the underdog narrative, scoreboards, and the intense pressure of a penalty shootout mapping to edge-case stress tests.`,
+  scientific: `Use scientific lab culture references: hypothesis-experiment-conclusion cycle for iterative processes, peer review as validation, the eureka moment as breakthrough events, double-blind experiments for unbiased testing, Occam's razor for simplicity, and famous experiment stories.`,
+  musical: `Use Musical culture: the jazz improvisation of a rhythm section responding asynchronously, the conductor of an orchestra managing microservices, the crescendo of volume as scaling up, harmony/dissonance, and sheet music as raw syntax.`,
 }
 
 // ─── Exported Functions ──────────────────────────────────────────
 
-/**
- * Generates the system prompt for analyzing concepts based on the cultural lens.
- */
-export function getLensSystemPrompt(lens: LensType): string {
+export function getLensSystemPrompt(lens: string): string {
   const persona = BASE_PERSONA
-  const lensStyle = getLensInstruction(lens)
+  
+  // Provide a safe fallback if the lens is not recognized
+  const lensStyle = LENS_CULTURAL_INSTRUCTIONS[lens as LensType] || LENS_CULTURAL_INSTRUCTIONS['nusantara']
   
   return `${persona}
 In this session, you will receive text input (academic material).
@@ -101,12 +145,9 @@ ${JSON_SCHEMA_LENS}
 `
 }
 
-/**
- * Generates the system prompt to generate an adaptive cultural mini quiz.
- */
-export function getQuizSystemPrompt(lens: LensType): string {
+export function getQuizSystemPrompt(lens: string): string {
   const persona = BASE_PERSONA
-  const lensStyle = getLensInstruction(lens)
+  const lensStyle = LENS_CULTURAL_INSTRUCTIONS[lens as LensType] || LENS_CULTURAL_INSTRUCTIONS['nusantara']
 
   return `${persona}
 Your task now is to create 3 Multiple Choice Questions (MCQ) to test the user's understanding of the provided material.
@@ -123,9 +164,6 @@ ${JSON_SCHEMA_QUIZ}
 `
 }
 
-/**
- * Prompt to just extract text from multimodal files (audio transcription, image OCR / graph interpretation).
- */
 export function getMultimodalExtractionPrompt(): string {
   return `You are a super precise academic data extraction specialist.
 Given multimodal input (either images/infographics of academic material or audio recordings of a tutor's explanation):
