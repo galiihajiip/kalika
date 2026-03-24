@@ -39,6 +39,74 @@ const LENSES_ROW_2 = [
   { id: 'andean', emoji: '🦅', label: 'Andean', region: 'Americas' },
 ]
 
+// ── TESTIMONIALS DATA ──
+const TESTIMONIALS = [
+  {
+    name: "Aisha Mahmoud",
+    university: "University of Toronto, Canada",
+    initial: "A",
+    color: "green",
+    quote: "The Islamic lens made thermodynamics click instantly. Explaining entropy through the concept of tawakkul gave me a mental model that no lecture ever could. My midterm score jumped two full letter grades.",
+    stars: 5,
+  },
+  {
+    name: "Park Seo-jin",
+    university: "Yonsei University, South Korea",
+    initial: "P",
+    color: "blue",
+    quote: "The Korean lens explained supply and demand using K-drama production economics. I actually enjoyed studying for the first time. The quiz feature kept me focused without feeling overwhelmed.",
+    stars: 5,
+  },
+  {
+    name: "Priya Krishnamurthy",
+    university: "IIT Delhi, India",
+    initial: "P",
+    color: "purple",
+    quote: "As someone with dyslexia, the formatted output alone is worth everything. Short sentences, bold keywords, generous spacing. KALIKA reads my material the way my brain needs it to be presented.",
+    stars: 5,
+  },
+  {
+    name: "Marcos Dela Cruz",
+    university: "University of the Philippines Diliman",
+    initial: "M",
+    color: "amber",
+    quote: "Filipino bayanihan analogy for distributed computing was pure genius. The TTS feature with word highlighting lets me study during my 3-hour Manila commute without looking at the screen.",
+    stars: 5,
+  },
+  {
+    name: "Mei Ling Zhao",
+    university: "National Taiwan University",
+    initial: "M",
+    color: "teal",
+    quote: "Chinese Confucian lens for organizational behavior transformed how I understand management theory. The bilingual glossary is a lifesaver for technical terms in my second language.",
+    stars: 5,
+  },
+  {
+    name: "Dimitri Alexopoulos",
+    university: "University of Athens, Greece",
+    initial: "D",
+    color: "green",
+    quote: "Greek Classical lens for philosophy coursework is incredible. Explaining the Socratic method through debugging code made my professor stop the lecture to ask where I learned that analogy.",
+    stars: 5,
+  },
+  {
+    name: "Fatima Al-Rashid",
+    university: "King Abdulaziz University, Saudi Arabia",
+    initial: "F",
+    color: "blue",
+    quote: "KALIKA explained neural networks using the Islamic concept of ijma (scholarly consensus). As an international student the cultural bridge made abstract AI concepts finally make sense.",
+    stars: 5,
+  },
+  {
+    name: "James Okonkwo",
+    university: "University of Lagos, Nigeria",
+    initial: "J",
+    color: "amber",
+    quote: "West African Ubuntu lens for systems thinking was a revelation. Explaining interdependency through community cooperation gave me frameworks I use in every engineering class now.",
+    stars: 5,
+  },
+]
+
 export default function LandingPage() {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -95,6 +163,15 @@ export default function LandingPage() {
       <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
         <div className="flex items-center gap-4">
           <LogoMark />
+          <div className="w-8 h-8 relative flex-shrink-0 animate-float">
+            <Image
+              src="/images/bagong-small.png"
+              alt="Bagong"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+          </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-kalika-green text-lg tracking-wider leading-none uppercase">KALIKA</span>
             <span className="text-[9px] text-kalika-muted uppercase tracking-widest mt-0.5 font-bold">AI STUDY COMPANION</span>
@@ -616,9 +693,85 @@ export default function LandingPage() {
               
               <div className="text-sm font-medium text-kalika-muted/80">{p.role}</div>
 
-              <div className={`bg-kalika-surface border-l-4 ${p.color} p-6 rounded-r-2xl`}>
+              <div className={`bg-kalika-surface border-l-4 ${p.color} p-6 rounded-r-2xl shadow-inner`}>
                 <p className="text-base text-kalika-text-secondary leading-relaxed italic font-light">
                   "{p.quote}"
+                </p>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.features.map(f => (
+                  <span key={f} className="text-[10px] font-bold text-kalika-muted uppercase tracking-wider bg-kalika-surface border border-kalika-border px-3 py-1.5 rounded-full">
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* --- Section: Testimonials --- */}
+      <section className="py-24 bg-kalika-surface/50 border-y border-kalika-border relative overflow-hidden z-10">
+        <div className="max-w-6xl mx-auto px-8 mb-16 text-center">
+          <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">What learners say</span>
+          <h2 className="font-display font-extrabold text-[clamp(28px,4vw,40px)] leading-tight mb-4 text-kalika-text">World-class insights from world-class scholars</h2>
+        </div>
+
+        <div className="flex flex-col gap-8">
+          {/* Row 1 (Cards 0-3) - Scrolls Left */}
+          <div className="flex overflow-hidden">
+            <div className="flex gap-6 animate-marquee shrink-0" style={{ animationDuration: '35s' }}>
+              {[...TESTIMONIALS.slice(0, 4), ...TESTIMONIALS.slice(0, 4)].map((t, i) => (
+                <div key={i} className="min-w-80 max-w-sm flex-shrink-0 bg-kalika-bg border border-kalika-border2 rounded-2xl p-8 flex flex-col gap-5 hover:border-kalika-green/40 transition-colors group">
+                  <div className="text-yellow-400 text-sm">★★★★★</div>
+                  <p className="text-sm text-kalika-text-secondary leading-relaxed italic font-light">"{t.quote}"</p>
+                  <div className="flex items-center gap-4 border-t border-kalika-border pt-4 mt-auto">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
+                      t.color === 'green' ? 'bg-kalika-green-subtle text-kalika-green' :
+                      t.color === 'blue' ? 'bg-blue-500/10 text-blue-400' :
+                      t.color === 'purple' ? 'bg-purple-500/10 text-purple-400' :
+                      t.color === 'amber' ? 'bg-amber-500/10 text-amber-400' :
+                      'bg-teal-500/10 text-teal-400'
+                    }`}>
+                      {t.initial}
+                    </div>
+                    <div>
+                      <div className="font-display font-semibold text-sm text-kalika-text">{t.name}</div>
+                      <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest">{t.university}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Row 2 (Cards 4-7) - Scrolls Right */}
+          <div className="flex overflow-hidden">
+            <div className="flex gap-6 animate-marquee2 shrink-0" style={{ animationDuration: '40s' }}>
+               {[...TESTIMONIALS.slice(4, 8), ...TESTIMONIALS.slice(4, 8)].map((t, i) => (
+                <div key={i} className="min-w-80 max-w-sm flex-shrink-0 bg-kalika-bg border border-kalika-border2 rounded-2xl p-8 flex flex-col gap-5 hover:border-kalika-green/40 transition-colors group">
+                  <div className="text-yellow-400 text-sm">★★★★★</div>
+                  <p className="text-sm text-kalika-text-secondary leading-relaxed italic font-light">"{t.quote}"</p>
+                  <div className="flex items-center gap-4 border-t border-kalika-border pt-4 mt-auto">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
+                      t.color === 'green' ? 'bg-kalika-green-subtle text-kalika-green' :
+                      t.color === 'blue' ? 'bg-blue-500/10 text-blue-400' :
+                      t.color === 'purple' ? 'bg-purple-500/10 text-purple-400' :
+                      t.color === 'amber' ? 'bg-amber-500/10 text-amber-400' :
+                      'bg-teal-500/10 text-teal-400'
+                    }`}>
+                      {t.initial}
+                    </div>
+                    <div>
+                      <div className="font-display font-semibold text-sm text-kalika-text">{t.name}</div>
+                      <div className="text-[10px] text-kalika-muted font-bold uppercase tracking-widest">{t.university}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
