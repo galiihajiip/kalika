@@ -72,8 +72,7 @@ function TextMode() {
         )}
         {!isBelowMin && <span />}
         <span className={`text-xs font-semibold tabular-nums
-          ${isOverLimit ? 'text-red-500' : 'text-[var(--text-muted)]'}`}>
-          {charCount.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+          {charCount.toLocaleString('en-US')} / {MAX_CHARS.toLocaleString('en-US')}
         </span>
       </div>
     </div>
