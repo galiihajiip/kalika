@@ -113,6 +113,7 @@ export const LENS_CULTURAL_INSTRUCTIONS: Record<LensType, string> = {
   sports_universal: `Use Universal Sports culture: relay race baton passing as memory handoffs, team formations (offense/defense arrays), the underdog narrative, scoreboards, and the intense pressure of a penalty shootout mapping to edge-case stress tests.`,
   scientific: `Use scientific lab culture references: hypothesis-experiment-conclusion cycle for iterative processes, peer review as validation, the eureka moment as breakthrough events, double-blind experiments for unbiased testing, Occam's razor for simplicity, and famous experiment stories.`,
   musical: `Use Musical culture: the jazz improvisation of a rhythm section responding asynchronously, the conductor of an orchestra managing microservices, the crescendo of volume as scaling up, harmony/dissonance, and sheet music as raw syntax.`,
+  cyber: `Use Cyber/Tech culture: terminal commands (sudo style), hacker logic, neon matrix grids, darkweb navigation as depth-first search, firewall security protocols, and glitched aesthetics representing system anomalies.`,
 }
 
 // ─── Exported Functions ──────────────────────────────────────────
