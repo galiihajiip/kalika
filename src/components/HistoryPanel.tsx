@@ -1,55 +1,36 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useKalikaStore } from '@/store/useKalikaStore'
 import type { HistoryEntry, LensType } from '@/types'
+import { LENS_ITEMS } from '@/components/LensSelector'
 
-export interface HistoryPanelProps {
+interface Props {
   isOpen: boolean
   onClose: () => void
 }
 
-import { LENS_ITEMS } from '@/components/LensSelector'
-
 function getLensData(lensId: string) {
   const found = LENS_ITEMS.find((l) => l.id === lensId)
   return {
-    bg: 'bg-[var(--surface-muted)]',
-    text: 'text-[var(--kalika-primary)]',
     label: found ? found.label : lensId.replace('_', ' '),
     emoji: found ? found.emoji : '🌍'
   }
 }
 
-
 function getRelativeTime(timestamp: number) {
   const diffInSeconds = Math.floor((Date.now() - timestamp) / 1000)
-  
-  if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`
-  
+  if (diffInSeconds < 60) return `Just now`
   const diffInMinutes = Math.floor(diffInSeconds / 60)
-  if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`
-  
+  if (diffInMinutes < 60) return `${diffInMinutes}m ago`
   const diffInHours = Math.floor(diffInMinutes / 60)
-  if (diffInHours < 24) return `${diffInHours} hours ago`
-  
+  if (diffInHours < 24) return `${diffInHours}h ago`
   const diffInDays = Math.floor(diffInHours / 24)
-  if (diffInDays === 1) return 'yesterday'
-  return `${diffInDays} days ago`
+  return `${diffInDays}d ago`
 }
 
-export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
-  const { history, clearHistory, setInputText, setSelectedLens, setResult, setActiveTab } = useKalikaStore()
-  const [mounted, setMounted] = useState(false)
+export default function HistoryPanel({ isOpen, onClose }: Props) {
+  const { history, setInputText, setSelectedLens, setResult, clearHistory, setActiveTab } = useKalikaStore()
 
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
-  // Handle item click
   const handleRestore = (entry: HistoryEntry) => {
     setInputText(entry.inputText)
     setSelectedLens(entry.lens as LensType)
@@ -59,92 +40,71 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
   }
 
   const handleClear = () => {
-    if (confirm('Are you sure you want to delete all analysis history?')) {
+    if (confirm('Are you sure you want to clear your entire history?')) {
       clearHistory()
     }
   }
 
   return (
     <>
-      {/* ── Dark Overlay ── */}
       <div 
-        className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 bg-kalika-bg/80 backdrop-blur-sm z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} 
         onClick={onClose}
       />
-
-      {/* ── Slide-in Panel from Left ── */}
-      <div
-        className={`fixed top-0 left-0 h-full w-[320px] bg-[var(--surface-bg)] shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] border-r border-[var(--surface-border)] ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-[var(--surface-border)] bg-[var(--surface-card)]">
-          <h2 className="font-[var(--font-sora)] font-bold text-lg text-[var(--text-primary)]">
-            Analysis History
+      <div className={`fixed top-0 bottom-0 left-0 w-[400px] bg-kalika-surface border-r border-kalika-border shadow-2xl z-50 transform transition-transform duration-300 flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        
+        <div className="p-5 border-b border-kalika-border flex items-center justify-between mt-2">
+          <h2 className="text-sm font-semibold tracking-[0.12em] text-kalika-muted uppercase font-display flex items-center gap-2">
+            <span className="text-kalika-green text-lg">📁</span> History
           </h2>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-[var(--surface-muted)] flex items-center justify-center hover:bg-[var(--surface-border)] hover:text-red-500 transition-colors text-[var(--text-secondary)]"
-            aria-label="Close history"
-          >
+          <button onClick={onClose} className="p-2 rounded-lg text-kalika-muted hover:bg-kalika-surface2 hover:text-kalika-text-secondary transition-colors text-lg line-height-none">
             ✕
           </button>
         </div>
 
-        {/* List Content */}
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+        <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
           {history.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center h-full opacity-60">
-              <span className="text-5xl mb-4">🕰️</span>
-              <p className="font-semibold text-[var(--text-primary)]">No history yet</p>
-              <p className="text-xs text-[var(--text-muted)] mt-1 max-w-[200px]">
-                The materials you analyze will automatically be saved here.
-              </p>
+            <div className="h-full flex flex-col items-center justify-center opacity-60">
+              <span className="text-4xl mb-3 grayscale mix-blend-overlay">👻</span>
+              <p className="text-sm text-kalika-muted font-medium">No history yet</p>
             </div>
           ) : (
-            history.map((entry) => {
-              const meta = getLensData(entry.lens)
-              return (
-                <button
-                  key={entry.id}
-                  onClick={() => handleRestore(entry)}
-                  className="flex flex-col text-left w-full p-4 rounded-xl border border-[var(--surface-border)] bg-[var(--surface-card)] hover:border-[var(--kalika-primary)] hover:shadow-md transition-all active:scale-[0.98] group"
-                >
-                  <div className="flex justify-between items-start w-full mb-2">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${meta.bg} ${meta.text}`}>
-                      {meta.emoji} {meta.label}
-                    </span>
-                    <span className="text-[10px] font-semibold text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
-                      {getRelativeTime(entry.timestamp)}
-                    </span>
-                  </div>
-                  
-                  <p className="text-sm font-medium text-[var(--text-primary)] line-clamp-2 leading-relaxed">
-                    {entry.inputText.length > 80 
-                      ? entry.inputText.slice(0, 80) + '...' 
-                      : entry.inputText}
-                  </p>
-                </button>
-              )
-            })
+            <div className="flex flex-col gap-3">
+              {history.map((entry) => {
+                const meta = getLensData(entry.lens)
+                return (
+                  <button
+                    key={entry.id}
+                    onClick={() => handleRestore(entry)}
+                    className="flex flex-col text-left w-full p-4 rounded-xl border border-kalika-border bg-kalika-surface hover:border-kalika-green-glow hover:bg-kalika-surface2 transition-all active:scale-[0.98] group"
+                  >
+                    <div className="flex justify-between items-start w-full mb-2">
+                      <span className="inline-block text-[9px] font-bold tracking-widest uppercase bg-kalika-green-subtle text-kalika-green px-2 py-0.5 rounded-full">
+                        {meta.emoji} {meta.label}
+                      </span>
+                      <span className="text-[10px] font-medium text-kalika-muted group-hover:text-kalika-text-secondary transition-colors">
+                        {getRelativeTime(entry.timestamp)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-kalika-text-secondary line-clamp-2 leading-relaxed">
+                      {entry.inputText}
+                    </p>
+                  </button>
+                )
+              })}
+            </div>
           )}
         </div>
 
-        {/* Footer */}
         {history.length > 0 && (
-          <div className="p-4 border-t border-[var(--surface-border)] bg-[var(--surface-bg)]">
-            <button
+          <div className="p-5 border-t border-kalika-border bg-kalika-surface2/50 backdrop-blur-md">
+            <button 
               onClick={handleClear}
-              className="w-full py-3 rounded-xl border border-red-200 dark:border-red-900/50 text-red-500 text-sm font-bold hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+              className="w-full py-3 rounded-lg border border-red-900/50 text-red-400 text-xs font-bold hover:bg-red-900/20 transition-colors"
             >
-              🗑️ Clear All History
+              Clear All History
             </button>
-            <p className="text-center text-[10px] font-semibold text-[var(--text-muted)] mt-3 tracking-wide">
-              STORED LOCALLY IN YOUR BROWSER
-            </p>
+            <p className="text-center text-[10px] text-kalika-muted mt-3">Saved locally in your browser.</p>
           </div>
         )}
       </div>
