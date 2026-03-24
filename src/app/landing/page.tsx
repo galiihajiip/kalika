@@ -152,10 +152,10 @@ export default function LandingPage() {
       {/* --- Hero Section --- */}
       <section className="relative min-h-screen pt-28 px-[5%] flex flex-col md:grid md:grid-cols-[1.2fr_1fr] lg:grid-cols-[1.1fr_1fr] gap-12 items-center z-10 max-w-[1400px] mx-auto">
         <div className="flex flex-col text-left">
-          <div className="animate-fade-up inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-kalika-green/10 border border-kalika-green-dim text-kalika-green text-[11px] font-bold tracking-widest uppercase mb-6 w-fit">
-            <span className="w-2 h-2 rounded-full bg-kalika-green animate-pulse" />
-            AI Case Competition · GDG UTSC 2025
-          </div>
+      <div className="animate-fade-up inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-kalika-green/10 border border-kalika-green-dim text-kalika-green text-[11px] font-bold tracking-widest uppercase mb-6 w-fit">
+        <span className="w-2 h-2 rounded-full bg-kalika-green animate-pulse" />
+        AI Case Competition · GDG UTSC 2026
+      </div>
           
           <h1 className="animate-fade-up font-display font-extrabold text-[clamp(42px,6vw,72px)] leading-[1.02] tracking-tight mb-8" style={{ animationDelay: '0.1s' }}>
             <span className="text-kalika-text">Study smarter.</span><br />
