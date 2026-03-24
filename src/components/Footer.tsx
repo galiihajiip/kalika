@@ -61,7 +61,7 @@ export default function Footer() {
             <h4 className="text-[10px] font-bold text-kalika-muted uppercase tracking-[0.2em]">Built With</h4>
             <div className="flex flex-wrap gap-2">
               {['Next.js', 'Gemini 2.5 Flash', 'TypeScript', 'Tailwind CSS', 'Vercel'].map(tech => (
-                <div key={tech} className="px-3 py-1.5 bg-kalika-surface border border-kalika-border2 rounded-lg font-mono text-[10px] text-kalika-text-secondary hover:border-kalika-green/50 transition-all cursor-default">
+                <div key={tech} className="px-3 py-1.5 bg-kalika-surface border border-kalika-border2 rounded-lg font-mono text-xs text-kalika-text-secondary hover:border-kalika-green/50 transition-all cursor-default">
                   {tech}
                 </div>
               ))}
@@ -71,9 +71,9 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM STRIP */}
-        <div className="pt-8 border-t border-kalika-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[10px] text-kalika-muted font-medium">© 2026 KALIKA. All rights reserved.</p>
-          <p className="text-[10px] text-kalika-muted font-medium flex items-center gap-1">
+        <div className="pt-[20px] border-t border-kalika-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-kalika-muted font-medium">© 2026 KALIKA. All rights reserved.</p>
+          <p className="text-xs text-kalika-muted font-medium flex items-center gap-1">
             Made with <span className="text-red-500">❤️</span> for learners everywhere
           </p>
         </div>
