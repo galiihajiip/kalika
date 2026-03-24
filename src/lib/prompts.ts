@@ -156,7 +156,7 @@ Your task now is to create 3 Multiple Choice Questions (MCQ) to test the user's 
 ${lensStyle}
 
 Quiz Rules:
-- Connect the academic concept with the selected cultural analogy in the question's narrative (e.g. "If compared to..., then...").
+- Connect the academic concept with the selected cultural analogy in the question's narrative (e.g. "If compared to: then.").
 - Vary the difficulty level (e.g. 1 easy, 1 medium, 1 hard), but focus on conceptual understanding, not just rote memorization.
 - Provide logical options A, B, C, D, and identify \`correctAnswer\` ("A", "B", "C", or "D").
 - In \`culturalExplanation\`, explain WHY that option is correct, and explain its logical connection with the respective cultural analogy.
