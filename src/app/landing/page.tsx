@@ -551,7 +551,9 @@ export default function LandingPage() {
         <div className="reveal flex flex-col items-center text-center max-w-3xl mx-auto mb-20 text-balance">
           <span className="text-kalika-green text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">Who It's For</span>
           <h2 className="font-display font-extrabold text-[clamp(28px,4vw,44px)] leading-tight mb-4">Built for every kind of mind</h2>
-          <p className="text-kalika-text-secondary text-lg font-light">No learner gets left behind.</p>
+          <p className="text-kalika-text-secondary text-lg font-light leading-relaxed max-w-2xl">
+            No learner gets left behind. Whether you're navigating dyslexia, ADHD, or a multicultural background, KALIKA adapts to you.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">
@@ -560,8 +562,8 @@ export default function LandingPage() {
               tag: 'Dyslexia', 
               icon: '🧠', 
               title: 'The Deliberate Learner', 
-              role: 'Student with Dyslexia or Reading Difficulty',
-              quote: 'I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process, in my own cultural language.',
+              role: 'Dyslexia / Reading difficulty',
+              quote: 'I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process — in my own cultural language.',
               features: ['Dyslexia-Friendly Text', 'TTS Highlight', 'Bilingual Glossary'],
               color: 'border-kalika-green'
             },
@@ -569,17 +571,17 @@ export default function LandingPage() {
               tag: 'ADHD', 
               icon: '⚡', 
               title: 'The Sprint Learner', 
-              role: 'Student with ADHD or Attention Challenges',
-              quote: '5-minute quizzes that feel like a game? Finally something that keeps my brain locked in until I actually understand the material.',
-              features: ['Mini Quiz', 'Cultural Analogy', 'Fast Input'],
+              role: 'ADHD / Focus challenges',
+              quote: 'ADHD makes focused reading hard, especially for dry subjects. The mini quizzes give me that quick hit of challenge I need to actually stay engaged with the material.',
+              features: ['Gamified Quizzes', 'Audio Scholar', 'Narrative Analogies'],
               color: 'border-amber-500'
             },
             { 
               tag: 'Global', 
               icon: '🌏', 
               title: 'The Global Scholar', 
-              role: 'International Student, Multicultural Background',
-              quote: 'Explaining recursion through the Mahabharata? That clicked in 30 seconds what three lectures never could.',
+              role: 'International / Multicultural',
+              quote: 'Explaining recursion through the Mahabharata? That clicked in 30 seconds what three lectures never could. Finally, software engineering makes sense to my brain.',
               features: ['50+ Cultural Lenses', 'Multimodal Input', 'Multilingual TTS'],
               color: 'border-sky-500'
             }
