@@ -9,12 +9,18 @@ export interface HistoryPanelProps {
   onClose: () => void
 }
 
-const LENS_COLORS: Record<LensType, { bg: string; text: string; label: string }> = {
-  nusantara: { bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-700 dark:text-emerald-400', label: 'Nusantara' },
-  western: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400', label: 'Western' },
-  islamic: { bg: 'bg-teal-100 dark:bg-teal-900/30', text: 'text-teal-700 dark:text-teal-400', label: 'Islami' },
-  chinese: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400', label: 'Tionghoa' },
+import { LENS_ITEMS } from '@/components/LensSelector'
+
+function getLensData(lensId: string) {
+  const found = LENS_ITEMS.find((l) => l.id === lensId)
+  return {
+    bg: 'bg-[var(--surface-muted)]',
+    text: 'text-[var(--kalika-primary)]',
+    label: found ? found.label : lensId.replace('_', ' '),
+    emoji: found ? found.emoji : '🌍'
+  }
 }
+
 
 function getRelativeTime(timestamp: number) {
   const diffInSeconds = Math.floor((Date.now() - timestamp) / 1000)
@@ -46,7 +52,7 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
   // Handle item click
   const handleRestore = (entry: HistoryEntry) => {
     setInputText(entry.inputText)
-    setSelectedLens(entry.lens)
+    setSelectedLens(entry.lens as LensType)
     setResult(entry.result)
     setActiveTab('result')
     onClose()
@@ -100,7 +106,7 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
             </div>
           ) : (
             history.map((entry) => {
-              const style = LENS_COLORS[entry.lens]
+              const meta = getLensData(entry.lens)
               return (
                 <button
                   key={entry.id}
@@ -108,8 +114,8 @@ export default function HistoryPanel({ isOpen, onClose }: HistoryPanelProps) {
                   className="flex flex-col text-left w-full p-4 rounded-xl border border-[var(--surface-border)] bg-[var(--surface-card)] hover:border-[var(--kalika-primary)] hover:shadow-md transition-all active:scale-[0.98] group"
                 >
                   <div className="flex justify-between items-start w-full mb-2">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
-                      {style.label}
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${meta.bg} ${meta.text}`}>
+                      {meta.emoji} {meta.label}
                     </span>
                     <span className="text-[10px] font-semibold text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
                       {getRelativeTime(entry.timestamp)}
