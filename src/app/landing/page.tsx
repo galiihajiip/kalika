@@ -292,6 +292,26 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* --- 6A: HERO MINI-FEATURES ROW --- */}
+      <section className="border-y border-kalika-border bg-kalika-surface/30 backdrop-blur-sm relative z-10">
+        <div className="max-w-6xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
+          {[
+            { icon: '🌍', num: '50+', label: 'Cultural Lenses', sub: 'From Nusantara to Viking' },
+            { icon: '🧠', num: '3',   label: 'Learner Personas', sub: 'Dyslexia · ADHD · Scholar' },
+            { icon: '⚡', num: '6',   label: 'AI-Powered Tools', sub: 'One unified experience' },
+          ].map((stat, i) => (
+            <div key={i} className="flex items-center gap-6 group">
+              <div className="text-4xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">{stat.icon}</div>
+              <div>
+                <div className="font-display font-bold text-3xl text-kalika-green leading-none">{stat.num}</div>
+                <div className="font-semibold text-kalika-text text-base mt-2">{stat.label}</div>
+                <div className="text-kalika-text-secondary text-sm mt-1 leading-relaxed font-light">{stat.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* --- Section: Cultural Marquee --- */}
       <section id="lenses" className="py-24 px-[5%] relative z-10">
         <div className="reveal flex flex-col items-center text-center max-w-[800px] mx-auto mb-20 text-balance">
