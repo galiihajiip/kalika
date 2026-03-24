@@ -21,23 +21,7 @@ const sora = Sora({
 // ─── Metadata ────────────────────────────────────────────────────
 export const metadata: Metadata = {
   title: 'KALIKA — AI Study Companion',
-  description:
-    'KALIKA is a culturally-aware AI study companion that transforms complex topics into dyslexia-friendly explanations using Nusantara, Western, Islamic, and Chinese cultural lenses — powered by Google Gemini.',
-  keywords: [
-    'KALIKA',
-    'AI study companion',
-    'EdTech Indonesia',
-    'budaya belajar',
-    'dyslexia friendly',
-    'Gemini AI',
-    'kuis adaptif',
-  ],
-  authors: [{ name: 'KALIKA Team' }],
-  openGraph: {
-    title: 'KALIKA — AI Study Companion',
-    description: 'Belajar lebih mudah dengan analisis budaya AI yang cerdas.',
-    type: 'website',
-  },
+  description: 'AI-Powered student companion built to simplify complex academic materials using culturally-aware analogies, complete with a dyslexia-friendly UI and adaptive quizzes natively powered by Google Gemini.',
 }
 
 // ─── Root Layout ─────────────────────────────────────────────────
@@ -47,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id" className="dark" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${nunito.variable} ${sora.variable} font-[var(--font-nunito)] antialiased min-h-screen`}
       >
