@@ -12,35 +12,35 @@ export async function POST(request: Request) {
     try {
       body = await request.json()
     } catch (e) {
-      return NextResponse.json({ error: 'Body request JSON tidak valid.' }, { status: 400 })
+      return NextResponse.json({ error: 'Invalid JSON request body.' }, { status: 400 })
     }
 
     const { text, lens } = body
 
-    // Validasi Input
+    // Validate Input
     if (!text || typeof text !== 'string') {
-      return NextResponse.json({ error: 'Teks materi tidak valid atau kosong.' }, { status: 400 })
+      return NextResponse.json({ error: 'Text material is invalid or empty.' }, { status: 400 })
     }
     const charCount = text.length
     if (charCount < 50) {
-      return NextResponse.json({ error: 'Teks terlalu singkat, minimal 50 karakter.' }, { status: 400 })
+      return NextResponse.json({ error: 'Text is too short, minimum 50 characters required.' }, { status: 400 })
     }
     if (charCount > 5000) {
-      return NextResponse.json({ error: 'Teks terlalu panjang, maksimal 5000 karakter.' }, { status: 400 })
+      return NextResponse.json({ error: 'Text is too long, maximum 5000 characters allowed.' }, { status: 400 })
     }
 
     if (!lens || !ALLOWED_LENSES.includes(lens)) {
       return NextResponse.json(
-        { error: 'Lensa budaya tidak valid. Pilih antara nusantara, western, islamic, atau chinese.' },
+        { error: 'Invalid cultural lens. Choose between nusantara, western, islamic, or chinese.' },
         { status: 400 }
       )
     }
 
     const targetLens = lens as LensType
 
-    // 2. Panggil Gemini
+    // 2. Call Gemini
     const systemInstruction = getQuizSystemPrompt(targetLens)
-    const userPrompt = `Buatlah kuis pilihan ganda dari materi ini:\n\n${text}`
+    const userPrompt = `Create a multiple-choice quiz from this material:\n\n${text}`
 
     const responseString = await callGemini({
       userPrompt,
@@ -49,63 +49,63 @@ export async function POST(request: Request) {
       responseAsJson: true,
     })
 
-    // 3. Parsing dan Validasi Struktur Hasil
+    // 3. Parse and Validate Result Structure
     let quizData: QuizItem[]
     try {
       quizData = JSON.parse(responseString) as QuizItem[]
 
-      // Pastikan output adalah Array
+      // Ensure output is an Array
       if (!Array.isArray(quizData)) {
-        throw new Error('Format root harus berupa Array.')
+        throw new Error('Root format must be an Array.')
       }
 
-      // Pastikan ada 3 soal (meski AI bisa saja salah menghitung, minimal kita cek stuktur per item)
+      // Ensure there are questions (even if AI miscalculates, at least we check structure per item)
       if (quizData.length < 1) {
-        throw new Error('Kuis gagal dibuat. Array kosong.')
+        throw new Error('Quiz creation failed. Empty array.')
       }
 
-      // Validasi tiap soal
+      // Validate each question
       quizData.forEach((item, index) => {
         if (!item.question || typeof item.question !== 'string') {
-          throw new Error(`Soal #${index + 1} tidak memiliki pertanyaan yang valid.`)
+          throw new Error(`Question #${index + 1} does not have a valid question string.`)
         }
         if (!Array.isArray(item.options) || item.options.length !== 4) {
-          throw new Error(`Soal #${index + 1} tidak memiliki 4 opsi jawaban.`)
+          throw new Error(`Question #${index + 1} does not have exactly 4 answer options.`)
         }
         if (!['A', 'B', 'C', 'D'].includes(item.correctAnswer)) {
-          throw new Error(`Kunci jawaban soal #${index + 1} salah format.`)
+          throw new Error(`Answer key for question #${index + 1} has an invalid format.`)
         }
         if (!item.culturalExplanation || typeof item.culturalExplanation !== 'string') {
-          throw new Error(`Soal #${index + 1} tidak memiliki penjelasan budaya.`)
+          throw new Error(`Question #${index + 1} does not have a cultural explanation.`)
         }
       })
 
     } catch (parseError) {
       console.error('[Generate-Quiz] Invalid completion JSON:', parseError, responseString)
       return NextResponse.json(
-        { error: 'AI mengembalikan format kuis yang tidak valid.' },
+        { error: 'AI returned an invalid quiz format.' },
         { status: 500 }
       )
     }
 
-    // 4. Return Output Sukses
+    // 4. Return Success Output
     return NextResponse.json({ success: true, data: quizData }, { status: 200 })
 
   } catch (error: any) {
-    // 5. Tangkap semua Error Service
+    // 5. Catch all Service Errors
     console.error('[Generate-Quiz] Error:', error)
 
     const errorMessage = error instanceof Error ? error.message : String(error)
 
     if (errorMessage.includes('429')) {
       return NextResponse.json(
-        { error: 'Terlalu banyak permintaan (Quota Habis atau Rate Limit). Silakan coba lagi nanti.' },
+        { error: 'Too many requests (Quota Exceeded or Rate Limited). Please try again later.' },
         { status: 429 }
       )
     }
 
     return NextResponse.json(
-      { error: 'Terjadi kesalahan pada server AI saat membuat kuis.' },
+      { error: 'An error occurred on the AI server while creating the quiz.' },
       { status: 500 }
     )
   }
