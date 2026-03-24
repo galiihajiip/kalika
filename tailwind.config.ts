@@ -10,24 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         kalika: {
-          bg:        '#060c06',
-          surface:   '#0c140c',
-          surface2:  '#111c11',
-          border:    '#1a2a1a',
-          border2:   '#243824',
-          green: {
-            DEFAULT: '#4ade80',
-            dim:     '#22c55e',
-            glow:    '#166534',
-            subtle:  '#14532d',
-            text:    '#bbf7d0',
-            pale:    '#dcfce7',
-          },
-          muted:     '#5a7a5a',
-          text: {
-            DEFAULT:   '#e2f0e2',
-            secondary: '#9ab89a',
-          }
+          bg:       '#060c06',
+          surface:  '#0c140c',
+          surface2: '#111c11',
+          border:   '#1a2a1a',
+          border2:  '#243824',
+          muted:    '#5a7a5a',
+          text:     '#e2f0e2',
+          'text-secondary': '#9ab89a',
+          green:         '#4ade80',
+          'green-dim':   '#22c55e',
+          'green-glow':  '#166534',
+          'green-subtle':'#14532d',
+          'green-text':  '#bbf7d0',
+          'green-pale':  '#dcfce7',
         }
       },
       fontFamily: {
