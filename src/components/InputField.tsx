@@ -10,8 +10,8 @@ const MIN_CHARS = 50
 const MAX_AUDIO_BYTES = 5 * 1024 * 1024 // 5 MB
 
 const TABS: { mode: InputMode; label: string; icon: string }[] = [
-  { mode: 'text',  label: 'Teks',   icon: '📝' },
-  { mode: 'image', label: 'Gambar', icon: '🖼️' },
+  { mode: 'text',  label: 'Text',   icon: '📝' },
+  { mode: 'image', label: 'Image', icon: '🖼️' },
   { mode: 'audio', label: 'Audio',  icon: '🎙️' },
 ]
 
@@ -49,7 +49,7 @@ function TextMode() {
           id="input-text-area"
           value={inputText}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
-          placeholder="Tempelkan materi ujian kamu di sini... (min. 50 karakter)"
+          placeholder="Paste your study material here... (min. 50 characters)"
           maxLength={MAX_CHARS + 100}
           className={`w-full resize-none rounded-xl border px-4 py-3 text-sm leading-relaxed
             bg-[var(--surface-muted)] text-[var(--text-primary)]
@@ -67,7 +67,7 @@ function TextMode() {
       <div className="flex items-center justify-between px-1">
         {isBelowMin && (
           <span className="text-xs text-amber-500 font-semibold">
-            Minimal {MIN_CHARS} karakter
+            Minimum {MIN_CHARS} characters required
           </span>
         )}
         {!isBelowMin && <span />}
@@ -111,8 +111,8 @@ function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onCl
 
   const icon = mode === 'image' ? '🖼️' : '🎙️'
   const hint = mode === 'image'
-    ? 'PNG, JPG hingga berapa saja'
-    : 'MP3, WAV, OGG · maks 5 MB'
+    ? 'PNG, JPG · no size limit'
+    : 'MP3, WAV, OGG · max 5 MB'
 
   return (
     <div className="flex flex-col gap-3">
@@ -133,7 +133,7 @@ function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onCl
         <span className="text-4xl">{icon}</span>
         <div>
           <p className="text-sm font-semibold text-[var(--text-primary)]">
-            Seret &amp; lepas file di sini
+            Drag &amp; drop your file here
           </p>
           <p className="text-xs text-[var(--text-muted)] mt-0.5">{hint}</p>
         </div>
@@ -144,7 +144,7 @@ function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onCl
           className="px-5 py-2 rounded-lg text-xs font-bold bg-[var(--kalika-primary)] text-white
             hover:opacity-90 active:scale-95 transition-all duration-150 pointer-events-auto"
         >
-          Pilih File
+          Select File
         </button>
         <input
           ref={inputRef}
@@ -184,17 +184,17 @@ function DropZone({ mode, accept, onFile, error, isExtracting, previewFile, onCl
               <span className="w-4 h-4 border-2 border-[var(--kalika-primary)]/30 border-t-[var(--kalika-primary)]
                 rounded-full animate-spin" />
               <span className="text-xs font-semibold text-[var(--text-secondary)]">
-                Mengekstrak teks...
+                Extracting text...
               </span>
             </div>
           ) : (
             <button
               type="button"
               id={`btn-clear-${mode}`}
-              onClick={onClear}
+              onMouseDown={(e) => { e.stopPropagation(); onClear() }}
               className="shrink-0 w-7 h-7 rounded-lg bg-[var(--surface-muted)] flex items-center justify-center
                 hover:bg-red-500/10 hover:text-red-500 text-[var(--text-muted)]
-                transition-all duration-150 text-sm font-bold"
+                transition-all duration-150 text-sm font-bold pointer-events-auto"
             >
               ✕
             </button>
@@ -243,14 +243,14 @@ export default function InputField() {
 
       if (!res.ok) {
         const json = await res.json() as { error?: string }
-        throw new Error(json.error ?? 'Gagal mengekstrak konten')
+        throw new Error(json.error ?? 'Failed to extract content')
       }
 
       const json = await res.json() as { extractedText: string }
       setInputText(json.extractedText)
       setInputMode('text')
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Terjadi kesalahan'
+      const message = err instanceof Error ? err.message : 'An error occurred'
       setError(message)
     } finally {
       setExtracting(false)
@@ -260,7 +260,7 @@ export default function InputField() {
   function handleImageFile(file: File) {
     setImageError(null)
     if (!['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(file.type)) {
-      setImageError('Format tidak didukung. Gunakan PNG, JPG, atau WebP.')
+      setImageError('Unsupported format. Please use PNG, JPG, or WebP.')
       return
     }
     extractMultimodal(file, 'image')
@@ -269,11 +269,11 @@ export default function InputField() {
   function handleAudioFile(file: File) {
     setAudioError(null)
     if (!['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/x-wav'].includes(file.type)) {
-      setAudioError('Format tidak didukung. Gunakan MP3, WAV, atau OGG.')
+      setAudioError('Unsupported format. Please use MP3, WAV, or OGG.')
       return
     }
     if (file.size > MAX_AUDIO_BYTES) {
-      setAudioError(`Ukuran file terlalu besar. Maksimal ${formatBytes(MAX_AUDIO_BYTES)}.`)
+      setAudioError(`File size too large. Maximum ${formatBytes(MAX_AUDIO_BYTES)}.`)
       return
     }
     extractMultimodal(file, 'audio')
