@@ -12,35 +12,35 @@ export async function POST(request: Request) {
     try {
       body = await request.json()
     } catch (e) {
-      return NextResponse.json({ error: 'Body request JSON tidak valid.' }, { status: 400 })
+      return NextResponse.json({ error: 'Invalid JSON request body.' }, { status: 400 })
     }
 
     const { text, lens } = body
 
-    // Validasi Input
+    // Validate Input
     if (!text || typeof text !== 'string') {
-      return NextResponse.json({ error: 'Teks materi tidak valid atau kosong.' }, { status: 400 })
+      return NextResponse.json({ error: 'Text material is invalid or empty.' }, { status: 400 })
     }
     const charCount = text.length
     if (charCount < 50) {
-      return NextResponse.json({ error: 'Teks terlalu singkat, minimal 50 karakter.' }, { status: 400 })
+      return NextResponse.json({ error: 'Text is too short, minimum 50 characters required.' }, { status: 400 })
     }
     if (charCount > 5000) {
-      return NextResponse.json({ error: 'Teks terlalu panjang, maksimal 5000 karakter.' }, { status: 400 })
+      return NextResponse.json({ error: 'Text is too long, maximum 5000 characters allowed.' }, { status: 400 })
     }
 
     if (!lens || !ALLOWED_LENSES.includes(lens)) {
       return NextResponse.json(
-        { error: 'Lensa budaya tidak valid. Pilih antara nusantara, western, islamic, atau chinese.' },
+        { error: 'Invalid cultural lens. Choose between nusantara, western, islamic, or chinese.' },
         { status: 400 }
       )
     }
 
     const targetLens = lens as LensType
 
-    // 2. Panggil Gemini
+    // 2. Call Gemini
     const systemInstruction = getLensSystemPrompt(targetLens)
-    const userPrompt = `Materi yang perlu disederhanakan:\n\n${text}`
+    const userPrompt = `Material to be simplified:\n\n${text}`
 
     const responseString = await callGemini({
       userPrompt,
@@ -49,48 +49,48 @@ export async function POST(request: Request) {
       responseAsJson: true,
     })
 
-    // 3. Parsing dan Validasi Struktur Hasil
+    // 3. Parse and Validate Result Structure
     let resultData: ResultData
     try {
       resultData = JSON.parse(responseString) as ResultData
 
-      // Validasi properti wajib ada pada JSON
+      // Validate required properties in JSON
       if (
         typeof resultData.dyslexiaFriendlyText !== 'string' ||
         typeof resultData.culturalAnalogy !== 'string' ||
         typeof resultData.examBoundary !== 'string' ||
         !Array.isArray(resultData.bilingualGlossary)
       ) {
-        throw new Error('Properti yang dibutuhkan hilang.')
+        throw new Error('Required properties are missing.')
       }
 
     } catch (parseError) {
-      // Jika hasil JSON berantakan gara-gara model atau parsing rusak
+      // If JSON result is messed up due to model or parsing fail
       console.error('[Generate-Lens] Invalid completion JSON:', parseError, responseString)
       return NextResponse.json(
-        { error: 'AI mengembalikan format yang tidak dikenali.' },
+        { error: 'AI returned an unrecognized format.' },
         { status: 500 }
       )
     }
 
-    // 4. Return Output Sukses
+    // 4. Return Success Output
     return NextResponse.json({ success: true, data: resultData }, { status: 200 })
 
   } catch (error: any) {
-    // 5. Tangkap semua Error yang bertebaran
+    // 5. Catch all scattered Errors
     console.error('[Generate-Lens] Error:', error)
 
     const errorMessage = error instanceof Error ? error.message : String(error)
 
     if (errorMessage.includes('429')) {
       return NextResponse.json(
-        { error: 'Terlalu banyak permintaan (Quota Habis atau Rate Limit). Silakan coba lagi nanti.' },
+        { error: 'Too many requests (Quota Exceeded or Rate Limited). Please try again later.' },
         { status: 429 }
       )
     }
 
     return NextResponse.json(
-      { error: 'Terjadi kesalahan pada server AI.' },
+      { error: 'An error occurred on the AI server.' },
       { status: 500 }
     )
   }
