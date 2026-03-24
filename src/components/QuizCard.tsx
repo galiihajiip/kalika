@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import type { QuizItem, LensType } from '@/types'
 
 interface QuizCardProps {
@@ -58,8 +59,20 @@ export default function QuizCard({ quiz, lens }: QuizCardProps) {
         </p>
         
         {score === quiz.length && (
-          <div className="bg-kalika-green-subtle text-kalika-green border border-kalika-green-glow px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest mb-8">
-            Culture Master: {lens}
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="w-32 h-32 relative">
+              <Image
+                src="/images/bagong.png"
+                alt="Bagong celebrates your perfect score!"
+                width={128}
+                height={128}
+                className="object-contain animate-bounce"
+              />
+            </div>
+            <p className="text-sm font-medium text-kalika-green-text">Perfect score! Bagong is proud of you! 🦅</p>
+            <div className="bg-kalika-green-subtle text-kalika-green border border-kalika-green-glow px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest mb-4">
+              Culture Master: {lens}
+            </div>
           </div>
         )}
 
