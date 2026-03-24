@@ -61,7 +61,7 @@ export async function callGemini({
         },
       })
 
-      const responseText = response.text()
+      const responseText = response.text
       if (!responseText) {
         throw new Error('Empty response from Gemini.')
       }
