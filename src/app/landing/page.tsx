@@ -152,7 +152,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="animate-fade-up text-lg text-kalika-text-secondary font-light leading-relaxed max-w-[580px] mb-10" style={{ animationDelay: '0.2s' }}>
-            KALIKA transforms complex academic material into <span className="text-kalika-green-text font-medium underline decoration-kalika-green/30 underline-offset-4">culturally resonant analogies</span> — from Nusantara to Viking, Islamic to K-Drama. Built to empower <span className="text-kalika-green-text font-medium decoration-kalika-green/30 underline underline-offset-4">neurodivergent minds</span> and global scholars.
+            KALIKA transforms complex academic material into <span className="text-kalika-green-text font-medium underline decoration-kalika-green/30 underline-offset-4">culturally resonant analogies</span>: from Nusantara to Viking, Islamic to K-Drama. Built to empower <span className="text-kalika-green-text font-medium decoration-kalika-green/30 underline underline-offset-4">neurodivergent minds</span> and global scholars.
           </p>
 
           <div className="animate-fade-up flex flex-wrap gap-5" style={{ animationDelay: '0.3s' }}>
@@ -290,7 +290,7 @@ export default function LandingPage() {
             <span className="text-kalika-green">Your way of understanding.</span>
           </h2>
           <p className="text-kalika-text-secondary font-light max-w-[600px]">
-            Every student thinks differently. KALIKA speaks your language — not just linguistically, but culturally. From ancient stories to modern gaming logic.
+            Every student thinks differently. KALIKA speaks your language: not just linguistically, but culturally. From ancient stories to modern gaming logic.
           </p>
         </div>
 
@@ -338,7 +338,7 @@ export default function LandingPage() {
           </h2>
           <p className="text-kalika-text-secondary text-lg leading-relaxed max-w-2xl font-light">
             Six AI-powered tools designed with neurodivergent minds in mind. 
-            Generous spacing, clear language, cultural context — because 
+            Generous spacing, clear language, and cultural context: because 
             everyone learns differently.
           </p>
         </div>
@@ -392,7 +392,7 @@ export default function LandingPage() {
               icon: '📖', 
               tag: 'Accessibility', 
               title: 'Dyslexia-Friendly Structuring', 
-              desc: 'Every wall of text broken into short sentences, clear bullet points, and bold keywords. Generous spacing. Clean layout. Because every learner deserves to understand — not just survive.' 
+              desc: 'Every wall of text broken into short sentences, clear bullet points, and bold keywords. Generous spacing. Clean layout. Because every learner deserves to understand, not just survive.' 
             },
             { 
               icon: '🎮', 
@@ -409,8 +409,8 @@ export default function LandingPage() {
             { 
               icon: '🖼️', 
               tag: 'Multimodal Input', 
-              title: 'Upload Anything — Notes, Photos, Audio', 
-              desc: 'Photograph your handwritten notes. Upload a lecture screenshot. Record a voice memo. KALIKA extracts and structures the text using Gemini Vision — then analyzes it through your chosen lens.' 
+              title: 'Upload Anything: Notes, Photos, Audio', 
+              desc: 'Photograph your handwritten notes. Upload a lecture screenshot. Record a voice memo. KALIKA extracts and structures the text using Gemini Vision, then analyzes it through your chosen lens.' 
             },
             { 
               icon: '🔊', 
@@ -463,13 +463,13 @@ export default function LandingPage() {
               num: '02', 
               icon: '🌍', 
               title: 'Choose Your Cultural Lens',
-              desc: 'Select from 50+ world cultures. Nusantara, Japanese, Viking, Islamic, Gamer — pick the lens that resonates with you.'
+              desc: 'Select from 50+ world cultures. Nusantara, Japanese, Viking, Islamic, Gamer: pick the lens that resonates with you.'
             },
             { 
               num: '03', 
               icon: '✦', 
               title: 'Get Your Personalized Analysis',
-              desc: 'Receive a dyslexia-friendly breakdown, cultural analogy, exam boundary warning, and bilingual glossary — all in seconds.'
+              desc: 'Receive a dyslexia-friendly breakdown, cultural analogy, exam boundary warning, and bilingual glossary: all in seconds.'
             }
           ].map((step, i) => (
             <div key={i} className="reveal flex flex-col items-center text-center relative z-10">
@@ -501,7 +501,7 @@ export default function LandingPage() {
               icon: '🧠', 
               title: 'The Deliberate Learner', 
               role: 'Student with Dyslexia or Reading Difficulty',
-              quote: 'I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process — in my own cultural language.',
+              quote: 'I used to avoid dense lecture slides. Now I paste them into KALIKA and get clear, spaced-out bullet points I can actually process, in my own cultural language.',
               features: ['Dyslexia-Friendly Text', 'TTS Highlight', 'Bilingual Glossary'],
               color: 'border-kalika-green'
             },
@@ -656,7 +656,7 @@ export default function LandingPage() {
           <span className="bg-kalika-green-subtle border border-kalika-green-dim text-kalika-green text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
             Free for Hackathon Demo
           </span>
-          <h2 className="font-display font-extrabold text-[clamp(28px,4vw,52px)] leading-tight mb-6">Try KALIKA — completely free</h2>
+          <h2 className="font-display font-extrabold text-[clamp(28px,4vw,52px)] leading-tight mb-6">Try KALIKA: completely free</h2>
           <p className="text-kalika-text-secondary text-lg font-light leading-relaxed max-w-2xl">
             No account needed. No payment. Just paste your material 
             and start learning in your cultural language.
