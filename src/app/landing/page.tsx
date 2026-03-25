@@ -108,6 +108,8 @@ const TESTIMONIALS = [
 ]
 
 export default function LandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -159,15 +161,16 @@ export default function LandingPage() {
       </div>
 
 
-      <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
-        <div className="flex items-center gap-4 group">
+      <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/80 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-[100]">
+        <Link href="/" className="flex items-center gap-4 group">
           <LogoMark />
           <div className="flex flex-col">
             <span className="font-display font-bold text-kalika-green text-lg tracking-wider leading-none uppercase">KALIKA</span>
             <span className="text-[9px] text-kalika-muted uppercase tracking-widest mt-0.5 font-bold">AI STUDY COMPANION</span>
           </div>
-        </div>
+        </Link>
 
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-10">
           {['Features', 'Lenses', 'Who It\'s For'].map(item => (
             <a
@@ -181,6 +184,39 @@ export default function LandingPage() {
           <Link href="/app" className="bg-kalika-green text-kalika-bg px-6 py-2.5 rounded-xl font-display font-bold text-sm hover:scale-[1.03] hover:bg-green-300 transition-all duration-200">
             Launch App →
           </Link>
+        </div>
+
+        {/* Mobile Hamburger Button */}
+        <button 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden flex flex-col gap-1.5 p-2 text-kalika-green"
+        >
+          <div className={`w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+          <div className={`w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`} />
+          <div className={`w-6 h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+        </button>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`fixed inset-0 bg-kalika-bg/95 backdrop-blur-2xl z-[-1] transition-all duration-500 ease-in-out md:hidden ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
+          <div className="flex flex-col items-center justify-center h-full gap-8 px-8">
+            {['Features', 'Lenses', 'Who It\'s For'].map(item => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase().replace(/\s/g, '-')}`}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-2xl font-display font-bold text-kalika-text hover:text-kalika-green transition-colors"
+              >
+                {item}
+              </a>
+            ))}
+            <Link 
+              href="/app" 
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full bg-kalika-green text-kalika-bg py-5 rounded-2xl font-display font-bold text-xl text-center shadow-lg shadow-kalika-green/20"
+            >
+              Launch KALIKA
+            </Link>
+          </div>
         </div>
       </nav>
 
