@@ -90,7 +90,7 @@ Proudly developed by the team from **UPN Veteran East Java, Indonesia**:
 |-----------|------|--------|
 | **Galih Aji Pangestu** | Lead Developer / AI Integration | [@galiihajiip](https://github.com/galiihajiip) |
 | **Muhammad Ananda Hariadi** | Backend / Multimodal Pipeline | [@anandahariadi](https://github.com/anandahariadi) |
-| **Fachri Ahmad Fabian** | UI/UX / Design Systems | [@fachriahmad](https://github.com/fachriahmad) |
+| **Fachri Ahmad Fabian** | UI/UX / Design Systems | [@facboiii](https://www.instagram.com/facboiii) |
 
 ---
 
