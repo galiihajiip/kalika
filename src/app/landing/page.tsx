@@ -158,7 +158,6 @@ export default function LandingPage() {
         <div className="orb w-[300px] h-[300px] bg-kalika-green/5 top-[30%] left-[50%] animate-float" />
       </div>
 
-      <CustomCursor />
 
       <nav className="fixed top-0 inset-x-0 h-16 bg-kalika-bg/70 backdrop-blur-xl border-b border-kalika-border flex items-center justify-between px-[5%] z-50">
         <div className="flex items-center gap-4 group">

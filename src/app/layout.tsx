@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: 'AI-Powered student companion built to simplify complex academic materials.',
 }
 
+import CustomCursor from '@/components/CustomCursor'
+
 export default function RootLayout({
   children,
 }: {
@@ -29,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable} scroll-smooth`}>
       <body className="bg-kalika-bg text-kalika-text min-h-screen antialiased font-body">
+        <CustomCursor />
         {children}
         <ToastContainer />
       </body>
