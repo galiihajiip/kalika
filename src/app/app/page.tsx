@@ -111,7 +111,10 @@ export default function HomePage() {
             Learn through the <span className="text-kalika-green-dim font-bold">cultural lens</span> you choose
           </p>
           <div className="flex items-center gap-2">
-            <button className="text-xs font-semibold text-kalika-muted hover:text-kalika-green transition-colors px-4 py-2 rounded-lg border border-transparent hover:border-kalika-border">
+            <button 
+              onClick={() => setHowToOpen(true)}
+              className="text-xs font-semibold text-kalika-muted hover:text-kalika-green transition-colors px-4 py-2 rounded-lg border border-transparent hover:border-kalika-border"
+            >
               How to use
             </button>
             <button 
@@ -278,6 +281,7 @@ export default function HomePage() {
       </div>
 
       <HistoryPanel isOpen={historyOpen} onClose={() => setHistoryOpen(false)} />
+      <HowToUseModal isOpen={howToOpen} onClose={() => setHowToOpen(false)} />
     </div>
   )
 }
