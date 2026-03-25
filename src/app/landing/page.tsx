@@ -759,7 +759,12 @@ export default function LandingPage() {
             <Link href="/app" className="bg-kalika-green text-kalika-bg px-10 py-5 rounded-xl font-bold text-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-300">
               ✦ Launch KALIKA Now
             </Link>
-            <a href="https://github.com" target="_blank" className="border border-kalika-border2 text-kalika-text px-10 py-5 rounded-xl font-bold text-lg hover:border-kalika-green/50 hover:bg-kalika-surface transition-all duration-300">
+            <a 
+              href="https://github.com/galiihajiip/kalika" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="border border-kalika-border2 text-kalika-text px-10 py-5 rounded-xl font-bold text-lg hover:border-kalika-green/50 hover:bg-kalika-surface transition-all duration-300"
+            >
               ↗ View on GitHub
             </a>
           </div>
