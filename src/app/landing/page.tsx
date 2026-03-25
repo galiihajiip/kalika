@@ -199,7 +199,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="animate-fade-up text-lg text-kalika-text-secondary font-light leading-relaxed max-w-[580px] mb-10" style={{ animationDelay: '0.2s' }}>
-            KALIKA transforms complex academic material into <span className="text-kalika-green-text font-medium underline decoration-kalika-green/30 underline-offset-4">culturally resonant analogies</span>: from Nusantara to Viking, Islamic to K-Drama. Built to empower <span className="text-kalika-green-text font-medium decoration-kalika-green/30 underline underline-offset-4">neurodivergent minds</span> and global scholars.
+            KALIKA transforms complex academic material into <span className="text-kalika-green-text font-medium underline decoration-kalika-green/30 underline-offset-4">culturally resonant analogies</span>: from Indigenous wisdom to North American pop, South Asian heritage to K-Drama. Built to empower <span className="text-kalika-green-text font-medium decoration-kalika-green/30 underline underline-offset-4">neurodivergent minds</span> and global scholars.
           </p>
 
           <div className="animate-fade-up flex flex-wrap gap-5" style={{ animationDelay: '0.3s' }}>
@@ -323,7 +323,7 @@ export default function LandingPage() {
       <section className="border-y border-kalika-border bg-kalika-surface/30 relative z-10">
         <div className="max-w-[1400px] mx-auto px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
           {[
-            { icon: '🌍', num: '50+', label: 'Cultural Lenses', sub: 'From Nusantara to Viking' },
+            { icon: '🌍', num: '50+', label: 'Cultural Lenses', sub: 'From Indigenous to Pop Culture' },
             { icon: '🔊', num: '20+', label: 'Regional Voices', sub: 'Multilingual TTS Engine' },
             { icon: '💎', num: '100%', label: 'Free Demo', sub: 'For Hackathon Period' },
           ].map((stat, i) => (
