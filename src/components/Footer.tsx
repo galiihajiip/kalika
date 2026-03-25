@@ -52,9 +52,14 @@ export default function Footer() {
               <ul className="flex flex-col gap-3">
                 {['About KALIKA', 'How It Works', 'Who It\'s For', 'GitHub Repository', 'Hackathon Info'].map(item => (
                   <li key={item}>
-                    <Link href="#" className="text-sm text-kalika-text-secondary hover:text-kalika-green transition-all hover:translate-x-1 inline-block font-body">
+                    <a 
+                      href={item === 'GitHub Repository' ? 'https://github.com/galiihajiip/kalika' : '#'} 
+                      target={item === 'GitHub Repository' ? '_blank' : undefined}
+                      rel={item === 'GitHub Repository' ? 'noopener noreferrer' : undefined}
+                      className="text-sm text-kalika-text-secondary hover:text-kalika-green transition-all hover:translate-x-1 inline-block font-body"
+                    >
                       {item}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
