@@ -86,7 +86,7 @@ Test your retention with AI-generated 3-question quizzes that weave academic con
 
 Proudly developed by the team from **UPN Veteran East Java, Indonesia**:
 
-| Developer | Role | GitHub |
+| Developer | Role | GitHub/Instagram |
 |-----------|------|--------|
 | **Galih Aji Pangestu** | Lead Developer / AI Integration | [@galiihajiip](https://github.com/galiihajiip) |
 | **Muhammad Ananda Hariadi** | Full Stack Web Developer | [@anandahariadi_](https://www.instagram.com/anandahariadi_) |
