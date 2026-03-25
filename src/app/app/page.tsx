@@ -9,6 +9,7 @@ import LensSelector from '@/components/LensSelector'
 import ResultCard from '@/components/ResultCard'
 import QuizCard from '@/components/QuizCard'
 import HistoryPanel from '@/components/HistoryPanel'
+import HowToUseModal from '@/components/HowToUseModal'
 import { useKalikaStore } from '@/store/useKalikaStore'
 import { LENS_ITEMS } from '@/components/LensSelector'
 
@@ -22,6 +23,7 @@ export default function HomePage() {
   } = useKalikaStore()
 
   const [historyOpen, setHistoryOpen] = useState(false)
+  const [howToOpen, setHowToOpen] = useState(false)
   const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false)
 
   const handleGenerate = async () => {
