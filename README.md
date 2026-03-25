@@ -89,7 +89,7 @@ Proudly developed by the team from **UPN Veteran East Java, Indonesia**:
 | Developer | Role | GitHub |
 |-----------|------|--------|
 | **Galih Aji Pangestu** | Lead Developer / AI Integration | [@galiihajiip](https://github.com/galiihajiip) |
-| **Muhammad Ananda Hariadi** | Backend / Multimodal Pipeline | [@anandahariadi](https://github.com/anandahariadi) |
+| **Muhammad Ananda Hariadi** | Full Stack Web Developer | [@anandahariadi](https://github.com/anandahariadi) |
 | **Fachri Ahmad Fabian** | UI/UX / Design Systems | [@facboiii](https://www.instagram.com/facboiii) |
 
 ---
